@@ -11,26 +11,23 @@ import java.time.LocalDate;
  * @author jorge
  */
 public class Jugador {
-    
+
     // Atributos
+    private int contadorCodigo = 0;
     protected int codigo;
     protected String nombre;
-    protected LocalDate fechaNacimiento;
+    protected String fechaNacimiento;
     protected String nacionalidad;
-    protected String posicion;         
-    
+    protected String posicion;
+
     // Constructor
-      public Jugador(int codigo, String nombre, LocalDate fechaNacimiento, String nacionalidad, String posicion) {
-        this.codigo = codigo;
+    public Jugador(int codigo, String nombre, String fechaNacimiento, String nacionalidad, String posicion) {
+        this.codigo = contadorCodigo++;
         this.nombre = nombre;
         this.fechaNacimiento = fechaNacimiento;
         this.nacionalidad = nacionalidad;
         this.posicion = posicion;
     }
-      
-    // Metodos
 
-  
-    
-    
+    // Metodos
 }

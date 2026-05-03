@@ -16,11 +16,11 @@ public class Partido {
     protected int codigoEquipoLocal;
     protected int codigoEquipoVisitante;
     protected int añoTemporada;
-    protected LocalDate fecha;
+    protected String fecha;
     protected int partidoTitular;
 
     // Constructor
-    public Partido(int codigoEquipoLocal, int codigoEquipoVisitante, int añoTemporada, LocalDate fecha, int partidoTitular) {
+    public Partido(int codigoEquipoLocal, int codigoEquipoVisitante, int añoTemporada, String fecha, int partidoTitular) {
         this.codigoEquipoLocal = codigoEquipoLocal;
         this.codigoEquipoVisitante = codigoEquipoVisitante;
         this.añoTemporada = añoTemporada;

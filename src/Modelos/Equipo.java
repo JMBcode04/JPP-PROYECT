@@ -11,8 +11,9 @@ import java.time.LocalDate;
  * @author jorge
  */
 public class Equipo {
-    // Atributos
 
+    // Atributos
+    private int contadorCodigo = 0;
     protected int codigo;
     protected String nombre;
     protected LocalDate añoFundacion;
@@ -22,14 +23,13 @@ public class Equipo {
 
     // Constructor
     public Equipo(int codigo, String nombre, LocalDate añoFundacion, String lugarSede, String estadio, int sociosAficionados) {
-        this.codigo = codigo;
+        this.codigo = contadorCodigo++;
         this.nombre = nombre;
         this.añoFundacion = añoFundacion;
         this.lugarSede = lugarSede;
         this.estadio = estadio;
         this.sociosAficionados = sociosAficionados;
     }
-    
-    // Metodos
 
+    // Metodos
 }

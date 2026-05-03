@@ -40,6 +40,12 @@ public class JPP_ProyectoFinal {
                     + "3. Gestion de Partidos\n"
                     + "4. Gestion de Jugador-Equipos\n"
                     + "5. Consultar multitabla\n");
+
+            while (!teclado.hasNextInt()) {
+                System.err.println("Error: debes introducir un numero valido.");
+                teclado.next(); // limpia el dato incorrecto
+            }
+
             menu = teclado.nextInt();
 
             switch (menu) {
@@ -82,6 +88,12 @@ public class JPP_ProyectoFinal {
                     + "6. Exportar la tabla\n"
                     + "7. Importar la tabla\n"
                     + "8. Ver datos insertados durante la ejecucion\n");
+            
+            while (!teclado.hasNextInt()) {
+                System.err.println("Error: debes introducir un numero valido.");
+                teclado.next(); // limpia el dato incorrecto
+            }
+
             menu = teclado.nextInt();
 
             switch (menu) {
@@ -90,27 +102,19 @@ public class JPP_ProyectoFinal {
                     break;
                 case 1:
 
-                    System.err.println("Inserta el codigo del jugador: ");
+                    System.out.println("Inserta el codigo del jugador: ");
                     int codigo = teclado.nextInt();
                     System.out.println("Inserta el nombre del jugador: ");
                     String nombre = teclado.nextLine();
                     System.out.println("Inserta la fecha de nacimiento del jugador: (yyyy/MM/DD) ");
                     String fechaNacimiento = teclado.nextLine();
-                    // Definir el formato que estás usando
-                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy/MM/dd");
-                    // Convertir String a LocalDate
-                    LocalDate fecha = LocalDate.parse(fechaNacimiento, formatter);
-
                     System.out.println("Inserta la nacionalidad del jugador: ");
                     String nacionalidad = teclado.nextLine();
                     System.out.println("Inserta la posicion del jugador: ");
                     String posicion = teclado.nextLine();
 
-                    Jugador j1 = new Jugador(codigo, nombre, LocalDate.MIN, nacionalidad, posicion);
-                    
-                    
-                            
 
+                    // Arreglar 
                     break;
                 case 2:
 
