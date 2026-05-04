@@ -13,4 +13,9 @@ public class SeHaProducidoUnError extends Exception {
     public SeHaProducidoUnError(String mensaje) {
         super(mensaje);
     }
+    
+    // Sirve para que lance el mensaje cuando salte el error
+     public SeHaProducidoUnError() {
+        super("Se ha producido un error inesperado en la aplicación.");
+    }
 }
