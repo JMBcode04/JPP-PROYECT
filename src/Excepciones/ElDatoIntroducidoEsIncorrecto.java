@@ -8,8 +8,14 @@ package Excepciones;
  *
  * @author jorge
  */
-public class ElDatoIntroducidoEsIncorrecto extends Exception{
-     public ElDatoIntroducidoEsIncorrecto(String mensaje) {
+public class ElDatoIntroducidoEsIncorrecto extends Exception {
+
+    public ElDatoIntroducidoEsIncorrecto(String mensaje) {
         super(mensaje);
+    }
+
+    // Sirve para que lance el mensaje cuando salte el error
+    public ElDatoIntroducidoEsIncorrecto() {
+        super("El dato introducido es incorrecto. Por favor vuelva a intentarlo.");
     }
 }
