@@ -40,14 +40,11 @@ public class Jugador {
     
 
     // Metodos 
-    
-
+ 
     public int getCodigo() {
         return codigo;
     }
 
-    
-    
     //Auto asignar codigo a jugador
     //hay que contar los jugadores que ya existen en la BD y empezar el codigo desde ahi
 
