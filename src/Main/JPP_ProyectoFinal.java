@@ -78,6 +78,7 @@ public class JPP_ProyectoFinal {
         int menu = 1;
 
         while (menu != 0) {
+            
             System.out.println("Introduce un numero del menu");
             System.out.println("0. Salir\n"
                     + "1. Insertar Jugador\n"
@@ -101,10 +102,9 @@ public class JPP_ProyectoFinal {
                     System.out.println("Salir...");
                     break;
                 case 1:
-
-                    System.out.println("Inserta el codigo del jugador: ");
-                    int codigo = teclado.nextInt();
+                    //El codigo se asigna automaticamente al insertar un nuevo jugador
                     System.out.println("Inserta el nombre del jugador: ");
+                    teclado.next();
                     String nombre = teclado.nextLine();
                     System.out.println("Inserta la fecha de nacimiento del jugador: (yyyy/MM/DD) ");
                     String fechaNacimiento = teclado.nextLine();
@@ -112,7 +112,8 @@ public class JPP_ProyectoFinal {
                     String nacionalidad = teclado.nextLine();
                     System.out.println("Inserta la posicion del jugador: ");
                     String posicion = teclado.nextLine();
-
+                    
+                    Jugador j1= new Jugador(nombre, fechaNacimiento, nacionalidad, posicion);
 
                     // Arreglar 
                     break;
@@ -123,7 +124,9 @@ public class JPP_ProyectoFinal {
 
                     break;
                 case 4:
-
+                    System.out.println("Inserta el codigo del jugador a actualizar");
+                    int codigo = teclado.nextInt();
+                    
                     break;
                 case 5:
 

@@ -21,7 +21,7 @@ public class Jugador {
     protected String posicion;
 
     // Constructor
-    public Jugador(int codigo, String nombre, String fechaNacimiento, String nacionalidad, String posicion) {
+    public Jugador(String nombre, String fechaNacimiento, String nacionalidad, String posicion) {//para el main
         this.codigo = contadorCodigo++;
         this.nombre = nombre;
         this.fechaNacimiento = fechaNacimiento;
@@ -29,5 +29,30 @@ public class Jugador {
         this.posicion = posicion;
     }
 
-    // Metodos
+    public Jugador(int codigo, String nombre, String fechaNacimiento, String nacionalidad, String posicion) {//para consultar por codigo BD
+        this.codigo = codigo;
+        this.nombre = nombre;
+        this.fechaNacimiento = fechaNacimiento;
+        this.nacionalidad = nacionalidad;
+        this.posicion = posicion;
+    }
+    
+    
+
+    // Metodos 
+    
+
+    public int getCodigo() {
+        return codigo;
+    }
+
+    
+    
+    //Auto asignar codigo a jugador
+    //hay que contar los jugadores que ya existen en la BD y empezar el codigo desde ahi
+
+    public void setContadorCodigo(int contadorCodigo) {
+        this.contadorCodigo = contadorCodigo;
+    }
+    
 }

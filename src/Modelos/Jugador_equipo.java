@@ -21,7 +21,7 @@ public class Jugador_equipo extends Jugador {
 
     // Constructor
     public Jugador_equipo(int codigoEquipo, int codigoJugador, int añoEntrada, int añoSalida, int partidosTitular, int codigo, String nombre, String fechaNacimiento, String nacionalidad, String posicion) {
-        super(codigo, nombre, fechaNacimiento, nacionalidad, posicion);
+        super(nombre, fechaNacimiento, nacionalidad, posicion);
         this.codigoEquipo = codigoEquipo;
         this.codigoJugador = codigoJugador;
         this.añoEntrada = añoEntrada;

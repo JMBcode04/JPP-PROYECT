@@ -19,6 +19,11 @@ public class JugadorService {
     public static void InsertarJugador() {
 
         MetodosBaseDeDatos.AccederBaseDeDatos();
+        
+        
+        
+        
+        MetodosBaseDeDatos.CerrarBaseDeDatos();
 
     }
 }
