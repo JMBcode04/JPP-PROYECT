@@ -15,9 +15,9 @@ import java.util.logging.Logger;
  */
 public class MetodosBaseDeDatos {
 
-    public static Connection con;
+    private static Connection con;
 
-    public static void AccederBaseDeDatos() {
+    public static Connection AccederBaseDeDatos() {
 
         try {
             String url = Constantes.URL;
@@ -29,7 +29,7 @@ public class MetodosBaseDeDatos {
         } catch (SQLException ex) {
             System.err.println("No se ha establecido la conexion con la base de datos");
         }
-
+        return con;
     }
 
     public static void CerrarBaseDeDatos() {

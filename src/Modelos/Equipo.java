@@ -15,12 +15,12 @@ public class Equipo implements Serializable {
 
     // Atributos
     private int contadorCodigo = 0;
-    protected int codigo;
-    protected String nombre;
-    protected int añoFundacion;
-    protected String lugarSede;
-    protected String estadio;
-    protected int sociosAficionados;
+    private int codigo;
+    private String nombre;
+    private int añoFundacion;
+    private String lugarSede;
+    private String estadio;
+    private int sociosAficionados;
 
     // Constructor
     public Equipo(int codigo, String nombre, int añoFundacion, String lugarSede, String estadio, int sociosAficionados) {
@@ -56,7 +56,7 @@ public class Equipo implements Serializable {
         this.nombre = nombre;
     }
 
-    public int añoFundacion() {
+    public int getañoFundacion() {
         return añoFundacion;
     }
 
