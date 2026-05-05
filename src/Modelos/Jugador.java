@@ -4,13 +4,14 @@
  */
 package Modelos;
 
+import java.io.Serializable;
 import java.time.LocalDate;
 
 /**
  *
  * @author jorge
  */
-public class Jugador {
+public class Jugador implements Serializable {
 
     // Atributos
     private int contadorCodigo = 0;
@@ -22,7 +23,7 @@ public class Jugador {
 
     // Constructor
     public Jugador(String nombre, String fechaNacimiento, String nacionalidad, String posicion) {//para el main
-        this.codigo = contadorCodigo++;
+        this.codigo = codigo;
         this.nombre = nombre;
         this.fechaNacimiento = fechaNacimiento;
         this.nacionalidad = nacionalidad;
@@ -36,20 +37,58 @@ public class Jugador {
         this.nacionalidad = nacionalidad;
         this.posicion = posicion;
     }
-    
-    
 
     // Metodos 
- 
     public int getCodigo() {
         return codigo;
     }
 
-    //Auto asignar codigo a jugador
-    //hay que contar los jugadores que ya existen en la BD y empezar el codigo desde ahi
+    public void setCodigo(int codigo) {
+        this.codigo = codigo;
+    }
 
-    public void setContadorCodigo(int contadorCodigo) {
-        this.contadorCodigo = contadorCodigo;
+    public String getNombre() {
+        return nombre;
+    }
+
+    public void setNombre(String nombre) {
+        this.nombre = nombre;
+    }
+
+    public String getFechaNacimiento() {
+        return fechaNacimiento;
+    }
+
+    public void setFechaNacimiento(String fechaNacimiento) {
+        this.fechaNacimiento = fechaNacimiento;
+    }
+
+    public String getNacionalidad() {
+        return nacionalidad;
+    }
+
+    public void setNacionalidad(String nacionalidad) {
+        this.nacionalidad = nacionalidad;
+    }
+
+    public String getPosicion() {
+        return posicion;
+    }
+
+    public void setPosicion(String posicion) {
+        this.posicion = posicion;
+    }
+
+    @Override
+    public String toString() {
+        return "Jugador{" + "contadorCodigo=" + contadorCodigo + 
+                ", codigo=" + codigo + ", "
+                + "nombre=" + nombre + ", "
+                + "fechaNacimiento=" + fechaNacimiento + 
+                ", nacionalidad=" + nacionalidad + ", "
+                + "posicion=" + posicion + '}';
     }
     
+    
+
 }
