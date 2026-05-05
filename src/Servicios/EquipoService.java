@@ -37,6 +37,10 @@ public class EquipoService implements MetodosComunes<Equipo> {
         this.contenedor = contenedor;
     }
 
+    public EquipoService() {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+
     @Override
     public void insertar(Equipo entidad) throws ElDatoIntroducidoEsIncorrecto, SeHaProducidoUnError {
         validarEquipo(entidad);

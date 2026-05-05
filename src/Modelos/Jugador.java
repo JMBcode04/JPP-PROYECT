@@ -12,9 +12,13 @@ import java.time.LocalDate;
  * @author jorge
  */
 public class Jugador implements Serializable {
-
+    
     // Atributos
-    private int contadorCodigo = 0;
+    private static int contadorCodigo=0;
+    //Ajustar Codigo Contador desde el ultimo en la BD (JugadorService,main)
+    public static void inicializarContador(int valorInicial) {
+        contadorCodigo = valorInicial + 1;
+    }
     protected int codigo;
     protected String nombre;
     protected String fechaNacimiento;
@@ -23,7 +27,7 @@ public class Jugador implements Serializable {
 
     // Constructor
     public Jugador(String nombre, String fechaNacimiento, String nacionalidad, String posicion) {//para el main
-        this.codigo = codigo;
+        this.codigo = contadorCodigo++;
         this.nombre = nombre;
         this.fechaNacimiento = fechaNacimiento;
         this.nacionalidad = nacionalidad;
@@ -81,14 +85,12 @@ public class Jugador implements Serializable {
 
     @Override
     public String toString() {
-        return "Jugador{" + "contadorCodigo=" + contadorCodigo + 
-                ", codigo=" + codigo + ", "
+        return "Jugador{"
+                + /*"contadorCodigo=" + contadorCodigo + */ "codigo=" + codigo + ", "
                 + "nombre=" + nombre + ", "
-                + "fechaNacimiento=" + fechaNacimiento + 
-                ", nacionalidad=" + nacionalidad + ", "
+                + "fechaNacimiento=" + fechaNacimiento + ", "
+                + "nacionalidad=" + nacionalidad + ", "
                 + "posicion=" + posicion + '}';
     }
-    
-    
 
 }

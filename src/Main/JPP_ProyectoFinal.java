@@ -4,7 +4,11 @@
  */
 package Main;
 
+import Excepciones.ElDatoIntroducidoEsIncorrecto;
+import Excepciones.SeHaProducidoUnError;
 import Modelos.Jugador;
+import Servicios.EquipoService;
+import Servicios.JugadorService;
 import Servicios.MetodosBaseDeDatos;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -21,13 +25,22 @@ public class JPP_ProyectoFinal {
     /**
      * @param args the command line arguments
      */
+    //SERVICIOS
+    private static JugadorService service = new JugadorService();
+    //private static EquipoService service = new EquipoService();
+
     public static void main(String[] args) {
 
+        /*//Ajustar Codigo jugador Contador desde el ultimo en la BD (JugadorService)
+        int ultimoCodigo = JugadorService.obtenerUltimoCodigo();
+        Jugador.inicializarContador(ultimoCodigo);
+         */
         menuPrincipal();
 
     }
 
     public static void menuPrincipal() {
+
         Scanner teclado = new Scanner(System.in);
         int menu = 1;
 
@@ -78,7 +91,7 @@ public class JPP_ProyectoFinal {
         int menu = 1;
 
         while (menu != 0) {
-            
+
             System.out.println("Introduce un numero del menu");
             System.out.println("0. Salir\n"
                     + "1. Insertar Jugador\n"
@@ -89,7 +102,7 @@ public class JPP_ProyectoFinal {
                     + "6. Exportar la tabla\n"
                     + "7. Importar la tabla\n"
                     + "8. Ver datos insertados durante la ejecucion\n");
-            
+
             while (!teclado.hasNextInt()) {
                 System.err.println("Error: debes introducir un numero valido.");
                 teclado.next(); // limpia el dato incorrecto
@@ -101,10 +114,11 @@ public class JPP_ProyectoFinal {
                 case 0:
                     System.out.println("Salir...");
                     break;
-                case 1:
+                case 1:              
+                    try {
                     //El codigo se asigna automaticamente al insertar un nuevo jugador
                     System.out.println("Inserta el nombre del jugador: ");
-                    teclado.next();
+                    teclado.nextLine();
                     String nombre = teclado.nextLine();
                     System.out.println("Inserta la fecha de nacimiento del jugador: (yyyy/MM/DD) ");
                     String fechaNacimiento = teclado.nextLine();
@@ -112,11 +126,16 @@ public class JPP_ProyectoFinal {
                     String nacionalidad = teclado.nextLine();
                     System.out.println("Inserta la posicion del jugador: ");
                     String posicion = teclado.nextLine();
-                    
-                    Jugador j1= new Jugador(nombre, fechaNacimiento, nacionalidad, posicion);
 
-                    // Arreglar 
-                    break;
+                    Jugador j = new Jugador(nombre, fechaNacimiento, nacionalidad, posicion);
+
+                    service.insertar(j);
+                    } catch (ElDatoIntroducidoEsIncorrecto | SeHaProducidoUnError e) {
+                        System.out.println("Error: " + e.getMessage());
+                    }
+                // Arreglar 
+                break;
+
                 case 2:
 
                     break;
@@ -126,7 +145,7 @@ public class JPP_ProyectoFinal {
                 case 4:
                     System.out.println("Inserta el codigo del jugador a actualizar");
                     int codigo = teclado.nextInt();
-                    
+
                     break;
                 case 5:
 
