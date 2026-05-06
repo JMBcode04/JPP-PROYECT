@@ -31,10 +31,15 @@ public class JPP_ProyectoFinal {
 
     public static void main(String[] args) {
 
-        /*//Ajustar Codigo jugador Contador desde el ultimo en la BD (JugadorService)
-        int ultimoCodigo = JugadorService.obtenerUltimoCodigo();
-        Jugador.inicializarContador(ultimoCodigo);
-         */
+        //Ajustar Codigo jugador Contador desde el ultimo en la BD (JugadorService)
+        try {
+            int ultimoCodigo = JugadorService.obtenerUltimoCodigo();
+            Jugador.inicializarContador(ultimoCodigo);
+        } catch (SeHaProducidoUnError e) {
+            System.out.println("Error al inicializar: " + e.getMessage());
+        }
+        
+         
         menuPrincipal();
 
     }
