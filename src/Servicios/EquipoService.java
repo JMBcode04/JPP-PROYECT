@@ -11,6 +11,7 @@ import Interfaces.MetodosComunes;
 import Modelos.ContenedorEquipos;
 import Modelos.Equipo;
 import Utils.Constantes;
+import com.google.gson.reflect.TypeToken;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -37,10 +38,6 @@ public class EquipoService implements MetodosComunes<Equipo> {
         this.contenedor = contenedor;
     }
 
-    public EquipoService() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
     @Override
     public void insertar(Equipo entidad) throws ElDatoIntroducidoEsIncorrecto, SeHaProducidoUnError {
         validarEquipo(entidad);
@@ -65,24 +62,165 @@ public class EquipoService implements MetodosComunes<Equipo> {
 
     @Override
     public void actualizar(Equipo entidad) throws ElDatoIntroducidoEsIncorrecto, SeHaProducidoUnError {
+        validarEquipo(entidad);
+        String sql = "UPDATE equipo SET nombre=?, año_fundacion=?, lugar_sede=?, estadio=?, socios_aficionados=? "
+                + "WHERE codigo=?";
+        try (Connection con = MetodosBaseDeDatos.AccederBaseDeDatos(); PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setString(1, entidad.getNombre());
+            ps.setInt(2, entidad.getañoFundacion());
+            ps.setString(3, entidad.getLugarSede());
+            ps.setString(4, entidad.getEstadio());
+            ps.setInt(5, entidad.getSociosAficionados());
+            ps.setInt(6, entidad.getCodigo());
+            int filas = ps.executeUpdate();
+            if (filas == 0) {
+                throw new SeHaProducidoUnError();
+            }
+        } catch (SQLException e) {
+            throw new SeHaProducidoUnError("Error al actualizar equipo: " + e.getMessage());
+        }
     }
 
     @Override
     public void eliminar(int codigo) throws SeHaProducidoUnError {
+        String sql = "DELETE FROM equipo WHERE codigo=?";
+        try (Connection con = MetodosBaseDeDatos.AccederBaseDeDatos(); PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setInt(1, codigo);
+            int filas = ps.executeUpdate();
+            if (filas == 0) {
+                throw new SeHaProducidoUnError();
+            }
+        } catch (SQLException e) {
+            throw new SeHaProducidoUnError("Error al eliminar equipo: " + e.getMessage());
+        }
+
     }
 
     @Override
     public Equipo consultar(int codigo) throws SeHaProducidoUnError {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        String sql = "SELECT * FROM equipo WHERE codigo=?";
+        try (Connection con = MetodosBaseDeDatos.AccederBaseDeDatos(); PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setInt(1, codigo);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) {
+                    return mapearEquipo(rs);
+                } else {
+                    throw new SeHaProducidoUnError();
+                }
+            }
+        } catch (SQLException e) {
+            throw new SeHaProducidoUnError("Error al consultar equipo: " + e.getMessage());
+        }
     }
 
     @Override
     public List<Equipo> consultarTodos() throws SeHaProducidoUnError {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        String sql = "SELECT * FROM equipo ORDER BY nombre ASC";
+        List<Equipo> lista = new ArrayList<>();
+        try (Connection con = MetodosBaseDeDatos.AccederBaseDeDatos(); PreparedStatement ps = con.prepareStatement(sql); ResultSet rs = ps.executeQuery()) {
+            while (rs.next()) {
+                lista.add(mapearEquipo(rs));
+            }
+        } catch (SQLException e) {
+            throw new SeHaProducidoUnError("Error al consultar todos los equipos: " + e.getMessage());
+        }
+        return lista;
     }
 
-    
-    // Metodoo para validar el equipo
+    // Metodos de exportacion e importacion a TXT de Equipos
+    public void exportarTxt() throws SeHaProducidoUnError {
+        List<Equipo> equipos = consultarTodos();
+        List<String> lineas = new ArrayList<>();
+        for (Equipo e : equipos) {
+            lineas.add(e.getCodigo() + Constantes.SEPARADOR_TXT
+                    + e.getNombre() + Constantes.SEPARADOR_TXT
+                    + e.getañoFundacion() + Constantes.SEPARADOR_TXT
+                    + e.getLugarSede() + Constantes.SEPARADOR_TXT
+                    + e.getEstadio() + Constantes.SEPARADOR_TXT
+                    + e.getSociosAficionados());
+        }
+        MetodosFicheros.exportarTxt(Constantes.FICHERO_EQUIPO, lineas);
+    }
+
+    public void importarTxt() throws SeHaProducidoUnError, YaImportadoException, ElDatoIntroducidoEsIncorrecto {
+        List<String> lineas = MetodosFicheros.importarTxt(Constantes.FICHERO_EQUIPO, txtImportado);
+        for (String linea : lineas) {
+            String[] campos = linea.split(Constantes.SEPARADOR_TXT);
+            Equipo e = parsearEquipo(campos);
+            insertar(e);
+        }
+        txtImportado = true;
+    }
+
+    // Metodos de exportacion e importacion a binario de Equipos
+    public void exportarBinario() throws SeHaProducidoUnError {
+        List<Equipo> equipos = consultarTodos();
+        MetodosFicheros.exportarBinario(Constantes.FICHERO_EQUIPO, equipos);
+    }
+
+    public void importarBinario() throws SeHaProducidoUnError, YaImportadoException, ElDatoIntroducidoEsIncorrecto {
+        List<Equipo> equipos = MetodosFicheros.importarBinario(Constantes.FICHERO_EQUIPO, binImportado);
+        for (Equipo e : equipos) {
+            insertar(e);
+        }
+        binImportado = true;
+    }
+
+    // Metodos de exportacion e importacion a CSV de Equipos
+    public void exportarCsv() throws SeHaProducidoUnError {
+        List<Equipo> equipos = consultarTodos();
+        List<String> lineas = new ArrayList<>();
+        for (Equipo e : equipos) {
+            lineas.add(e.getCodigo() + Constantes.SEPARADOR_CSV
+                    + e.getNombre() + Constantes.SEPARADOR_CSV
+                    + e.getañoFundacion() + Constantes.SEPARADOR_CSV
+                    + e.getLugarSede() + Constantes.SEPARADOR_CSV
+                    + e.getEstadio() + Constantes.SEPARADOR_CSV
+                    + e.getSociosAficionados());
+        }
+        MetodosFicheros.exportarCsv(Constantes.FICHERO_EQUIPO, lineas);
+    }
+
+    public void importarCsv() throws SeHaProducidoUnError, YaImportadoException, ElDatoIntroducidoEsIncorrecto {
+        List<String> lineas = MetodosFicheros.importarCsv(Constantes.FICHERO_EQUIPO, csvImportado);
+        for (String linea : lineas) {
+            String[] campos = linea.split(Constantes.SEPARADOR_CSV);
+            Equipo e = parsearEquipo(campos);
+            insertar(e);
+        }
+        csvImportado = true;
+    }
+
+    // Metodos de exportacion y importacion a JSON de Equipos
+    public void exportarJson() throws SeHaProducidoUnError {
+        List<Equipo> equipos = consultarTodos();
+        MetodosFicheros.exportarJson(Constantes.FICHERO_EQUIPO, equipos);
+    }
+
+    public void importarJson() throws SeHaProducidoUnError, YaImportadoException, ElDatoIntroducidoEsIncorrecto {
+        List<Equipo> equipos = MetodosFicheros.importarJson(
+                Constantes.FICHERO_EQUIPO, jsonImportado,
+                new TypeToken<List<Equipo>>() {
+                }.getType());
+        for (Equipo e : equipos) {
+            insertar(e);
+        }
+        jsonImportado = true;
+    }
+
+    // Sirve para mapear una fila mediante el ResultSet a un objeto en este caso de Equipo
+    private Equipo mapearEquipo(ResultSet rs) throws SQLException {
+        return new Equipo(
+                rs.getInt("codigo"),
+                rs.getString("nombre"),
+                rs.getInt("año_fundacion"),
+                rs.getString("lugar_sede"),
+                rs.getString("estadio"),
+                rs.getInt("socios_aficionados")
+        );
+    }
+
+    // Metodo para validar el equipo
     private void validarEquipo(Equipo equipo) throws ElDatoIntroducidoEsIncorrecto {
         if (equipo.getNombre() == null || equipo.getNombre().isBlank()) {
             throw new ElDatoIntroducidoEsIncorrecto("El nombre del equipo no puede estar vacío.");
@@ -100,5 +238,24 @@ public class EquipoService implements MetodosComunes<Equipo> {
             throw new ElDatoIntroducidoEsIncorrecto("El número de socios no puede ser negativo.");
         }
     }
-    
+
+    private Equipo parsearEquipo(String[] campos) throws ElDatoIntroducidoEsIncorrecto {
+        if (campos.length < 6) {
+            throw new ElDatoIntroducidoEsIncorrecto("Formato de línea incorrecto para equipo.");
+        }
+        return new Equipo(
+                Integer.parseInt(campos[0].trim()),
+                campos[1].trim(),
+                Integer.parseInt(campos[2].trim()),
+                campos[3].trim(),
+                campos[4].trim(),
+                Integer.parseInt(campos[5].trim())
+        );
+    }
+
+    // Muestra los equipos insertados durante la sesion actual
+    public void verDatosInsertadosSesion() {
+        contenedor.mostrarEquiposSesion();
+    }
+
 }
