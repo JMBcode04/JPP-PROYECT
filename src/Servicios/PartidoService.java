@@ -63,7 +63,8 @@ public class PartidoService implements MetodosComunes<Partido>{
     public void actualizar(Partido entidad) throws ElDatoIntroducidoEsIncorrecto, SeHaProducidoUnError {
         validarPartido(entidad);
         String sql = "UPDATE partido SET añoTemporada=?, fecha=?, puntuacionLocal=?, puntuacionVisitante=? "
-                + "WHERE codigoEquipoLocal=? or codigoEquipoVisitante=?";
+                + "WHERE codigoEquipoLocal=? and codigoEquipoVisitante=?";
+
     }
 
     @Override
