@@ -158,7 +158,7 @@ public class EquipoService implements MetodosComunes<Equipo> {
         MetodosFicheros.exportarBinario(Constantes.FICHERO_EQUIPO, equipos);
     }
 
-    public void importarBinario() throws SeHaProducidoUnError, YaImportadoException, ElDatoIntroducidoEsIncorrecto {
+    public void importarBinario() throws SeHaProducidoUnError, YaImportadoException, ElDatoIntroducidoEsIncorrecto, ClassNotFoundException {
         List<Equipo> equipos = MetodosFicheros.importarBinario(Constantes.FICHERO_EQUIPO, binImportado);
         for (Equipo e : equipos) {
             insertar(e);
