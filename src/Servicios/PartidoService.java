@@ -6,37 +6,37 @@ package Servicios;
 
 import Excepciones.ElDatoIntroducidoEsIncorrecto;
 import Excepciones.SeHaProducidoUnError;
-import Interfaces.MetodosComunes;
-import Modelos.ContenedorEquipos;
-import Modelos.Equipo;
+import Modelos.ContenedorPartidos;
 import Modelos.Partido;
+import com.mysql.cj.jdbc.result.ResultSetImpl;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.List;
+import java.sql.*;
+
 
 /**
  *
  * @author jorge
  */
-public class PartidoService implements MetodosComunes<Partido>{
-    
-     // Sirve como memoria para almacenar los equipos introducidos durante la sesion
-    private ContenedorEquipos contenedor;
+public class PartidoService {
+
+    // Atributos
+    // Sirve como memoria para almacenar los equipos introducidos durante la sesion
+    private ContenedorPartidos contenedor;
 
     // Son controladores para la importacion de cada tipo de fichero
     private boolean txtImportado = false;
     private boolean csvImportado = false;
     private boolean binImportado = false;
     private boolean jsonImportado = false;
-    
-    //Constructor
 
-    public PartidoService(ContenedorEquipos contenedor) {
+    //Constructor
+    public PartidoService(ContenedorPartidos contenedor) {
         this.contenedor = contenedor;
     }
 
-    @Override
     public void insertar(Partido entidad) throws ElDatoIntroducidoEsIncorrecto, SeHaProducidoUnError {
         validarPartido(entidad);
         String sql = "INSERT INTO partido (codigoEquipoLocal, codigoEquipoVisitante, añoTemporada, fecha, puntuacionLocal, puntuacionVisitante) "
@@ -44,64 +44,131 @@ public class PartidoService implements MetodosComunes<Partido>{
         try {
             Connection con = MetodosBaseDeDatos.AccederBaseDeDatos();
             PreparedStatement ps = con.prepareStatement(sql);
-            
+
             ps.setInt(1, entidad.getCodigoEquipoLocal());
             ps.setInt(2, entidad.getCodigoEquipoVisitante());
             ps.setInt(3, entidad.getAñoTemporada());
             ps.setString(4, entidad.getFecha());
-            ps.setInt(5, entidad.getPuntuacionLocal());
-            ps.setInt(6, entidad.getPuntuacionVisitante());
+            if (entidad.getPuntuacionLocal() != null) {
+                ps.setInt(5, entidad.getPuntuacionLocal());
+            } else {
+                //ps.setNull(5, Types.);
+            }
+            if (entidad.getPuntuacionVisitante() != null) {
+                ps.setInt(6, entidad.getPuntuacionVisitante());
+            } else {
+                //ps.setNull(6, Types.);
+            }
+
             ps.executeUpdate();
-            contenedor.añadirPartido(entidad);
-            
+
         } catch (SQLException e) {
-            throw  new SeHaProducidoUnError("Error al insertar partido: " + e.getMessage());
+            throw new SeHaProducidoUnError("Error al insertar partido: " + e.getMessage());
         }
     }
 
-    @Override
     public void actualizar(Partido entidad) throws ElDatoIntroducidoEsIncorrecto, SeHaProducidoUnError {
         validarPartido(entidad);
         String sql = "UPDATE partido SET añoTemporada=?, fecha=?, puntuacionLocal=?, puntuacionVisitante=? "
                 + "WHERE codigoEquipoLocal=? and codigoEquipoVisitante=?";
+        try ( Connection con = MetodosBaseDeDatos.AccederBaseDeDatos();  PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setInt(1, entidad.getAñoTemporada());
+            ps.setString(2, entidad.getFecha());
+            if (entidad.getPuntuacionLocal() != null) {
+                ps.setInt(3, entidad.getPuntuacionLocal());
+            } else {
+                //ps.setNull(3, Types.);
+            }
+            if (entidad.getPuntuacionVisitante() != null) {
+                ps.setInt(4, entidad.getPuntuacionVisitante());
+            } else {
+                //ps.setNull(3, Types.);
+            }
+            ps.setInt(5, entidad.getCodigoEquipoLocal());
+            ps.setInt(6, entidad.getCodigoEquipoVisitante());
+            int filas = ps.executeUpdate();
+            if (filas == 0) {
+                throw new SeHaProducidoUnError();
+            }
+        } catch (SQLException e) {
+            throw new SeHaProducidoUnError("Error al actualizar partido: " + e.getMessage());
+        }
 
     }
 
-    @Override
-    public void eliminar(int codigo) throws SeHaProducidoUnError {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    public void eliminar(int codigoLocal, int codigoVisitante, int anioTemporada) throws SeHaProducidoUnError {
+        String sql = "DELETE FROM partido WHERE codigoEquipoLocal=? AND codigoEquipoVisitante=? AND año_temporada =?";
+        try ( Connection con = MetodosBaseDeDatos.AccederBaseDeDatos();  PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setInt(1, codigoLocal);
+            ps.setInt(2, codigoVisitante);
+            ps.setInt(3, anioTemporada);
+            int filas = ps.executeUpdate();
+            if (filas == 0) {
+                throw new SeHaProducidoUnError();
+            }
+        } catch (SQLException e) {
+            throw new SeHaProducidoUnError("Error al eliminar partido: " + e.getMessage());
+        }
     }
 
-    @Override
-    public Partido consultar(int codigo) throws SeHaProducidoUnError {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    public Partido consultar(int codigoLocal, int codigoVisitante, int anioTemporada) throws SeHaProducidoUnError {
+        String sql = "SELECT * FROM partido WHERE codigoEquipoLocal=? AND codigoEquipoVisitante=? AND año_temporada =?";
+        try ( Connection con = MetodosBaseDeDatos.AccederBaseDeDatos();  PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setInt(1, codigoLocal);
+            ps.setInt(2, codigoVisitante);
+            ps.setInt(3, anioTemporada);
+            try(ResultSetImpl rs= ps.executeQuery() ) {
+                if(rs.next()){
+                    return 
+                }else{
+                    
+                }
+            } catch (Exception e) {
+            }
+        } catch (Exception e) {
+            
+        }
     }
 
-    @Override
     public List<Partido> consultarTodos() throws SeHaProducidoUnError {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
     
-    private void validarPartido(Partido partido)throws ElDatoIntroducidoEsIncorrecto{
-        if(partido.getCodigoEquipoLocal()<=0){
-            throw  new ElDatoIntroducidoEsIncorrecto("El codigo tiene que ser mayor a 0");
+    
+    
+    //METODOS
+    //transforma una fila de MYSQL a un objeto de Partido
+    private Partido convertir(ResultSet rs)throws SQLException{
+        Integer puntuacionLocal = rs.getObject("puntuacionLocal") !=null ? rs.getInt("puntuacion_local") : null;
+        Integer puntuacionVisitante = rs.getObject("puntuacionVisitante") !=null ? rs.getInt("puntuacion_visitante") : null;
+        return new Partido(
+                rs.getInt("codigoEquipoLocal"),
+                rs.getInt("codigoEquipoVisitante"),
+                rs.getInt("añoTemporada"),
+                rs.getString("fecha"),
+                puntuacionLocal,
+                puntuacionVisitante);
+    }
+
+    private void validarPartido(Partido partido) throws ElDatoIntroducidoEsIncorrecto {
+        if (partido.getCodigoEquipoLocal() <= 0) {
+            throw new ElDatoIntroducidoEsIncorrecto("El codigo tiene que ser mayor a 0");
         }
-        if(partido.getCodigoEquipoVisitante()<=0){
-            throw  new ElDatoIntroducidoEsIncorrecto("El codigo tiene que ser mayor a 0");
+        if (partido.getCodigoEquipoVisitante() <= 0) {
+            throw new ElDatoIntroducidoEsIncorrecto("El codigo tiene que ser mayor a 0");
         }
-        if(partido.getAñoTemporada()<=0){
-            throw  new ElDatoIntroducidoEsIncorrecto("El año tiene que ser un numero positivio");
+        if (partido.getAñoTemporada() <= 0) {
+            throw new ElDatoIntroducidoEsIncorrecto("El año tiene que ser un numero positivio");
         }
-        if(partido.getFecha()==null||partido.getFecha().isBlank()){
-            throw  new ElDatoIntroducidoEsIncorrecto("La fecha no puede estar vacia");
+        if (partido.getFecha() == null || partido.getFecha().isBlank()) {
+            throw new ElDatoIntroducidoEsIncorrecto("La fecha no puede estar vacia");
         }
-        if(partido.getPuntuacionLocal()<=0){
-            throw  new ElDatoIntroducidoEsIncorrecto("La puntuiacion tiene que ser un numero positivio");
+        if (partido.getPuntuacionLocal() <= 0) {
+            throw new ElDatoIntroducidoEsIncorrecto("La puntuiacion tiene que ser un numero positivio");
         }
-        if(partido.getPuntuacionVisitante()<=0){
-            throw  new ElDatoIntroducidoEsIncorrecto("La puntuiacion tiene que ser un numero positivio");
+        if (partido.getPuntuacionVisitante() <= 0) {
+            throw new ElDatoIntroducidoEsIncorrecto("La puntuiacion tiene que ser un numero positivio");
         }
     }
 
-    
 }
