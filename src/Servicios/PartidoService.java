@@ -6,15 +6,17 @@ package Servicios;
 
 import Excepciones.ElDatoIntroducidoEsIncorrecto;
 import Excepciones.SeHaProducidoUnError;
+import Excepciones.YaImportadoException;
 import Modelos.ContenedorPartidos;
 import Modelos.Partido;
 import Utils.Constantes;
-import com.mysql.cj.jdbc.result.ResultSetImpl;
+import com.google.gson.reflect.TypeToken;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.List;
 import java.sql.*;
+import java.util.ArrayList;
 
 /**
  *
@@ -52,16 +54,20 @@ public class PartidoService {
             if (entidad.getPuntuacionLocal() != null) {
                 ps.setInt(5, entidad.getPuntuacionLocal());
             } else {
-                //ps.setNull(5, Types.);
+                ps.setNull(5, Types.INTEGER);
             }
             if (entidad.getPuntuacionVisitante() != null) {
                 ps.setInt(6, entidad.getPuntuacionVisitante());
             } else {
-                //ps.setNull(6, Types.);
+                ps.setNull(6, Types.INTEGER);
             }
-
+            if (entidad.getPuntuacionVisitante() != null) {
+                ps.setInt(6, entidad.getPuntuacionVisitante());
+            } else {
+                ps.setNull(6, Types.INTEGER);
+            }
             ps.executeUpdate();
-
+            contenedor.añadirPartido(entidad);
         } catch (SQLException e) {
             throw new SeHaProducidoUnError("Error al insertar partido: " + e.getMessage());
         }
@@ -71,7 +77,7 @@ public class PartidoService {
         validarPartido(entidad);
         String sql = "UPDATE partido SET añoTemporada=?, fecha=?, puntuacionLocal=?, puntuacionVisitante=? "
                 + "WHERE codigoEquipoLocal=? and codigoEquipoVisitante=?";
-        try (Connection con = MetodosBaseDeDatos.AccederBaseDeDatos(); PreparedStatement ps = con.prepareStatement(sql)) {
+        try ( Connection con = MetodosBaseDeDatos.AccederBaseDeDatos();  PreparedStatement ps = con.prepareStatement(sql)) {
             ps.setInt(1, entidad.getAñoTemporada());
             ps.setString(2, entidad.getFecha());
             if (entidad.getPuntuacionLocal() != null) {
@@ -98,7 +104,7 @@ public class PartidoService {
 
     public void eliminar(int codigoLocal, int codigoVisitante, int añoTemporada) throws SeHaProducidoUnError {
         String sql = "DELETE FROM partido WHERE codigoEquipoLocal=? AND codigoEquipoVisitante=? AND año_temporada =?";
-        try (Connection con = MetodosBaseDeDatos.AccederBaseDeDatos(); PreparedStatement ps = con.prepareStatement(sql)) {
+        try ( Connection con = MetodosBaseDeDatos.AccederBaseDeDatos();  PreparedStatement ps = con.prepareStatement(sql)) {
             ps.setInt(1, codigoLocal);
             ps.setInt(2, codigoVisitante);
             ps.setInt(3, añoTemporada);
@@ -111,14 +117,13 @@ public class PartidoService {
         }
     }
 
-     public Partido consultar(int codigoLocal, int codigoVisitante, int añoTemporada) throws SeHaProducidoUnError {
+    public Partido consultar(int codigoLocal, int codigoVisitante, int añoTemporada) throws SeHaProducidoUnError {
         String sql = "SELECT * FROM partido WHERE codigo_equipo_local=? AND codigo_equipo_visitante=? AND año_temporada=?";
-        try (Connection con = MetodosBaseDeDatos.AccederBaseDeDatos();
-             PreparedStatement ps = con.prepareStatement(sql)) {
+        try ( Connection con = MetodosBaseDeDatos.AccederBaseDeDatos();  PreparedStatement ps = con.prepareStatement(sql)) {
             ps.setInt(1, codigoLocal);
             ps.setInt(2, codigoVisitante);
             ps.setInt(3, añoTemporada);
-            try (ResultSet rs = ps.executeQuery()) {
+            try ( ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
                     return mapear(rs);
                 } else {
@@ -129,24 +134,94 @@ public class PartidoService {
             throw new SeHaProducidoUnError("Error al consultar partido: " + e.getMessage());
         }
     }
+
     public List<Partido> consultarTodos() throws SeHaProducidoUnError {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        String sql = "SELECT * FROM partido PRDER BY fecha ASC";
+        List<Partido> lista = new ArrayList<>();
+        try ( Connection con = MetodosBaseDeDatos.AccederBaseDeDatos();  PreparedStatement ps = con.prepareStatement(sql);  ResultSet rs = ps.executeQuery()) {
+            while (rs.next()) {
+                lista.add(mapear(rs));
+            }
+        } catch (SQLException e) {
+            throw new SeHaProducidoUnError("Error al consultar todos los partidos: " + e.getMessage());
+        }
+        return lista;
+    }
+
+    //EXPORTAR
+    public void exportarTxt() throws SeHaProducidoUnError {
+        List<Partido> lista = consultarTodos();
+        List<String> lineas = new ArrayList<>();
+        for (Partido p : lista) {
+            lineas.add(p.getCodigoEquipoLocal() + Constantes.SEPARADOR_TXT +
+                       p.getCodigoEquipoVisitante() + Constantes.SEPARADOR_TXT +
+                       p.getAñoTemporada()+ Constantes.SEPARADOR_TXT +
+                       p.getFecha() + Constantes.SEPARADOR_TXT +
+                       (p.getPuntuacionLocal() != null ? p.getPuntuacionLocal() : "null") + Constantes.SEPARADOR_TXT +
+                       (p.getPuntuacionVisitante() != null ? p.getPuntuacionVisitante() : "null"));
+        }
+        MetodosFicheros.exportarTxt(Constantes.FICHERO_PARTIDO, lineas);
+    }
+    
+    public void exportarCsv() throws SeHaProducidoUnError {
+        List<Partido> lista = consultarTodos();
+        List<String> lineas = new ArrayList<>();
+        for (Partido p : lista) {
+            lineas.add(p.getCodigoEquipoLocal() + Constantes.SEPARADOR_CSV
+                    + p.getCodigoEquipoVisitante() + Constantes.SEPARADOR_CSV
+                    + p.getAñoTemporada() + Constantes.SEPARADOR_CSV
+                    + p.getFecha() + Constantes.SEPARADOR_CSV
+                    + (p.getPuntuacionLocal() != null ? p.getPuntuacionLocal() : "null") + Constantes.SEPARADOR_CSV
+                    + (p.getPuntuacionVisitante() != null ? p.getPuntuacionVisitante() : "null"));
+        }
+        MetodosFicheros.exportarCsv(Constantes.FICHERO_PARTIDO, lineas);
+    }
+
+    public void exportarBinario() throws SeHaProducidoUnError {
+        MetodosFicheros.exportarBinario(Constantes.FICHERO_PARTIDO, consultarTodos());
+    }
+    
+    public void exportarJson() throws SeHaProducidoUnError {
+        MetodosFicheros.exportarJson(Constantes.FICHERO_PARTIDO, consultarTodos());
+    }
+
+    //IMPORTAR
+    public void importarTxt() throws SeHaProducidoUnError, YaImportadoException, ElDatoIntroducidoEsIncorrecto {
+        List<String> lineas = MetodosFicheros.importarTxt(Constantes.FICHERO_PARTIDO, txtImportado);
+        for (String linea : lineas) {
+            insertar(parsear(linea.split(Constantes.SEPARADOR_TXT)));
+        }
+        txtImportado = true;
+    }
+    
+    public void importarCsv() throws SeHaProducidoUnError, YaImportadoException, ElDatoIntroducidoEsIncorrecto {
+        List<String> lineas = MetodosFicheros.importarCsv(Constantes.FICHERO_PARTIDO, csvImportado);
+        for (String linea : lineas) {
+            insertar(parsear(linea.split(Constantes.SEPARADOR_CSV)));
+        }
+        csvImportado = true;
+    }
+    
+    public void importarBinario() throws SeHaProducidoUnError, YaImportadoException, ElDatoIntroducidoEsIncorrecto, ClassNotFoundException {
+        List<Partido> lista = MetodosFicheros.importarBinario(Constantes.FICHERO_PARTIDO, binImportado);
+        for (Partido p : lista) {
+            insertar(p);
+        }
+        binImportado = true;
+    }
+    
+    public void importarJson() throws SeHaProducidoUnError, YaImportadoException, ElDatoIntroducidoEsIncorrecto {
+        List<Partido> lista = MetodosFicheros.importarJson(
+                Constantes.FICHERO_PARTIDO, jsonImportado,
+                new TypeToken<List<Partido>>(){}.getType());
+        for (Partido p : lista) {
+            insertar(p);
+        }
+        jsonImportado = true;
     }
 
     //METODOS
-    //transforma una fila de MYSQL a un objeto de Partido
-    private Partido convertir(ResultSet rs) throws SQLException {
-        Integer puntuacionLocal = rs.getObject("puntuacionLocal") != null ? rs.getInt("puntuacion_local") : null;
-        Integer puntuacionVisitante = rs.getObject("puntuacionVisitante") != null ? rs.getInt("puntuacion_visitante") : null;
-        return new Partido(
-                rs.getInt("codigoEquipoLocal"),
-                rs.getInt("codigoEquipoVisitante"),
-                rs.getInt("añoTemporada"),
-                rs.getString("fecha"),
-                puntuacionLocal,
-                puntuacionVisitante);
-    }
-
+    
     private void validarPartido(Partido partido) throws ElDatoIntroducidoEsIncorrecto {
         if (partido.getCodigoEquipoLocal() <= 0) {
             throw new ElDatoIntroducidoEsIncorrecto("El codigo tiene que ser mayor a 0");
@@ -168,6 +243,8 @@ public class PartidoService {
         }
     }
 
+    //transforma una fila de MYSQL a un objeto de Partido 
+    //Mapea una fila del ResultSet a un objeto Partido.
     private Partido mapear(ResultSet rs) throws SQLException {
         Integer puntuacionLocal = rs.getObject("puntuacion_local") != null ? rs.getInt("puntuacion_local") : null;
         Integer puntuacionVisitante = rs.getObject("puntuacion_visitante") != null ? rs.getInt("puntuacion_visitante") : null;
@@ -181,4 +258,25 @@ public class PartidoService {
         );
     }
 
+    //Parsea un array de campos de texto a un objeto Partido.
+    private Partido parsear(String[] campos) throws ElDatoIntroducidoEsIncorrecto {
+        if (campos.length < 6) {
+            throw new ElDatoIntroducidoEsIncorrecto("Formato de línea incorrecto para partido.");
+        }
+        Integer puntuacionLocal = campos[4].trim().equals("null") ? null : Integer.parseInt(campos[4].trim());
+        Integer puntuacionVisitante = campos[5].trim().equals("null") ? null : Integer.parseInt(campos[5].trim());
+        return new Partido(
+                Integer.parseInt(campos[0].trim()),
+                Integer.parseInt(campos[1].trim()),
+                Integer.parseInt(campos[2].trim()),
+                campos[3].trim(),
+                puntuacionLocal,
+                puntuacionVisitante
+        );
+    }
+    
+    //Muestra los partidos insertados durante la sesión actual.
+    public void verDatosInsertadosSesion() {
+        contenedor.mostrarPartidosSesion();
+    }
 }
