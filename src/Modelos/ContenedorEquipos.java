@@ -21,10 +21,7 @@ public class ContenedorEquipos {
     private TreeSet<Equipo> conjuntoEquiposOrdenados;
 
     // Constructor
-    public ContenedorEquipos(ArrayList<Equipo> listaEquipos, HashMap<Integer, Equipo> mapaEquipos, TreeSet<Equipo> conjuntoEquiposOrdenados) {
-        this.listaEquipos = listaEquipos;
-        this.mapaEquipos = mapaEquipos;
-        this.conjuntoEquiposOrdenados = conjuntoEquiposOrdenados;
+    public ContenedorEquipos() {
     }
 
     // Metodos

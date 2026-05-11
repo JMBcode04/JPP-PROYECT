@@ -21,10 +21,7 @@ public class ContenedorJugador {
     private LinkedList<Jugador> colaJugadores;
 
     // Constructor
-    public ContenedorJugador(ArrayList<Jugador> listaJugadores, HashMap<Integer, Jugador> mapaJugadores, LinkedList<Jugador> colaJugadores) {
-        this.listaJugadores = listaJugadores;
-        this.mapaJugadores = mapaJugadores;
-        this.colaJugadores = colaJugadores;
+    public ContenedorJugador() {
     }
 
 

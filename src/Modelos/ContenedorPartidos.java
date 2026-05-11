@@ -20,10 +20,7 @@ public class ContenedorPartidos {
     private HashSet<Integer> temporadasRegistradas;
 
     // Constructor
-    public ContenedorPartidos(ArrayList<Partido> listaPartidos, HashMap<String, Partido> mapaPartidos, HashSet<Integer> temporadasRegistradas) {
-        this.listaPartidos = listaPartidos;
-        this.mapaPartidos = mapaPartidos;
-        this.temporadasRegistradas = temporadasRegistradas;
+    public ContenedorPartidos() { 
     }
 
     // Metodos

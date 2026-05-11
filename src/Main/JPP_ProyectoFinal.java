@@ -6,10 +6,17 @@ package Main;
 
 import Excepciones.ElDatoIntroducidoEsIncorrecto;
 import Excepciones.SeHaProducidoUnError;
+import Excepciones.YaImportadoException;
+import Modelos.ContenedorEquipos;
+import Modelos.ContenedorJugador;
+import Modelos.ContenedorPartidos;
 import Modelos.Jugador;
 import Servicios.EquipoService;
+import Servicios.InformesService;
+import Servicios.JugadorEquipoService;
 import Servicios.JugadorService;
 import Servicios.MetodosBaseDeDatos;
+import Servicios.PartidoService;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
@@ -25,9 +32,20 @@ public class JPP_ProyectoFinal {
     /**
      * @param args the command line arguments
      */
+    // CONTENEDORES
+    private static ContenedorEquipos contenedorEquipos = new ContenedorEquipos();
+    private static ContenedorJugador contenedorJugador = new ContenedorJugador();
+    private static ContenedorPartidos contenedorPartidos = new ContenedorPartidos();
+
     //SERVICIOS
-    private static JugadorService service = new JugadorService();
-    //private static EquipoService service = new EquipoService();
+    private static EquipoService equipoService = new EquipoService(contenedorEquipos);
+    private static JugadorService jugadorService = new JugadorService(contenedorJugador);
+    private static JugadorEquipoService jugadorEquipoService = new JugadorEquipoService();
+    private static PartidoService partidoService = new PartidoService(contenedorPartidos);
+    private static InformesService informesService = new InformesService();
+
+    // SACNNER 
+    private static Scanner scanner = new Scanner(System.in);
 
     public static void main(String[] args) {
 
@@ -38,8 +56,7 @@ public class JPP_ProyectoFinal {
         } catch (SeHaProducidoUnError e) {
             System.out.println("Error al inicializar: " + e.getMessage());
         }
-        
-         
+
         menuPrincipal();
 
     }
@@ -58,7 +75,7 @@ public class JPP_ProyectoFinal {
                     + "3. Gestion de Partidos\n"
                     + "4. Gestion de Jugador-Equipos\n"
                     + "5. Consultar multitabla\n");
-
+            
             while (!teclado.hasNextInt()) {
                 System.err.println("Error: debes introducir un numero valido.");
                 teclado.next(); // limpia el dato incorrecto
@@ -104,9 +121,15 @@ public class JPP_ProyectoFinal {
                     + "3. Eliminar Jugador\n"
                     + "4. Consultar un Jugador\n"
                     + "5. Consultar Jugadores\n"
-                    + "6. Exportar la tabla\n"
-                    + "7. Importar la tabla\n"
-                    + "8. Ver datos insertados durante la ejecucion\n");
+                    + "6. Exportar a TXT\n"
+                    + "7. Exportar a CSV\n"
+                    + "8. Exportar a Binario\n"
+                    + "9. Exportar a JSON\n"
+                    + "10. Importar desde TXT\n"
+                    + "11. Importar desde CSV\n"
+                    + "12. Importar desde Binario\n"
+                    + "13. Importar desde JSON\n"
+                    + "14. Ver datos insertados durante la ejecucion\n");
 
             while (!teclado.hasNextInt()) {
                 System.err.println("Error: debes introducir un numero valido.");
@@ -119,28 +142,9 @@ public class JPP_ProyectoFinal {
                 case 0:
                     System.out.println("Salir...");
                     break;
-                case 1:              
-                    try {
-                    //El codigo se asigna automaticamente al insertar un nuevo jugador
-                    System.out.println("Inserta el nombre del jugador: ");
-                    teclado.nextLine();
-                    String nombre = teclado.nextLine();
-                    System.out.println("Inserta la fecha de nacimiento del jugador: (yyyy/MM/DD) ");
-                    String fechaNacimiento = teclado.nextLine();
-                    System.out.println("Inserta la nacionalidad del jugador: ");
-                    String nacionalidad = teclado.nextLine();
-                    System.out.println("Inserta la posicion del jugador: ");
-                    String posicion = teclado.nextLine();
+                case 1:
 
-                    Jugador j = new Jugador(nombre, fechaNacimiento, nacionalidad, posicion);
-
-                    service.insertar(j);
-                    } catch (ElDatoIntroducidoEsIncorrecto | SeHaProducidoUnError e) {
-                        System.out.println("Error: " + e.getMessage());
-                    }
-                // Arreglar 
-                break;
-
+                    break;
                 case 2:
 
                     break;
@@ -148,8 +152,6 @@ public class JPP_ProyectoFinal {
 
                     break;
                 case 4:
-                    System.out.println("Inserta el codigo del jugador a actualizar");
-                    int codigo = teclado.nextInt();
 
                     break;
                 case 5:
@@ -162,6 +164,28 @@ public class JPP_ProyectoFinal {
 
                     break;
                 case 8:
+
+                    break;
+
+                case 9:
+
+                    break;
+
+                case 10:
+
+                    break;
+
+                case 11:
+
+                    break;
+                case 12:
+
+                    break;
+
+                case 13:
+
+                    break;
+                case 14:
 
                     break;
 
@@ -182,11 +206,17 @@ public class JPP_ProyectoFinal {
                     + "1. Insertar Equipo\n"
                     + "2. Actualizar Equipo\n"
                     + "3. Eliminar Equipo\n"
-                    + "4. Consultar un Equipo\n"
-                    + "5. Consultar Equipos\n"
-                    + "6. Exportar la tabla\n"
-                    + "7. Importar la tabla\n"
-                    + "8. Ver datos insertados durante la ejecucion\n");
+                    + "4. Consultar un Equipo por codigo\n"
+                    + "5. Consultar todos los Equipos\n"
+                    + "6. Exportar a TXT\n"
+                    + "7. Exportar a CSV\n"
+                    + "8. Exportar a Binario\n"
+                    + "9. Exportar a JSON\n"
+                    + "10. Importar desde TXT\n"
+                    + "11. Importar desde CSV\n"
+                    + "12. Importar desde Binario\n"
+                    + "13. Importar desde JSON\n"
+                    + "14. Ver datos insertados durante la ejecucion\n");
             menu = teclado.nextInt();
 
             switch (menu) {
@@ -215,6 +245,28 @@ public class JPP_ProyectoFinal {
 
                     break;
                 case 8:
+
+                    break;
+
+                case 9:
+
+                    break;
+
+                case 10:
+
+                    break;
+
+                case 11:
+
+                    break;
+                case 12:
+
+                    break;
+
+                case 13:
+
+                    break;
+                case 14:
 
                     break;
 
@@ -235,11 +287,17 @@ public class JPP_ProyectoFinal {
                     + "1. Insertar Partido\n"
                     + "2. Actualizar Partido\n"
                     + "3. Eliminar Partido\n"
-                    + "4. Consultar un Partido\n"
-                    + "5. Consultar Partidos\n"
-                    + "6. Exportar la tabla\n"
-                    + "7. Importar la tabla\n"
-                    + "8. Ver datos insertados durante la ejecucion\n");
+                    + "4. Consultar un Partido por codigo\n"
+                    + "5. Consultar todos los Partidos\n"
+                    + "6. Exportar a TXT\n"
+                    + "7. Exportar a CSV\n"
+                    + "8. Exportar a Binario\n"
+                    + "9. Exportar a JSON\n"
+                    + "10. Importar desde TXT\n"
+                    + "11. Importar desde CSV\n"
+                    + "12. Importar desde Binario\n"
+                    + "13. Importar desde JSON\n"
+                    + "14. Ver datos insertados durante la ejecucion\n");
             menu = teclado.nextInt();
 
             switch (menu) {
@@ -270,6 +328,24 @@ public class JPP_ProyectoFinal {
                 case 8:
 
                     break;
+                case 9:
+
+                    break;
+                case 10:
+
+                    break;
+                case 11:
+
+                    break;
+                case 12:
+
+                    break;
+                case 13:
+
+                    break;
+                case 14:
+
+                    break;
 
                 default:
                     System.out.println("No esta en el menu");
@@ -285,13 +361,20 @@ public class JPP_ProyectoFinal {
         while (menu != 0) {//no se añade eliminar porque es algo del historial (3. se consultaria cuando se da de baja)
             System.out.println("Introduce un numero del menu");
             System.out.println("0. Salir\n"
-                    + "1. Insertar relacion\n"//el jugador 10 entra en el equipo 2 el 2024
-                    + "2. Actualizar relacion\n"
-                    + "3. Consultar una relacion\n"
-                    + "4. Consultar relaciones\n"
-                    + "5. Exportar la tabla\n"
-                    + "6. Importar la tabla\n"
-                    + "7. Ver datos insertados durante la ejecucion\n");
+                    + "1. Insertar relacion jugador-equipo\n"//el jugador 10 entra en el equipo 2 el 2024
+                    + "2. Actualizar relacion jugador-equipo\n"
+                    + "3. Eliminar relación jugador-equipo"
+                    + "4. Consultar una relacion jugador-equipo\n"
+                    + "5. Consultar todas las relaciones jugador-equipo\n"
+                    + "6. Exportar a TXT\n"
+                    + "7. Exportar a CSV\n"
+                    + "8. Exportar a Binario\n"
+                    + "9. Exportar a JSON\n"
+                    + "10. Importar desde TXT\n"
+                    + "11. Importar desde CSV\n"
+                    + "12. Importar desde Binario\n"
+                    + "13. Importar desde JSON\n"
+                    + "14. Ver datos insertados durante la ejecucion\n");
             menu = teclado.nextInt();
 
             switch (menu) {
@@ -319,6 +402,28 @@ public class JPP_ProyectoFinal {
                 case 7:
 
                     break;
+                case 8:
+
+                    break;
+                case 9:
+
+                    break;
+                case 10:
+
+                    break;
+                case 11:
+
+                    break;
+                case 12:
+
+                    break;
+                case 13:
+
+                    break;
+                case 14:
+
+                    break;
+
                 default:
                     System.out.println("No esta en el menu");
             }
