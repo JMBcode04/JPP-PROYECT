@@ -16,7 +16,7 @@ import java.util.List;
  *
  * @author jorge
  */
-public class JugadorEquipoService implements MetodosComunes<JugadorEquipo>{
+public class JugadorEquipoService implements MetodosComunes<Jugador_equipo>{
     
    // Implementar el crud de Jugadorequipo
     
@@ -37,16 +37,14 @@ public class JugadorEquipoService implements MetodosComunes<JugadorEquipo>{
     
 
     @Override
-    public void insertar(JugadorEquipo je) throws ElDatoIntroducidoEsIncorrecto, SeHaProducidoUnError {
+    public void insertar(Jugador_equipo je) throws ElDatoIntroducidoEsIncorrecto, SeHaProducidoUnError {
         validar(je);
         String sql = "INSET INTO jugador_equipo(codigo_equipo,codigo_jugador,año_entrada,año_salida,partidos_titular)" + "VALUES (?,?,?,?,?)";
-        try {
-            Connection con = MetodosBaseDeDatos.getConexion);
-            PreparedStatement ps= con.prepareStatement(sql);
-            
+        try (Connection con = MetodosBaseDeDatos.AccederBaseDeDatos();PreparedStatement ps= con.prepareStatement(sql)) {
+                        
             ps.setInt(1, je.getCodigoEquipo());
             ps.setInt(2, je.getCodigoJugador());
-            ps.setInt(2, je.getAñontrada());
+            ps.setInt(2, je.getAñoEntrada());
             
             if (je.getAñoSalida() != null) {
                 ps.setInt(4, je.getAñoSalida());
@@ -55,7 +53,7 @@ public class JugadorEquipoService implements MetodosComunes<JugadorEquipo>{
             }
             
             if (je.getPartidosTitular() != null) {
-                ps.setInt(5, je.getParrtidosTitular());
+                ps.setInt(5, je.getPartidosTitular());
             } else {
                ps.setNull(5, Types.INTEGER); 
             }
@@ -65,47 +63,95 @@ public class JugadorEquipoService implements MetodosComunes<JugadorEquipo>{
         } catch (SQLException e) {
             throw new SeHaProducidoUnError("Error al insertar jugador_equipo: " + e.getMessage());
         }   
+    }
+
+    @Override
+    public void actualizar(Jugador_equipo je) throws ElDatoIntroducidoEsIncorrecto, SeHaProducidoUnError {
+        validar(je);
+        String sql= "UPDATE jugador_equipo SET año_salida=?, partidos_titular=?" + "WHERE codigo_equipo=? AND codigo_jugador=? AND año_entrada=?";
+        
+        try (Connection con = MetodosBaseDeDatos.AccederBaseDeDatos(); PreparedStatement ps = con.prepareStatement(sql)){
+            if (je.getAñoSalida() != null) {
+                ps.setInt(1, je.getAñoSalida());
+            } else {
+                ps.setNull(1, Types.INTEGER);
+            }
+            
+            if (je.getPartidosTitular() !=null) {
+                ps.setInt(2, je.getPartidosTitular());
+            } else {
+                ps.setNull(2, Types.INTEGER);
+            }
+            
+            ps.setInt(3, je.getCodigoEquipo());
+            ps.setInt(4, je.getCodigoJugador());
+            ps.setInt(5, je.getAñoEntrada());
+            
+            int filas = ps.executeUpdate();
+            if (filas == 0) {
+                throw new SeHaProducidoUnError();
+            }
+        } catch (Exception e) {
+            throw new SeHaProducidoUnError("Error al actualizar jugador_equipo: " + e.getMessage());
+        }
+    }
+    
+    @Override
+    public void eliminar(int codigoEquipo, int codigoJugador, int añoEntrada) throws SeHaProducidoUnError {
+        String sql = "DELETE FROM jugador_equipo WHERE codigo_equipo=? AND codigo_jugador=? AND año_entrada=?";
+        
+        try (Connection con = MetodosBaseDeDatos.AccederBaseDeDatos(); PreparedStatement ps = con.prepareStatement(sql)){
+            ps.setInt(1, codigoEquipo);
+            ps.setInt(2, codigoJugador);
+            ps.setInt(3, añoEntrada);
+            
+            int filas = ps.executeUpdate();
+            if (filas == 0) {
+                throw new SeHaProducidoUnError();
+            }
+            
+        } catch (Exception e) {
+            throw new SeHaProducidoUnError("Error al eliminar jugador_equipo: " + e.getMessage());
+        }
+    }
+    
+    @Override
+    public Jugador_equipo consultar(int codigoEquipo, int codigoJugador, int añoEntrada) throws SeHaProducidoUnError {
+        String sql = "SELECT * FROM jugador_equipo WHERE codigo_equipo=? AND codigo_jugador=? AND añod_entrada=?";
+        
+        try (Connection con = MetodosBaseDeDatos.AccederBaseDeDatos(); PreparedStatement ps = con.prepareStatement(sql)){
+            ps.setInt(1, codigoEquipo);
+            ps.setInt(2, codigoJugador);
+            ps.setInt(3, añoEntrada);
+            
+            try (ResultSet rs = ps.executeQuery()){
+                if (rs.next()) {
+                    return mapearJugador_equipo(rs);
+                } else {
+                    throw new SeHaProducidoUnError();
+                }
+            }
+        } catch (Exception e) {
+            throw new SeHaProducidoUnError("Error al consultar jugador_equipo: " + e.getMessage());
         }
     }
 
     @Override
-    public void actualizar(JugadorEquipo je) throws ElDatoIntroducidoEsIncorrecto, SeHaProducidoUnError {
-        validarJugadorEquipo(je);
-        String sql = "UPDATE jugador_equipo SET codigo_equipo=?, codigo_jugador=?, año_entrada=?, año_salida=?, partidos_titular=? " + "WHERE codigo_equipo=?, codigo_jugador=?";
+    public List<Jugador_equipo> consultarTodos() throws SeHaProducidoUnError {
+        String sql = "SELECT * FROM jugador_equipo ORDER BY año_entrada ASC";
+        List<Jugador_equipo> lista = new ArrayList<>();
         
-        tr
-    }
-
-    @Override
-    public void eliminar(int codigo) throws SeHaProducidoUnError {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
-    @Override
-    public JugadorEquipo consultar(int codigo) throws SeHaProducidoUnError {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
-    }
-
-    @Override
-    public List<JugadorEquipo> consultarTodos() throws SeHaProducidoUnError {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        try (Connection con = MetodosBaseDeDatos.AccederBaseDeDatos(); PreparedStatement ps = con.prepareStatement(sql); ResultSet rs = ps.executeQuery()){
+            while (rs.next()) {                
+                lista.add(mapearJugador_equipo(rs));
+            }
+            
+        } catch (Exception e) {
+            throw new SeHaProducidoUnError("Error al consultar jugador_equipo: " + e.getMessage());
+        }
+        return lista;
     }
 
     
-    
-    
-    
-    
-    
-   
-    
-    
-   
-   
-   
-   
-   
-    
-  
     
 }
