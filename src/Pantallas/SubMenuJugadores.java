@@ -46,7 +46,6 @@ public class SubMenuJugadores {
                     System.out.println("Salir...");
                     break;
                 case 1:
-
                     break;
                 case 2:
 
