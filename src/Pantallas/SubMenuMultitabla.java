@@ -4,13 +4,20 @@
  */
 package Pantallas;
 
+import Excepciones.SeHaProducidoUnError;
+import Main.JPP_ProyectoFinal;
+import Utils.Constantes;
 import java.util.Scanner;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
  * @author jorge
  */
 public class SubMenuMultitabla {
+
+    private static Scanner scanner = new Scanner(System.in);
 
     public static void submenuMultitabla() {//menu consulta multitablas
         Scanner teclado = new Scanner(System.in);
@@ -34,37 +41,110 @@ public class SubMenuMultitabla {
                 case 0:
                     System.out.println("Salir...");
                     break;
-                case 1:
+                case 1: {
+                    try {
+                        JPP_ProyectoFinal.informesService.informeJugadoresActualesPorEquipo();
+                    } catch (SeHaProducidoUnError ex) {
+                        Logger.getLogger(SubMenuMultitabla.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+                break;
 
-                    break;
-                case 2:
+                case 2: {
+                    try {
+                        JPP_ProyectoFinal.informesService.informePartidosConEquipos();
+                    } catch (SeHaProducidoUnError ex) {
+                        Logger.getLogger(SubMenuMultitabla.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+                break;
 
-                    break;
-                case 3:
+                case 3: {
+                    try {
+                        JPP_ProyectoFinal.informesService.informeHistorialJugador();
+                    } catch (SeHaProducidoUnError ex) {
+                        Logger.getLogger(SubMenuMultitabla.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+                break;
 
-                    break;
                 case 4:
-
+                    System.out.print("  Introduce el año de temporada: ");
+                    int año = leerEntero();
+                     {
+                        try {
+                            JPP_ProyectoFinal.informesService.informePuntosLocalPorTemporada(año);
+                        } catch (SeHaProducidoUnError ex) {
+                            Logger.getLogger(SubMenuMultitabla.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                    }
                     break;
-                case 5:
 
-                    break;
-                case 6:
+                case 5: {
+                    try {
+                        JPP_ProyectoFinal.informesService.informeResumenCarreraJugadores();
+                    } catch (SeHaProducidoUnError ex) {
+                        Logger.getLogger(SubMenuMultitabla.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+                break;
 
-                    break;
-                case 7:
+                case 6: {
+                    try {
+                        JPP_ProyectoFinal.informesService.informeEquiposConJugadoresFieles();
+                    } catch (SeHaProducidoUnError ex) {
+                        Logger.getLogger(SubMenuMultitabla.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+                break;
 
-                    break;
+                case 7: {
+                    try {
+                        JPP_ProyectoFinal.informesService.informeJugadoresLibres();
+                    } catch (SeHaProducidoUnError ex) {
+                        Logger.getLogger(SubMenuMultitabla.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+                break;
+
                 case 8:
-
+                    System.out.print("  Introduce el valor mínimo de puntuación total: ");
+                    int valor = leerEntero();
+                     {
+                        try {
+                            JPP_ProyectoFinal.informesService.informePartidosAltaPuntuacion(valor);
+                        } catch (SeHaProducidoUnError ex) {
+                            Logger.getLogger(SubMenuMultitabla.class.getName()).log(Level.SEVERE, null, ex);
+                        }
+                    }
                     break;
-                case 9:
 
-                    break;
+                case 9: {
+                    try {
+                        JPP_ProyectoFinal.informesService.informeEquiposPorSede();
+                    } catch (SeHaProducidoUnError ex) {
+                        Logger.getLogger(SubMenuMultitabla.class.getName()).log(Level.SEVERE, null, ex);
+                    }
+                }
+                break;
+
                 default:
                     System.out.println("No esta en el menu");
             }
         }
-
     }
+
+    // Metodos
+    
+    private static int leerEntero() {
+        while (true) {
+            try {
+                String linea = scanner.nextLine().trim();
+                return Integer.parseInt(linea);
+            } catch (NumberFormatException e) {
+                System.out.print("  " + "Introduce un entero" + " > ");
+            }
+        }
+    }
+
 }
