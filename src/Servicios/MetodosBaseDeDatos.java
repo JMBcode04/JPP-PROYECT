@@ -14,22 +14,38 @@ import java.util.logging.Logger;
  * @author jorge
  */
 public class MetodosBaseDeDatos {
-
+    
     private static Connection con;
-
+    
     public static Connection AccederBaseDeDatos() {
-
+        
         try {
             String url = Constantes.URL;
             String user = Constantes.USER;
-            String password = Constantes.PASSWORD;
+            String password = Constantes.PASSWORD[0];
             con = DriverManager.getConnection(url, user, password);
             System.out.println("Conexion Establecida");
+            return con;
 
+            //si no se mete con la primera contraseña, prueba con la siguiente
         } catch (SQLException ex) {
-            System.err.println("No se ha establecido la conexion con la base de datos");
+            //System.err.println("No se ha establecido la conexion con la base de datos");
+            //System.err.println(ex.toString());
+            //ex.printStackTrace();
+            System.out.println("Error de conexión. Reintentando....");
+            String url = Constantes.URL;
+            String user = Constantes.USER;
+            String password = Constantes.PASSWORD[1];
+            try {
+                con = DriverManager.getConnection(url, user, password);
+                System.out.println("Conexion Establecida");
+            } catch (SQLException ex1) {
+                System.err.println("No se ha establecido la conexion con la base de datos");
+            }
+            return con;
+                   
         }
-        return con;
+        //return null;
     }
 
     public static void CerrarBaseDeDatos() {

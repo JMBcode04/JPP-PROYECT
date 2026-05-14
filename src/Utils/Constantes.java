@@ -13,7 +13,7 @@ public class Constantes {
     // CONSTANTES BASE DE DATOS
     public static final String URL = "jdbc:mysql://localhost:3306/campeonato_deporte";
     public static final String USER = "root";
-    public static final String PASSWORD = "Casita11";
+    public static final String[] PASSWORD = {"Casita11","root"};
     public static final String DRIVER = "com.mysql.cj.jdbc.Driver";
 
     // CONSATNTES FICHEROS

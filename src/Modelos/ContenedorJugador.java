@@ -22,6 +22,7 @@ public class ContenedorJugador {
 
     // Constructor
     public ContenedorJugador() {
+        
     }
 
 

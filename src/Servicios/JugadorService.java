@@ -43,8 +43,9 @@ public class JugadorService implements MetodosComunes<Jugador> {
         //aqui insercion en BD (mas adelante)   
         String sql = "INSERT INTO jugador (codigo, nombre, fecha_nacimiento, nacionalidad, posicion)"
                 + "values(?,?,?,?,?)";
-        try ( Connection con = MetodosBaseDeDatos.AccederBaseDeDatos();  PreparedStatement ps = con.prepareStatement(sql)) {
-
+        try {
+            Connection con = MetodosBaseDeDatos.AccederBaseDeDatos();  
+            PreparedStatement ps = con.prepareStatement(sql);
             ps.setInt(1, entidad.getCodigo());
             ps.setString(2, entidad.getNombre());
             ps.setString(3, entidad.getFechaNacimiento());
