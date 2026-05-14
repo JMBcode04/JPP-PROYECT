@@ -280,28 +280,54 @@ public class JugadorEquipoService implements MetodosComunes<Jugador_equipo>{
         return new Jugador_equipo(rs.getInt("codigo_equipo"),rs.getInt("codigo_jugador"),rs.getInt("año_entrada"),añoSalida,partidosTitular);
     }
     
-    
+    /**
+     * 
+     * @param campos
+     * @return
+     * @throws ElDatoIntroducidoEsIncorrecto 
+     */
     private Jugador_equipo parsear(String[]campos) throws ElDatoIntroducidoEsIncorrecto{
         if (campos.length < 5) {
             throw new ElDatoIntroducidoEsIncorrecto("Formato de linea incorrecto");
         }
         
-        Integer añoSalida=campos
+        Integer añoSalida=campos[3].trim().equals("null")?null:Integer.parseInt(campos[3].trim());
+        Integer partidosTitular=campos[4].trim().equals("null")?null: Integer.parseInt(campos[4].trim());
+        
+        return new Jugador_equipo(Integer.parseInt(campos[0].trim()), Integer.parseInt(campos[1].trim()),Integer.parseInt(campos[2].trim()), añoSalida,partidosTitular);
     }
     
+    /**
+     * 
+     * @param je
+     * @throws ElDatoIntroducidoEsIncorrecto 
+     */
+    private void validar(Jugador_equipo je) throws ElDatoIntroducidoEsIncorrecto{
+        if (je.getCodigoEquipo() <= 0) {
+            throw new ElDatoIntroducidoEsIncorrecto("El codigo de equipo debe ser un numero positivo");
+        }
+        if (je.getCodigoJugador() <= 0) {
+            throw new ElDatoIntroducidoEsIncorrecto("El codigo de jugador debe ser un numero positivo");
+        }
+        if (je.getAñoEntrada() <= 0) {
+            throw new ElDatoIntroducidoEsIncorrecto("El año de entrada debe ser un numero positivo");
+        }
+    }
     
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
+    /**
+     * 
+     */
+    public void verDatosInsertadosSesion() {
+        if (listaSesion.isEmpty()) {
+            System.out.println("No se han insertado relaciones jugador_equipo durante esta sesion");
+        } else {
+            System.out.println("Relaciones jugador_equipo insertadas en sesion ("+ listaSesion.size() + "):");
+            
+            for (Jugador_equipo je : listaSesion) {
+                System.out.println(" " + je.toString());
+            }
+        }
+    }
+ 
     
 }
