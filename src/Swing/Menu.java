@@ -1,7 +1,9 @@
 package Swing;
 
-
 import Swing.SubmenuGestionJugadores;
+import Swing.SubmenuGestionEquipos;
+import Swing.SubmenuGestionPartidos;
+import Swing.SubmenuGestionJugadorEquipo;
 
 /*
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
@@ -19,6 +21,7 @@ public class Menu extends javax.swing.JFrame {
      */
     public Menu() {
         initComponents();
+        setLocationRelativeTo(null);
     }
 
     /**
@@ -38,6 +41,7 @@ public class Menu extends javax.swing.JFrame {
         jButtonVolver = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setTitle("Menú Principal - Gestión Campeonato");
 
         jButtonGesJugador.setText("Gestion de Jugadores");
         jButtonGesJugador.addActionListener(new java.awt.event.ActionListener() {
@@ -118,29 +122,39 @@ public class Menu extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jButtonGesJugadorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonGesJugadorActionPerformed
-        // TODO add your handling code here:
         SubmenuGestionJugadores gj = new SubmenuGestionJugadores(this, true);
         gj.setVisible(true);
     }//GEN-LAST:event_jButtonGesJugadorActionPerformed
 
     private void jButtonGesEquiposActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonGesEquiposActionPerformed
-        // TODO add your handling code here:
+        SubmenuGestionEquipos ge = new SubmenuGestionEquipos(this, true);
+        ge.setVisible(true);
     }//GEN-LAST:event_jButtonGesEquiposActionPerformed
 
     private void jButtonGesJugadorEquipoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonGesJugadorEquipoActionPerformed
-        // TODO add your handling code here:
+        SubmenuGestionJugadorEquipo gje = new SubmenuGestionJugadorEquipo(this, true);
+        gje.setVisible(true);
     }//GEN-LAST:event_jButtonGesJugadorEquipoActionPerformed
 
     private void jButtonGesPartidosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonGesPartidosActionPerformed
-        // TODO add your handling code here:
+        SubmenuGestionPartidos gp = new SubmenuGestionPartidos(this, true);
+        gp.setVisible(true);
     }//GEN-LAST:event_jButtonGesPartidosActionPerformed
 
     private void jButtonConsultarMultitablaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonConsultarMultitablaActionPerformed
-        // TODO add your handling code here:
+        javax.swing.JOptionPane.showMessageDialog(this,
+            "La consulta multitabla está disponible desde la interfaz de consola.\n" +
+            "Ejecuta la aplicación por consola y selecciona la opción 5.",
+            "Información", javax.swing.JOptionPane.INFORMATION_MESSAGE);
     }//GEN-LAST:event_jButtonConsultarMultitablaActionPerformed
 
     private void jButtonVolverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonVolverActionPerformed
-        // TODO add your handling code here:
+        int confirm = javax.swing.JOptionPane.showConfirmDialog(this,
+            "¿Seguro que deseas salir?", "Confirmar salida",
+            javax.swing.JOptionPane.YES_NO_OPTION);
+        if (confirm == javax.swing.JOptionPane.YES_OPTION) {
+            System.exit(0);
+        }
     }//GEN-LAST:event_jButtonVolverActionPerformed
 
     /**
@@ -168,7 +182,6 @@ public class Menu extends javax.swing.JFrame {
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
             java.util.logging.Logger.getLogger(Menu.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
-        //</editor-fold>
         //</editor-fold>
 
         /* Create and display the form */

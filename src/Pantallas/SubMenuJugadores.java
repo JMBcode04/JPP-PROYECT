@@ -82,7 +82,7 @@ public class SubMenuJugadores {
                 break;
                 case 7: {
                     try {
-                       JPP_ProyectoFinal.jugadorService.exportarCsv();
+                        JPP_ProyectoFinal.jugadorService.exportarCsv();
                         System.out.println("Exportado correctamente");
                     } catch (SeHaProducidoUnError e) {
                         System.out.println("Error: " + e.getMessage());
@@ -91,7 +91,7 @@ public class SubMenuJugadores {
                 break;
                 case 8: {
                     try {
-                       JPP_ProyectoFinal.jugadorService.exportarBinario();
+                        JPP_ProyectoFinal.jugadorService.exportarBinario();
                         System.out.println("Exportado correctamente");
                     } catch (SeHaProducidoUnError e) {
                         System.out.println("Error: " + e.getMessage());
@@ -141,8 +141,8 @@ public class SubMenuJugadores {
                     } catch (SeHaProducidoUnError | ElDatoIntroducidoEsIncorrecto e) {
                         System.out.println("Error: " + e.getMessage());
                     } catch (ClassNotFoundException ex) {
-                    Logger.getLogger(SubMenuJugadores.class.getName()).log(Level.SEVERE, null, ex);
-                }
+                        Logger.getLogger(SubMenuJugadores.class.getName()).log(Level.SEVERE, null, ex);
+                    }
                 }
                 break;
 
@@ -273,10 +273,34 @@ public class SubMenuJugadores {
         while (true) {
             try {
                 String linea = scanner.nextLine().trim();
+                if (linea.isEmpty()) {
+                    System.out.print("Error: el campo no puede estar vacio. Introduce un numero entero: ");
+                    continue;
+                }
                 return Integer.parseInt(linea);
             } catch (NumberFormatException e) {
                 System.out.print("Introduce un numero entero");
             }
+        }
+    }
+
+    private static String leerTextoNoVacio(Scanner teclado, String campo) {
+        while (true) {
+            String valor = teclado.nextLine().trim();
+            if (!valor.isEmpty()) {
+                return valor;
+            }
+            System.out.print("Error: el campo '" + campo + "' no puede estar vacio. Intentalo de nuevo: ");
+        }
+    }
+
+    private static String leerFecha(Scanner teclado) {
+        while (true) {
+            String fecha = teclado.nextLine().trim();
+            if (fecha.matches("\\d{2}/\\d{2}/\\d{4}")) {
+                return fecha;
+            }
+            System.out.print("Error: la fecha debe tener el formato dd/mm/aaaa (ej: 15/06/1995). Intentalo de nuevo: ");
         }
     }
 

@@ -135,11 +135,14 @@ public class SubMenuMultitabla {
     }
 
     // Metodos
-    
     private static int leerEntero() {
         while (true) {
             try {
                 String linea = scanner.nextLine().trim();
+                if (linea.isEmpty()) {
+                    System.out.print("Error: el campo no puede estar vacio. Introduce un numero entero: ");
+                    continue;
+                }
                 return Integer.parseInt(linea);
             } catch (NumberFormatException e) {
                 System.out.print("  " + "Introduce un entero" + " > ");

@@ -131,8 +131,8 @@ public class SubMenuPartidos {
                     } catch (SeHaProducidoUnError | ElDatoIntroducidoEsIncorrecto e) {
                         System.out.println("Error: " + e.getMessage());
                     } catch (ClassNotFoundException ex) {
-                    Logger.getLogger(SubMenuPartidos.class.getName()).log(Level.SEVERE, null, ex);
-                }
+                        Logger.getLogger(SubMenuPartidos.class.getName()).log(Level.SEVERE, null, ex);
+                    }
                 }
                 break;
                 case 13: {
@@ -168,7 +168,7 @@ public class SubMenuPartidos {
             System.out.print("Año de temporada: ");
             int añoTemporada = leerEntero();
             System.out.print("Fecha (dd/mm/aaaa): ");
-            String fecha = teclado.nextLine().trim();
+            String fecha = leerFecha(teclado);
             System.out.print("Puntuación local (0 si no hay): ");
             int puntuacionLocalInput = leerEntero();
             Integer puntuacionLocal = puntuacionLocalInput == 0 ? null : puntuacionLocalInput;
@@ -198,7 +198,7 @@ public class SubMenuPartidos {
             System.out.print("Año de temporada (clave): ");
             int añoTemporada = leerEntero();
             System.out.print("Nueva fecha (dd/mm/aaaa): ");
-            String fecha = teclado.nextLine().trim();
+            String fecha = leerFecha(teclado);
             System.out.print("Nueva puntuación local: ");
             int puntuacionLocalInput = leerEntero();
             Integer puntuacionLocal = puntuacionLocalInput == 0 ? null : puntuacionLocalInput;
@@ -290,4 +290,15 @@ public class SubMenuPartidos {
             }
         }
     }
+
+    private static String leerFecha(Scanner teclado) {
+        while (true) {
+            String fecha = teclado.nextLine().trim();
+            if (fecha.matches("\\d{2}/\\d{2}/\\d{4}")) {
+                return fecha;
+            }
+            System.out.print("Error: la fecha debe tener el formato dd/mm/aaaa. Intentalo de nuevo: ");
+        }
+    }
+
 }

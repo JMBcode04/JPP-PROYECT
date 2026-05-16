@@ -112,17 +112,17 @@ public class SubMenuEquipos {
         try {
             System.out.println("INSERTAR EQUIPO");
             System.out.print("Código: ");
-            int codigo = leerEntero();
+            int codigo = leerEntero("Codigo");
             System.out.print("Nombre: ");
             String nombre = teclado.nextLine().trim();
             System.out.print("Año de fundación: ");
-            int añoFundacion = leerEntero();
+            int añoFundacion = leerEntero("Año de fundacion");
             System.out.print("Lugar de sede (localidad y provincia): ");
-            String lugarSede = teclado.nextLine().trim();
+            String lugarSede = leerTextoNoVacio("Lugar de sede");
             System.out.print("Estadio: ");
-            String estadio = teclado.nextLine().trim();
+            String estadio = leerTextoNoVacio("Estadio");
             System.out.print("Número de socios aficionados: ");
-            int sociosAficionados = leerEntero();
+            int sociosAficionados = leerEnteroNoNegativo("Numero de socios");
 
             Equipo equipo = new Equipo(codigo, nombre, añoFundacion, lugarSede, estadio, sociosAficionados);
             JPP_ProyectoFinal.equipoService.insertar(equipo);
@@ -140,17 +140,17 @@ public class SubMenuEquipos {
         try {
             System.out.println("ACTUALIZAR EQUIPO");
             System.out.print("Código del equipo a actualizar: ");
-            int codigo = leerEntero();
+            int codigo = leerEntero("Codigo");
             System.out.print("Nuevo nombre: ");
-            String nombre = teclado.nextLine().trim();
+            String nombre = leerTextoNoVacio("Nombre");
             System.out.print("Nuevo año de fundación: ");
-            int añoFundacion = leerEntero();
+            int añoFundacion = leerEntero("Año de Fundacion");
             System.out.print("Nuevo lugar de sede: ");
-            String lugarSede = teclado.nextLine().trim();
+            String lugarSede = leerTextoNoVacio("Lugar de sede");
             System.out.print("Nuevo estadio: ");
-            String estadio = teclado.nextLine().trim();
+            String estadio =  leerTextoNoVacio("Estadio");
             System.out.print("Nuevo número de socios: ");
-            int sociosAficionados = leerEntero();
+            int sociosAficionados = leerEnteroNoNegativo("Numero de socios");
 
             Equipo equipo = new Equipo(codigo, nombre, añoFundacion, lugarSede, estadio, sociosAficionados);
             JPP_ProyectoFinal.equipoService.actualizar(equipo);
@@ -166,7 +166,7 @@ public class SubMenuEquipos {
         try {
             System.out.println("ELIMINAR EQUIPO");
             System.out.print("Código del equipo a eliminar: ");
-            int codigo = leerEntero();
+            int codigo = leerEntero("Codigo");
             JPP_ProyectoFinal.equipoService.eliminar(codigo);
             System.out.println("Eliminado con Exito");
         } catch (SeHaProducidoUnError e) {
@@ -178,7 +178,7 @@ public class SubMenuEquipos {
         try {
             System.out.println("CONSULTAR EQUIPO");
             System.out.print("Código del equipo: ");
-            int codigo = leerEntero();
+            int codigo = leerEntero("Codigo");
             Equipo equipo = equipoService.consultar(codigo);
             System.out.println("Código: " + equipo.getCodigo());
             System.out.println("Nombre: " + equipo.getNombre());
@@ -294,14 +294,38 @@ public class SubMenuEquipos {
         }
     }
 
-    private static int leerEntero() {
+    private static int leerEntero(String campo) {
         while (true) {
             try {
                 String linea = scanner.nextLine().trim();
+                if (linea.isEmpty()) {
+                    System.out.print("Error: el campo '" + campo + "' no puede estar vacio. Intentalo de nuevo: ");
+                    continue;
+                }
                 return Integer.parseInt(linea);
             } catch (NumberFormatException e) {
-                System.out.print("Introduce un numero entero");
+                System.out.print("Error: '" + campo + "' debe ser un numero entero. Intentalo de nuevo: ");
             }
+        }
+    }
+
+    private static int leerEnteroNoNegativo(String campo) {
+        while (true) {
+            int valor = leerEntero(campo);
+            if (valor >= 0) {
+                return valor;
+            }
+            System.out.print("Error: '" + campo + "' no puede ser negativo. Intentalo de nuevo: ");
+        }
+    }
+
+    private static String leerTextoNoVacio(String campo) {
+        while (true) {
+            String valor = scanner.nextLine().trim();
+            if (!valor.isEmpty()) {
+                return valor;
+            }
+            System.out.print("Error: el campo '" + campo + "' no puede estar vacio. Intentalo de nuevo: ");
         }
     }
 
