@@ -1,0 +1,3 @@
+INFORME 3: HISTORIAL DE JUGADORES POR EQUIPOS
+JUGADOR              NACIONALIDAD    F.NACIMIENTO    EQUIPO                ENTRADA   SALIDA  TITULARES
+----------------------------------------------------------------------------------------------------

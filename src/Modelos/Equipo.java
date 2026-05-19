@@ -19,6 +19,8 @@ public class Equipo implements Serializable {
     private String nombre;
     private int añoFundacion;
     private String lugarSede;
+    private String localidad;
+    private String provincia;
     private String estadio;
     private int sociosAficionados;
 
@@ -27,18 +29,32 @@ public class Equipo implements Serializable {
         this.codigo = contadorCodigo++;
         this.nombre = nombre;
         this.añoFundacion = añoFundacion;
-        this.lugarSede = lugarSede;
+        setLugarSede(lugarSede); 
+        this.estadio = estadio;
+        this.sociosAficionados = sociosAficionados;
+    }
+
+    public Equipo(int codigo, String nombre, int añoFundacion,
+            String localidad, String provincia, String estadio, int sociosAficionados) {
+        this.codigo = codigo;
+        this.nombre = nombre;
+        this.añoFundacion = añoFundacion;
+        this.localidad = localidad != null ? localidad.trim() : "";
+        this.provincia = provincia != null ? provincia.trim() : "";
+        // reconstruimos lugarSede para que el Swing lo muestre correctamente
+        if (this.provincia.isBlank()) {
+            this.lugarSede = this.localidad;
+        } else {
+            this.lugarSede = this.localidad + ", " + this.provincia;
+        }
         this.estadio = estadio;
         this.sociosAficionados = sociosAficionados;
     }
 
     public Equipo() {
     }
-    
 
     // Metodos
-    
-    
     // Getters Y Setters
     public int getCodigo() {
         return codigo;
@@ -69,33 +85,68 @@ public class Equipo implements Serializable {
     }
 
     public void setLugarSede(String lugarSede) {
-        this.lugarSede = lugarSede;
+        this.lugarSede = lugarSede != null ? lugarSede.trim() : "";
+        int coma = this.lugarSede.indexOf(",");
+        if (coma >= 0) {
+            this.localidad = this.lugarSede.substring(0, coma).trim();
+            this.provincia = this.lugarSede.substring(coma + 1).trim();
+        } else {
+            this.localidad = this.lugarSede;
+            this.provincia = "";
+        }
     }
-    
+
     public String getEstadio() {
         return estadio;
     }
-    
-     public void setEstadio(String estadio) {
+
+    public void setEstadio(String estadio) {
         this.estadio = estadio;
     }
-    
+
     public int getSociosAficionados() {
         return sociosAficionados;
     }
-    
+
     public void setSociosAficionados(int sociosAficionados) {
         this.sociosAficionados = sociosAficionados;
     }
 
+    public String getLocalidad() {
+        return localidad;
+    }
+
+    public void setLocalidad(String localidad) {
+        this.localidad = localidad != null ? localidad.trim() : "";
+        // mantener lugarSede sincronizado
+        if (this.provincia == null || this.provincia.isBlank()) {
+            this.lugarSede = this.localidad;
+        } else {
+            this.lugarSede = this.localidad + ", " + this.provincia;
+        }
+    }
+
+    public String getProvincia() {
+        return provincia;
+    }
+
+    public void setProvincia(String provincia) {
+        this.provincia = provincia != null ? provincia.trim() : "";
+        // mantener lugarSede sincronizado
+        if (this.provincia.isBlank()) {
+            this.lugarSede = this.localidad;
+        } else {
+            this.lugarSede = this.localidad + ", " + this.provincia;
+        }
+    }
+
     @Override
     public String toString() {
-        return "Equipo{" + "contadorCodigo=" + contadorCodigo +
-                ", codigo=" + codigo + ", nombre=" + nombre + 
-                ", a\u00f1oFundacion=" + añoFundacion +
-                ", lugarSede=" + lugarSede + ", estadio=" + estadio + ", "
+        return "Equipo{" + "contadorCodigo=" + contadorCodigo
+                + ", codigo=" + codigo + ", nombre=" + nombre
+                + ", a\u00f1oFundacion=" + añoFundacion
+                + ", lugarSede=" + lugarSede + ", estadio=" + estadio + ", "
                 + "sociosAficionados=" + sociosAficionados + '}';
     }
-    
-    
+
 }

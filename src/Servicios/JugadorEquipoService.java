@@ -42,12 +42,12 @@ public class JugadorEquipoService implements MetodosComunes<Jugador_equipo> {
     @Override
     public void insertar(Jugador_equipo je) throws ElDatoIntroducidoEsIncorrecto, SeHaProducidoUnError {
         validar(je);
-        String sql = "INSET INTO jugador_equipo(codigo_equipo,codigo_jugador,año_entrada,año_salida,partidos_titular)" + "VALUES (?,?,?,?,?)";
+        String sql = "INSERT INTO jugador_equipo(codigo_equipo,codigo_jugador,año_entrada,año_salida,partidos_titular)" + "VALUES (?,?,?,?,?)";
         try ( Connection con = MetodosBaseDeDatos.AccederBaseDeDatos();  PreparedStatement ps = con.prepareStatement(sql)) {
 
             ps.setInt(1, je.getCodigoEquipo());
             ps.setInt(2, je.getCodigoJugador());
-            ps.setInt(2, je.getAñoEntrada());
+            ps.setInt(3, je.getAñoEntrada());
 
             if (je.getAñoSalida() != null) {
                 ps.setInt(4, je.getAñoSalida());

@@ -12,6 +12,7 @@ import static Main.JPP_ProyectoFinal.equipoService;
 import Modelos.Equipo;
 import Servicios.EquipoService;
 import Utils.Constantes;
+import Utils.Validadores;
 import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -113,16 +114,33 @@ public class SubMenuEquipos {
             System.out.println("INSERTAR EQUIPO");
             System.out.print("Código: ");
             int codigo = leerEntero("Codigo");
+            
             System.out.print("Nombre: ");
             String nombre = teclado.nextLine().trim();
+            while (!Validadores.validarNombre(nombre)) {
+                nombre = teclado.nextLine().trim();
+            }
             System.out.print("Año de fundación: ");
-            int añoFundacion = leerEntero("Año de fundacion");
+            int añoFundacion = teclado.nextInt();
+            while (!Validadores.añoFundacion(añoFundacion)) {
+                añoFundacion = teclado.nextInt();
+            }
             System.out.print("Lugar de sede (localidad y provincia): ");
-            String lugarSede = leerTextoNoVacio("Lugar de sede");
+            String lugarSede = teclado.nextLine().trim();
+            while (!Validadores.lugarSede(lugarSede)) {
+                lugarSede = teclado.nextLine().trim();
+            }
             System.out.print("Estadio: ");
-            String estadio = leerTextoNoVacio("Estadio");
+            String estadio = teclado.nextLine().trim();
+            while (!Validadores.estadio(estadio)) {
+                estadio = teclado.nextLine().trim();
+            }
+
             System.out.print("Número de socios aficionados: ");
-            int sociosAficionados = leerEnteroNoNegativo("Numero de socios");
+            int sociosAficionados = teclado.nextInt();
+            while (!Validadores.numeroSocios(sociosAficionados)) {
+                sociosAficionados = teclado.nextInt();
+            }
 
             Equipo equipo = new Equipo(codigo, nombre, añoFundacion, lugarSede, estadio, sociosAficionados);
             JPP_ProyectoFinal.equipoService.insertar(equipo);
@@ -142,15 +160,31 @@ public class SubMenuEquipos {
             System.out.print("Código del equipo a actualizar: ");
             int codigo = leerEntero("Codigo");
             System.out.print("Nuevo nombre: ");
-            String nombre = leerTextoNoVacio("Nombre");
+            String nombre = teclado.nextLine().trim();
+            while (Validadores.validarNombre(nombre)) {
+                nombre = teclado.nextLine().trim();
+            }
             System.out.print("Nuevo año de fundación: ");
-            int añoFundacion = leerEntero("Año de Fundacion");
+            int añoFundacion = teclado.nextInt();
+            while (Validadores.añoFundacion(añoFundacion)) {
+                añoFundacion = teclado.nextInt();
+            }
             System.out.print("Nuevo lugar de sede: ");
-            String lugarSede = leerTextoNoVacio("Lugar de sede");
+            String lugarSede = teclado.nextLine().trim();
+            while (Validadores.lugarSede(lugarSede)) {
+                lugarSede = teclado.nextLine().trim();
+            }
             System.out.print("Nuevo estadio: ");
-            String estadio =  leerTextoNoVacio("Estadio");
+            String estadio = teclado.nextLine().trim();
+            while (Validadores.estadio(estadio)) {
+                estadio = teclado.nextLine().trim();
+            }
+
             System.out.print("Nuevo número de socios: ");
-            int sociosAficionados = leerEnteroNoNegativo("Numero de socios");
+            int sociosAficionados = teclado.nextInt();
+            while (Validadores.numeroSocios(sociosAficionados)) {
+                sociosAficionados = teclado.nextInt();
+            }
 
             Equipo equipo = new Equipo(codigo, nombre, añoFundacion, lugarSede, estadio, sociosAficionados);
             JPP_ProyectoFinal.equipoService.actualizar(equipo);

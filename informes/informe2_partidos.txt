@@ -1,0 +1,3 @@
+INFORME 2: PARTIDOS CON EQUIPOS
+FECHA           ESTADIO                   LOCAL                VISITANTE             PTS LOCAL  PTS VISIT
+---------------------------------------------------------------------------------------------------------

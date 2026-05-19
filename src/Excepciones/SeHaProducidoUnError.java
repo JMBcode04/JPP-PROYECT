@@ -16,6 +16,6 @@ public class SeHaProducidoUnError extends Exception {
     
     // Sirve para que lance el mensaje cuando salte el error
      public SeHaProducidoUnError() {
-        super("Se ha producido un error inesperado en la aplicación.");
+        super("Se ha producido un error inesperado en la aplicación. No existe el código introducido.");
     }
 }

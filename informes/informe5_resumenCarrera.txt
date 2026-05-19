@@ -1,0 +1,3 @@
+INFORME 5: RESUMEN CARRERA DE JUGADORES
+JUGADOR                   POSICIÓN          TOTAL EQUIPOS  TOTAL PARTIDOS
+---------------------------------------------------------------------------

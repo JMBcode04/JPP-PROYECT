@@ -6,6 +6,7 @@ package Modelos;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.Date;
 
 /**
  *
@@ -21,7 +22,7 @@ public class Jugador implements Serializable {
     }
     protected int codigo;
     protected String nombre;
-    protected String fechaNacimiento;
+    protected String fechaNacimiento; //dd/MM/YYYY
     protected String nacionalidad;
     protected String posicion;
 
@@ -58,9 +59,15 @@ public class Jugador implements Serializable {
     public void setNombre(String nombre) {
         this.nombre = nombre;
     }
-
+    
     public String getFechaNacimiento() {
         return fechaNacimiento;
+    }
+    
+    //Profesor: A data
+    public LocalDate getFechaNacimientoEnDate() {
+        //dd/MM/YYYY
+        return LocalDate.of(Integer.parseInt(fechaNacimiento.substring(6, 10)), Integer.parseInt(fechaNacimiento.substring(3, 5)), Integer.parseInt(fechaNacimiento.substring(0, 2)));
     }
 
     public void setFechaNacimiento(String fechaNacimiento) {

@@ -25,7 +25,8 @@ public class InformesService {
 
     // 1.Primera consulta Multitabla
     public void informeJugadoresActualesPorEquipo() throws SeHaProducidoUnError {
-        String sql = "SELECT e.nombre AS equipo, e.estadio, e.lugar_sede, "
+        String sql = "SELECT e.nombre AS equipo, e.estadio, "
+                + "CONCAT(e.localidad, ', ', e.provincia) AS lugar_sede, "
                 + "j.nombre AS jugador, j.posicion "
                 + "FROM equipo e "
                 + "JOIN jugador_equipo je ON e.codigo = je.codigo_equipo "
@@ -88,8 +89,8 @@ public class InformesService {
                         rs.getString("nacionalidad"),
                         rs.getString("fecha_nacimiento"),
                         rs.getString("equipo"),
-                        rs.getInt("anio_entrada"),
-                        rs.getObject("anio_salida") != null ? rs.getInt("anio_salida") : "-",
+                        rs.getInt("año_entrada"),
+                        rs.getObject("año_salida") != null ? rs.getInt("año_salida") : "-",
                         rs.getObject("partidos_titular") != null ? rs.getInt("partidos_titular") : "-"));
     }
 
@@ -239,15 +240,16 @@ public class InformesService {
 
     // 9. Novena consulta Multitabla
     public void informeEquiposPorSede() throws SeHaProducidoUnError {
-        String sql = "SELECT e1.lugar_sede, "
+        String sql = "SELECT CONCAT(e1.localidad, ', ', e1.provincia) AS lugar_sede, "
                 + "GROUP_CONCAT(e1.nombre ORDER BY e1.nombre SEPARATOR ', ') AS equipos, "
                 + "SUM(e1.socios_aficionados) AS total_socios "
                 + "FROM equipo e1 "
-                + "WHERE e1.lugar_sede IN ( "
-                + "  SELECT lugar_sede FROM equipo GROUP BY lugar_sede HAVING COUNT(*) > 1 "
+                + "WHERE (e1.localidad, e1.provincia) IN ( "
+                + "  SELECT localidad, provincia FROM equipo "
+                + "  GROUP BY localidad, provincia HAVING COUNT(*) > 1 "
                 + ") "
-                + "GROUP BY e1.lugar_sede "
-                + "ORDER BY e1.lugar_sede ASC";
+                + "GROUP BY e1.localidad, e1.provincia "
+                + "ORDER BY e1.localidad ASC, e1.provincia ASC";
         List<String> lineas = new ArrayList<>();
         lineas.add("INFORME 9: EQUIPOS QUE COMPARTEN SEDE");
         lineas.add(String.format("%-25s %-40s %15s",
@@ -260,7 +262,6 @@ public class InformesService {
                         rs.getLong("total_socios")));
     }
 
-    
     private void ejecutarYGuardar(String sql, List<String> lineasCabecera,
             String nombreFichero, MapaFila mapeador) throws SeHaProducidoUnError {
         crearDirectorioInformes();
@@ -294,6 +295,7 @@ public class InformesService {
     // Creamos una interfaz funcional para poder mapear una fila del ResultSet a una cadena de texto
     @FunctionalInterface
     private interface MapaFila {
+
         String mapear(ResultSet rs) throws SQLException;
     }
 

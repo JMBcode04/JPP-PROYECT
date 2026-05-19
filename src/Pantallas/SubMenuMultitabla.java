@@ -31,7 +31,7 @@ public class SubMenuMultitabla {
                     + "3. Historial de equipos de jugador \n"
                     + "4. Total puntos local por temporada\n"
                     + "5. Total equipos y partidos como titular por jugador\n"
-                    + "6. Jugadores mas de 5 anios en equipo\n"
+                    + "6. Jugadores mas de 5 años en equipo\n"
                     + "7. Jugadores libres\n"
                     + "8. Partidos con suma de puntuacion mayor a X\n"
                     + "9. Equipos por ubicacion y sus socios\n");

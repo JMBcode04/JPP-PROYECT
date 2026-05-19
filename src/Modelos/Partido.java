@@ -11,7 +11,7 @@ import java.time.LocalDate;
  *
  * @author jorge
  */
-public class Partido implements Serializable{
+public class Partido implements Serializable {
 
     // Atributos
     protected int codigoEquipoLocal;
@@ -55,7 +55,7 @@ public class Partido implements Serializable{
         return añoTemporada;
     }
 
-    public void setAnioTemporada(int añoTemporada) {
+    public void setAñoTemporada(int añoTemporada) {
         this.añoTemporada = añoTemporada;
     }
 
@@ -65,6 +65,11 @@ public class Partido implements Serializable{
 
     public void setFecha(String fecha) {
         this.fecha = fecha;
+    }
+
+    public LocalDate getfechaEnDate() {
+        //dd/MM/YYYY
+        return LocalDate.of(Integer.parseInt(fecha.substring(6, 10)), Integer.parseInt(fecha.substring(3, 5)), Integer.parseInt(fecha.substring(0, 2)));
     }
 
     public Integer getPuntuacionLocal() {
@@ -86,14 +91,12 @@ public class Partido implements Serializable{
     // Devuelve los datos del partido 
     @Override
     public String toString() {
-        return "Partido{" + "codigoEquipoLocal=" + codigoEquipoLocal +
-                ", codigoEquipoVisitante=" + codigoEquipoVisitante + ", "
+        return "Partido{" + "codigoEquipoLocal=" + codigoEquipoLocal
+                + ", codigoEquipoVisitante=" + codigoEquipoVisitante + ", "
                 + "a\u00f1oTemporada=" + añoTemporada + ", "
                 + "fecha=" + fecha + ", "
                 + "puntuacionLocal=" + puntuacionLocal + ", "
                 + "puntuacionVisitante=" + puntuacionVisitante + '}';
     }
-    
-    
 
 }

@@ -41,8 +41,8 @@ public class EquipoService implements MetodosComunes<Equipo> {
     @Override
     public void insertar(Equipo entidad) throws ElDatoIntroducidoEsIncorrecto, SeHaProducidoUnError {
         validarEquipo(entidad);
-        String sql = "INSERT INTO equipo (codigo, nombre, año_fundacion, lugar_sede, estadio, socios_aficionados) "
-                + "VALUES (?, ?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO equipo (codigo, nombre, año_fundacion, localidad, provincia, estadio, socios_aficionados) "
+                + "VALUES (?, ?, ?, ?, ?, ?, ?)";
         try {
             Connection con = MetodosBaseDeDatos.AccederBaseDeDatos();
             PreparedStatement ps = con.prepareStatement(sql);
@@ -50,9 +50,10 @@ public class EquipoService implements MetodosComunes<Equipo> {
             ps.setInt(1, entidad.getCodigo());
             ps.setString(2, entidad.getNombre());
             ps.setInt(3, entidad.getañoFundacion());
-            ps.setString(4, entidad.getLugarSede());
-            ps.setString(5, entidad.getEstadio());
-            ps.setInt(6, entidad.getSociosAficionados());
+            ps.setString(4, entidad.getLocalidad());   // columna real BD
+            ps.setString(5, entidad.getProvincia());   // columna real BD
+            ps.setString(6, entidad.getEstadio());
+            ps.setInt(7, entidad.getSociosAficionados());
             ps.executeUpdate();
             contenedor.añadirEquipo(entidad);
         } catch (SQLException e) {
@@ -63,15 +64,16 @@ public class EquipoService implements MetodosComunes<Equipo> {
     @Override
     public void actualizar(Equipo entidad) throws ElDatoIntroducidoEsIncorrecto, SeHaProducidoUnError {
         validarEquipo(entidad);
-        String sql = "UPDATE equipo SET nombre=?, año_fundacion=?, lugar_sede=?, estadio=?, socios_aficionados=? "
+        String sql = "UPDATE equipo SET nombre=?, año_fundacion=?, localidad=?, provincia=?, estadio=?, socios_aficionados=? "
                 + "WHERE codigo=?";
         try (Connection con = MetodosBaseDeDatos.AccederBaseDeDatos(); PreparedStatement ps = con.prepareStatement(sql)) {
             ps.setString(1, entidad.getNombre());
             ps.setInt(2, entidad.getañoFundacion());
-            ps.setString(3, entidad.getLugarSede());
-            ps.setString(4, entidad.getEstadio());
-            ps.setInt(5, entidad.getSociosAficionados());
-            ps.setInt(6, entidad.getCodigo());
+            ps.setString(3, entidad.getLocalidad());
+            ps.setString(4, entidad.getProvincia());
+            ps.setString(5, entidad.getEstadio());
+            ps.setInt(6, entidad.getSociosAficionados());
+            ps.setInt(7, entidad.getCodigo());
             int filas = ps.executeUpdate();
             if (filas == 0) {
                 throw new SeHaProducidoUnError();
@@ -214,7 +216,8 @@ public class EquipoService implements MetodosComunes<Equipo> {
                 rs.getInt("codigo"),
                 rs.getString("nombre"),
                 rs.getInt("año_fundacion"),
-                rs.getString("lugar_sede"),
+                rs.getString("localidad"),
+                rs.getString("provincia"),
                 rs.getString("estadio"),
                 rs.getInt("socios_aficionados")
         );

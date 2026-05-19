@@ -10,6 +10,8 @@ import Excepciones.YaImportadoException;
 import Main.JPP_ProyectoFinal;
 import Modelos.Jugador;
 import Utils.Constantes;
+import Utils.Validadores;
+import java.time.LocalDate;
 import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -178,12 +180,30 @@ public class SubMenuJugadores {
             int codigo = leerEntero();
             System.out.print("Nombre: ");
             String nombre = teclado.nextLine().trim();
+            //nombre = teclado.nextLine().trim();
+            while (!Validadores.validarNombre(nombre)) {
+                System.out.print("Introduce el nombre correctamente: ");
+                nombre = teclado.nextLine().trim();
+            }
+
             System.out.print("Fecha de nacimiento (dd/mm/aaaa): ");
-            String fechaNacimiento = teclado.nextLine().trim();
+            String fechaNacimiento = teclado.nextLine().trim(); //Elimina espacios en blanco al principio y final
+            //fechaNacimiento = teclado.nextLine().trim(); //Elimina espacios en blanco al principio y final
+
             System.out.print("Nacionalidad: ");
             String nacionalidad = teclado.nextLine().trim();
+           // nacionalidad = teclado.nextLine().trim();
+            while (!Validadores.validarNacionalidad(nacionalidad)) {
+                System.out.print("Introduce la nacionalidad correctamente: ");
+                nacionalidad = teclado.nextLine().trim();
+            }
+
             System.out.print("Posición: ");
             String posicion = teclado.nextLine().trim();
+            while (!Validadores.validarPosicion(posicion)) {
+                System.out.print("Introduce la posicion correctamente: ");
+                posicion = teclado.nextLine().trim();
+            }
 
             Jugador jugador = new Jugador(codigo, nombre, fechaNacimiento, nacionalidad, posicion);
             JPP_ProyectoFinal.jugadorService.insertar(jugador);
@@ -203,12 +223,21 @@ public class SubMenuJugadores {
             int codigo = leerEntero();
             System.out.print("Nuevo nombre: ");
             String nombre = teclado.nextLine().trim();
+            while (Validadores.validarNombre(nombre)) {
+                nombre = teclado.nextLine().trim();
+            }
             System.out.print("Nueva fecha de nacimiento (dd/mm/aaaa): ");
             String fechaNacimiento = teclado.nextLine().trim();
             System.out.print("Nueva nacionalidad: ");
             String nacionalidad = teclado.nextLine().trim();
+            while (Validadores.validarNacionalidad(nacionalidad)) {
+                nacionalidad = teclado.nextLine().trim();
+            }
             System.out.print("Nueva posición: ");
             String posicion = teclado.nextLine().trim();
+            while (Validadores.validarPosicion(posicion)) {
+                posicion = teclado.nextLine().trim();
+            }
 
             Jugador jugador = new Jugador(codigo, nombre, fechaNacimiento, nacionalidad, posicion);
             JPP_ProyectoFinal.jugadorService.actualizar(jugador);

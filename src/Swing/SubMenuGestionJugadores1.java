@@ -39,6 +39,7 @@ public class SubMenuGestionJugadores1 extends javax.swing.JFrame {
         btnInsertar = new javax.swing.JButton();
         btnImpCSV = new javax.swing.JButton();
         btnImpBIN = new javax.swing.JButton();
+        jButtonVolver = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -83,11 +84,21 @@ public class SubMenuGestionJugadores1 extends javax.swing.JFrame {
 
         btnImpBIN.setText("Importar bin");
 
+        jButtonVolver.setText("Volver");
+        jButtonVolver.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonVolverActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 400, Short.MAX_VALUE)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(66, 66, 66)
+                .addComponent(jButtonVolver)
+                .addContainerGap(262, Short.MAX_VALUE))
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(layout.createSequentialGroup()
                     .addGap(43, 43, 43)
@@ -111,7 +122,10 @@ public class SubMenuGestionJugadores1 extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGap(0, 300, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap(267, Short.MAX_VALUE)
+                .addComponent(jButtonVolver)
+                .addGap(18, 18, 18))
             .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(layout.createSequentialGroup()
                     .addGap(31, 31, 31)
@@ -166,6 +180,15 @@ public class SubMenuGestionJugadores1 extends javax.swing.JFrame {
         insertar.setVisible(true);
     }//GEN-LAST:event_btnInsertarActionPerformed
 
+    private void jButtonVolverActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonVolverActionPerformed
+        int confirm = javax.swing.JOptionPane.showConfirmDialog(this,
+            "¿Seguro que deseas salir?", "Confirmar salida",
+            javax.swing.JOptionPane.YES_NO_OPTION);
+        if (confirm == javax.swing.JOptionPane.YES_OPTION) {
+            System.exit(0);
+        }
+    }//GEN-LAST:event_jButtonVolverActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -215,5 +238,6 @@ public class SubMenuGestionJugadores1 extends javax.swing.JFrame {
     private javax.swing.JButton btnImpJSON;
     private javax.swing.JButton btnImpTXT;
     private javax.swing.JButton btnInsertar;
+    private javax.swing.JButton jButtonVolver;
     // End of variables declaration//GEN-END:variables
 }

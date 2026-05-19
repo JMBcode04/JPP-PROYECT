@@ -1,0 +1,3 @@
+INFORME 8: PARTIDOS CON PUNTUACIÓN TOTAL > 9
+FECHA           TEMPORADA LOCAL                VISITANTE             SUMA PUNTOS
+--------------------------------------------------------------------------------

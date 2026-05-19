@@ -39,7 +39,7 @@ public class JugadorService implements MetodosComunes<Jugador> {
     @Override
     public void insertar(Jugador entidad) throws ElDatoIntroducidoEsIncorrecto, SeHaProducidoUnError {
         validarJugador(entidad);
-        System.out.println("Jugador insertado correctamente: " + entidad.toString());
+        //System.out.println("Jugador insertado correctamente: " + entidad.toString());
         //aqui insercion en BD (mas adelante)   
         String sql = "INSERT INTO jugador (codigo, nombre, fecha_nacimiento, nacionalidad, posicion)"
                 + "values(?,?,?,?,?)";
@@ -48,13 +48,13 @@ public class JugadorService implements MetodosComunes<Jugador> {
             PreparedStatement ps = con.prepareStatement(sql);
             ps.setInt(1, entidad.getCodigo());
             ps.setString(2, entidad.getNombre());
-            ps.setString(3, entidad.getFechaNacimiento());
+            ps.setDate(3, Date.valueOf(entidad.getFechaNacimientoEnDate()));
             ps.setString(4, entidad.getNacionalidad());
             ps.setString(5, entidad.getPosicion());
 
             ps.executeUpdate();
 
-            System.out.println("Jugador insertado correctamente: " + entidad);
+            System.out.println("Jugador insertado correctamente en BD: " + entidad);
 
         } catch (SQLException e) {
             throw new SeHaProducidoUnError("Error al insertar jugador: " + e.getMessage());
@@ -67,7 +67,7 @@ public class JugadorService implements MetodosComunes<Jugador> {
         String sql = "UPDATE jugador SET nombre=?, fecha_nacimiento=?, nacionalidad=?, posicion=? WHERE codigo=?";
         try ( Connection con = MetodosBaseDeDatos.AccederBaseDeDatos();  PreparedStatement ps = con.prepareStatement(sql)) {
             ps.setString(1, entidad.getNombre());
-            ps.setString(2, entidad.getFechaNacimiento());
+            ps.setDate(2, Date.valueOf(entidad.getFechaNacimientoEnDate()));
             ps.setString(3, entidad.getNacionalidad());
             ps.setString(4, entidad.getPosicion());
             ps.setInt(5, entidad.getCodigo());
@@ -248,6 +248,7 @@ public class JugadorService implements MetodosComunes<Jugador> {
             throw new ElDatoIntroducidoEsIncorrecto("El nombre del jugador no puede estar vacío.");
         }
         if (jugador.getFechaNacimiento() == null || jugador.getFechaNacimiento().isBlank()) {
+            //Profesro: Valida bien la fecha
             throw new ElDatoIntroducidoEsIncorrecto("La fecha de nacimiento no puede estar vacía.");
         }
         if (jugador.getNacionalidad() == null || jugador.getNacionalidad().isBlank()) {
