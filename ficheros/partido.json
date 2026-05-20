@@ -1,0 +1,26 @@
+[
+  {
+    "codigoEquipoLocal": 999,
+    "codigoEquipoVisitante": 1,
+    "añoTemporada": 2000,
+    "fecha": "2000-07-01",
+    "puntuacionLocal": 1,
+    "puntuacionVisitante": 2
+  },
+  {
+    "codigoEquipoLocal": 2,
+    "codigoEquipoVisitante": 1,
+    "añoTemporada": 2002,
+    "fecha": "2002-03-17",
+    "puntuacionLocal": 1,
+    "puntuacionVisitante": 0
+  },
+  {
+    "codigoEquipoLocal": 999,
+    "codigoEquipoVisitante": 2,
+    "añoTemporada": 2010,
+    "fecha": "2010-02-08",
+    "puntuacionLocal": 3,
+    "puntuacionVisitante": 1
+  }
+]

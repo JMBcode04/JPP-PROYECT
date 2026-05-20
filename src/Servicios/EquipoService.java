@@ -27,11 +27,7 @@ public class EquipoService implements MetodosComunes<Equipo> {
     // Sirve como memoria para almacenar los equipos introducidos durante la sesion
     private ContenedorEquipos contenedor;
 
-    // Son controladores para la importacion de cada tipo de fichero
-    private boolean txtImportado = false;
-    private boolean csvImportado = false;
-    private boolean binImportado = false;
-    private boolean jsonImportado = false;
+    // Son controladores para 
 
     // Constructor
     public EquipoService(ContenedorEquipos contenedor) {
@@ -46,9 +42,9 @@ public class EquipoService implements MetodosComunes<Equipo> {
         try {
             Connection con = MetodosBaseDeDatos.AccederBaseDeDatos();
             PreparedStatement ps = con.prepareStatement(sql);
-            
+
             System.out.println("Provincia: " + entidad.getProvincia());
-            
+
             ps.setInt(1, entidad.getCodigo());
             ps.setString(2, entidad.getNombre());
             ps.setInt(3, entidad.getañoFundacion());
@@ -63,7 +59,7 @@ public class EquipoService implements MetodosComunes<Equipo> {
         } catch (SQLException e) {
             throw new SeHaProducidoUnError("Error al insertar equipo: " + e.getMessage());
         }
-        
+
     }
 
     @Override
@@ -149,14 +145,21 @@ public class EquipoService implements MetodosComunes<Equipo> {
         MetodosFicheros.exportarTxt(Constantes.FICHERO_EQUIPO, lineas);
     }
 
-    public void importarTxt() throws SeHaProducidoUnError, YaImportadoException, ElDatoIntroducidoEsIncorrecto {
-        List<String> lineas = MetodosFicheros.importarTxt(Constantes.FICHERO_EQUIPO, txtImportado);
+    public void importarTxt() throws SeHaProducidoUnError, ElDatoIntroducidoEsIncorrecto {
+        List<String> lineas = MetodosFicheros.importarTxt(Constantes.FICHERO_EQUIPO);
         for (String linea : lineas) {
-            String[] campos = linea.split(Constantes.SEPARADOR_TXT);
-            Equipo e = parsearEquipo(campos);
-            insertar(e);
+            try {
+                String[] campos = linea.split(Constantes.SEPARADOR_TXT);
+                Equipo e = parsearEquipo(campos);
+                if (!existeEnBD(e.getCodigo())) {
+                    insertar(e);
+                } else {
+                    System.out.println("Equipo duplicado ignorado, codigo: " + e.getCodigo());
+                }
+            } catch (ElDatoIntroducidoEsIncorrecto ex) {
+                System.out.println("Linea con datos incorrectos ignorada: " + linea);
+            }
         }
-        txtImportado = true;
     }
 
     // Metodos de exportacion e importacion a binario de Equipos
@@ -165,12 +168,19 @@ public class EquipoService implements MetodosComunes<Equipo> {
         MetodosFicheros.exportarBinario(Constantes.FICHERO_EQUIPO, equipos);
     }
 
-    public void importarBinario() throws SeHaProducidoUnError, YaImportadoException, ElDatoIntroducidoEsIncorrecto, ClassNotFoundException {
-        List<Equipo> equipos = MetodosFicheros.importarBinario(Constantes.FICHERO_EQUIPO, binImportado);
+    public void importarBinario() throws SeHaProducidoUnError, ElDatoIntroducidoEsIncorrecto, ClassNotFoundException {
+        List<Equipo> equipos = MetodosFicheros.importarBinario(Constantes.FICHERO_EQUIPO);
         for (Equipo e : equipos) {
-            insertar(e);
+            try {
+                if (!existeEnBD(e.getCodigo())) {
+                    insertar(e);
+                } else {
+                    System.out.println("Equipo duplicado ignorado, codigo: " + e.getCodigo());
+                }
+            } catch (ElDatoIntroducidoEsIncorrecto ex) {
+                System.out.println("Equipo con datos incorrectos ignorado: " + e.getCodigo());
+            }
         }
-        binImportado = true;
     }
 
     // Metodos de exportacion e importacion a CSV de Equipos
@@ -188,14 +198,21 @@ public class EquipoService implements MetodosComunes<Equipo> {
         MetodosFicheros.exportarCsv(Constantes.FICHERO_EQUIPO, lineas);
     }
 
-    public void importarCsv() throws SeHaProducidoUnError, YaImportadoException, ElDatoIntroducidoEsIncorrecto {
-        List<String> lineas = MetodosFicheros.importarCsv(Constantes.FICHERO_EQUIPO, csvImportado);
+    public void importarCsv() throws SeHaProducidoUnError, ElDatoIntroducidoEsIncorrecto {
+        List<String> lineas = MetodosFicheros.importarCsv(Constantes.FICHERO_EQUIPO);
         for (String linea : lineas) {
-            String[] campos = linea.split(Constantes.SEPARADOR_CSV);
-            Equipo e = parsearEquipo(campos);
-            insertar(e);
+            try {
+                String[] campos = linea.split(Constantes.SEPARADOR_CSV);
+                Equipo e = parsearEquipo(campos);
+                if (!existeEnBD(e.getCodigo())) {
+                    insertar(e);
+                } else {
+                    System.out.println("Equipo duplicado ignorado, codigo: " + e.getCodigo());
+                }
+            } catch (ElDatoIntroducidoEsIncorrecto ex) {
+                System.out.println("Linea con datos incorrectos ignorada: " + linea);
+            }
         }
-        csvImportado = true;
     }
 
     // Metodos de exportacion y importacion a JSON de Equipos
@@ -204,15 +221,22 @@ public class EquipoService implements MetodosComunes<Equipo> {
         MetodosFicheros.exportarJson(Constantes.FICHERO_EQUIPO, equipos);
     }
 
-    public void importarJson() throws SeHaProducidoUnError, YaImportadoException, ElDatoIntroducidoEsIncorrecto {
+    public void importarJson() throws SeHaProducidoUnError, ElDatoIntroducidoEsIncorrecto {
         List<Equipo> equipos = MetodosFicheros.importarJson(
-                Constantes.FICHERO_EQUIPO, jsonImportado,
+                Constantes.FICHERO_EQUIPO,
                 new TypeToken<List<Equipo>>() {
                 }.getType());
         for (Equipo e : equipos) {
-            insertar(e);
+            try {
+                if (!existeEnBD(e.getCodigo())) {
+                    insertar(e);
+                } else {
+                    System.out.println("Equipo duplicado ignorado, codigo: " + e.getCodigo());
+                }
+            } catch (ElDatoIntroducidoEsIncorrecto ex) {
+                System.out.println("Equipo con datos incorrectos ignorado: " + e.getCodigo());
+            }
         }
-        jsonImportado = true;
     }
 
     // Sirve para mapear una fila mediante el ResultSet a un objeto en este caso de Equipo
@@ -264,6 +288,18 @@ public class EquipoService implements MetodosComunes<Equipo> {
     // Muestra los equipos insertados durante la sesion actual
     public void verDatosInsertadosSesion() {
         contenedor.mostrarEquiposSesion();
+    }
+
+    private boolean existeEnBD(int codigo) throws SeHaProducidoUnError {
+        String sql = "SELECT codigo FROM equipo WHERE codigo = ?";
+        try (Connection con = MetodosBaseDeDatos.AccederBaseDeDatos(); PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setInt(1, codigo);
+            try (ResultSet rs = ps.executeQuery()) {
+                return rs.next();
+            }
+        } catch (SQLException e) {
+            throw new SeHaProducidoUnError("Error al comprobar equipo en BD: " + e.getMessage());
+        }
     }
 
 }

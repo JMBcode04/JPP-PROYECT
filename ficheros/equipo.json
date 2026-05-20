@@ -1,0 +1,46 @@
+[
+  {
+    "contadorCodigo": 0,
+    "codigo": 2,
+    "nombre": "Albacete",
+    "añoFundacion": 1980,
+    "lugarSede": "Albacete, Aragon",
+    "localidad": "Albacete",
+    "provincia": "Aragon",
+    "estadio": "jnsdjfe",
+    "sociosAficionados": 312312
+  },
+  {
+    "contadorCodigo": 0,
+    "codigo": 1,
+    "nombre": "Barcelona",
+    "añoFundacion": 1900,
+    "lugarSede": "Barcelona, Cataluña",
+    "localidad": "Barcelona",
+    "provincia": "Cataluña",
+    "estadio": "Camp Nou",
+    "sociosAficionados": 32421
+  },
+  {
+    "contadorCodigo": 0,
+    "codigo": 3,
+    "nombre": "Real Madrid",
+    "añoFundacion": 1940,
+    "lugarSede": "Madrid, Madrid",
+    "localidad": "Madrid",
+    "provincia": "Madrid",
+    "estadio": "Santiago Bernabeu",
+    "sociosAficionados": 50000
+  },
+  {
+    "contadorCodigo": 0,
+    "codigo": 999,
+    "nombre": "Zaragoza",
+    "añoFundacion": 1900,
+    "lugarSede": "Zaragoza, Aragon",
+    "localidad": "Zaragoza",
+    "provincia": "Aragon",
+    "estadio": "Romareda",
+    "sociosAficionados": 12000
+  }
+]

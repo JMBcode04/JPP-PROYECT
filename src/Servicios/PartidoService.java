@@ -29,12 +29,6 @@ public class PartidoService {
     // Sirve como memoria para almacenar los equipos introducidos durante la sesion
     private ContenedorPartidos contenedor;
 
-    // Son controladores para la importacion de cada tipo de fichero
-    private boolean txtImportado = false;
-    private boolean csvImportado = false;
-    private boolean binImportado = false;
-    private boolean jsonImportado = false;
-
     //Constructor
     public PartidoService(ContenedorPartidos contenedor) {
         this.contenedor = contenedor;
@@ -183,39 +177,69 @@ public class PartidoService {
     }
 
     //IMPORTAR
-    public void importarTxt() throws SeHaProducidoUnError, YaImportadoException, ElDatoIntroducidoEsIncorrecto {
-        List<String> lineas = MetodosFicheros.importarTxt(Constantes.FICHERO_PARTIDO, txtImportado);
+    public void importarTxt() throws SeHaProducidoUnError, ElDatoIntroducidoEsIncorrecto {
+        List<String> lineas = MetodosFicheros.importarTxt(Constantes.FICHERO_PARTIDO);
         for (String linea : lineas) {
-            insertar(parsear(linea.split(Constantes.SEPARADOR_TXT)));
+            try {
+                Partido p = parsear(linea.split(Constantes.SEPARADOR_TXT));
+                if (!existeEnBD(p.getCodigoEquipoLocal(), p.getCodigoEquipoVisitante(), p.getAñoTemporada())) {
+                    insertar(p);
+                } else {
+                    System.out.println("Partido duplicado ignorado: " + p.getCodigoEquipoLocal() + "-" + p.getCodigoEquipoVisitante());
+                }
+            } catch (ElDatoIntroducidoEsIncorrecto e) {
+                System.out.println("Linea con datos incorrectos ignorada: " + linea);
+            }
         }
-        txtImportado = true;
     }
 
-    public void importarCsv() throws SeHaProducidoUnError, YaImportadoException, ElDatoIntroducidoEsIncorrecto {
-        List<String> lineas = MetodosFicheros.importarCsv(Constantes.FICHERO_PARTIDO, csvImportado);
+    public void importarCsv() throws SeHaProducidoUnError, ElDatoIntroducidoEsIncorrecto {
+        List<String> lineas = MetodosFicheros.importarCsv(Constantes.FICHERO_PARTIDO);
         for (String linea : lineas) {
-            insertar(parsear(linea.split(Constantes.SEPARADOR_CSV)));
+            try {
+                Partido p = parsear(linea.split(Constantes.SEPARADOR_CSV));
+                if (!existeEnBD(p.getCodigoEquipoLocal(), p.getCodigoEquipoVisitante(), p.getAñoTemporada())) {
+                    insertar(p);
+                } else {
+                    System.out.println("Partido duplicado ignorado: " + p.getCodigoEquipoLocal() + "-" + p.getCodigoEquipoVisitante());
+                }
+            } catch (ElDatoIntroducidoEsIncorrecto e) {
+                System.out.println("Linea con datos incorrectos ignorada: " + linea);
+            }
         }
-        csvImportado = true;
     }
 
-    public void importarBinario() throws SeHaProducidoUnError, YaImportadoException, ElDatoIntroducidoEsIncorrecto, ClassNotFoundException {
-        List<Partido> lista = MetodosFicheros.importarBinario(Constantes.FICHERO_PARTIDO, binImportado);
+    public void importarBinario() throws SeHaProducidoUnError, ElDatoIntroducidoEsIncorrecto, ClassNotFoundException {
+        List<Partido> lista = MetodosFicheros.importarBinario(Constantes.FICHERO_PARTIDO);
         for (Partido p : lista) {
-            insertar(p);
+            try {
+                if (!existeEnBD(p.getCodigoEquipoLocal(), p.getCodigoEquipoVisitante(), p.getAñoTemporada())) {
+                    insertar(p);
+                } else {
+                    System.out.println("Partido duplicado ignorado: " + p.getCodigoEquipoLocal() + "-" + p.getCodigoEquipoVisitante());
+                }
+            } catch (ElDatoIntroducidoEsIncorrecto e) {
+                System.out.println("Partido con datos incorrectos ignorado.");
+            }
         }
-        binImportado = true;
     }
 
-    public void importarJson() throws SeHaProducidoUnError, YaImportadoException, ElDatoIntroducidoEsIncorrecto {
+    public void importarJson() throws SeHaProducidoUnError, ElDatoIntroducidoEsIncorrecto {
         List<Partido> lista = MetodosFicheros.importarJson(
-                Constantes.FICHERO_PARTIDO, jsonImportado,
+                Constantes.FICHERO_PARTIDO,
                 new TypeToken<List<Partido>>() {
                 }.getType());
         for (Partido p : lista) {
-            insertar(p);
+            try {
+                if (!existeEnBD(p.getCodigoEquipoLocal(), p.getCodigoEquipoVisitante(), p.getAñoTemporada())) {
+                    insertar(p);
+                } else {
+                    System.out.println("Partido duplicado ignorado: " + p.getCodigoEquipoLocal() + "-" + p.getCodigoEquipoVisitante());
+                }
+            } catch (ElDatoIntroducidoEsIncorrecto e) {
+                System.out.println("Partido con datos incorrectos ignorado.");
+            }
         }
-        jsonImportado = true;
     }
 
     //METODOS
@@ -275,5 +299,19 @@ public class PartidoService {
     //Muestra los partidos insertados durante la sesión actual.
     public void verDatosInsertadosSesion() {
         contenedor.mostrarPartidosSesion();
+    }
+
+    private boolean existeEnBD(int codigoLocal, int codigoVisitante, int añoTemporada) throws SeHaProducidoUnError {
+        String sql = "SELECT codigo_equipo_local FROM partido WHERE codigo_equipo_local=? AND codigo_equipo_visitante=? AND año_temporada=?";
+        try (Connection con = MetodosBaseDeDatos.AccederBaseDeDatos(); PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setInt(1, codigoLocal);
+            ps.setInt(2, codigoVisitante);
+            ps.setInt(3, añoTemporada);
+            try (ResultSet rs = ps.executeQuery()) {
+                return rs.next();
+            }
+        } catch (SQLException e) {
+            throw new SeHaProducidoUnError("Error al comprobar partido en BD: " + e.getMessage());
+        }
     }
 }

@@ -46,11 +46,8 @@ public class MetodosFicheros {
     }
 
     
-    public static List<String> importarTxt(String nombreFichero, boolean yaImportado)
-            throws SeHaProducidoUnError, YaImportadoException {
-        if (yaImportado) {
-            throw new YaImportadoException();
-        }
+    public static List<String> importarTxt(String nombreFichero)
+            throws SeHaProducidoUnError {
         String ruta = Constantes.RUTA_FICHEROS + nombreFichero + Constantes.EXT_TXT;
         List<String> lineas = new ArrayList<>();
         try (BufferedReader reader = new BufferedReader(new FileReader(ruta))) {
@@ -79,11 +76,8 @@ public class MetodosFicheros {
     }
 
    
-    public static List<String> importarCsv(String nombreFichero, boolean yaImportado)
-            throws SeHaProducidoUnError, YaImportadoException {
-        if (yaImportado) {
-            throw new YaImportadoException();
-        }
+    public static List<String> importarCsv(String nombreFichero)
+            throws SeHaProducidoUnError {
         String ruta = Constantes.RUTA_FICHEROS + nombreFichero + Constantes.EXT_CSV;
         List<String> lineas = new ArrayList<>();
         try (BufferedReader reader = new BufferedReader(new FileReader(ruta))) {
@@ -110,11 +104,8 @@ public class MetodosFicheros {
 
     
     @SuppressWarnings("unchecked")
-    public static <T> List<T> importarBinario(String nombreFichero, boolean yaImportado)
-            throws SeHaProducidoUnError, YaImportadoException, ClassNotFoundException {
-        if (yaImportado) {
-            throw new YaImportadoException();
-        }
+    public static <T> List<T> importarBinario(String nombreFichero)
+            throws SeHaProducidoUnError, ClassNotFoundException {
         String ruta = Constantes.RUTA_FICHEROS + nombreFichero + Constantes.EXT_BIN;
         try (ObjectInputStream ois = new ObjectInputStream(new FileInputStream(ruta))) {
             return (List<T>) ois.readObject();
@@ -136,11 +127,8 @@ public class MetodosFicheros {
     }
 
   
-    public static <T> List<T> importarJson(String nombreFichero, boolean yaImportado, Type tipo)
-            throws SeHaProducidoUnError, YaImportadoException {
-        if (yaImportado) {
-            throw new YaImportadoException();
-        }
+    public static <T> List<T> importarJson(String nombreFichero, Type tipo)
+            throws SeHaProducidoUnError  {
         String ruta = Constantes.RUTA_FICHEROS + nombreFichero + Constantes.EXT_JSON;
         try (Reader reader = new FileReader(ruta)) {
             Gson gson = new Gson();

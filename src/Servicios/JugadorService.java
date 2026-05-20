@@ -26,11 +26,6 @@ public class JugadorService implements MetodosComunes<Jugador> {
 
     private ContenedorJugador contenedor;
 
-    private boolean txtImportado = false;
-    private boolean csvImportado = false;
-    private boolean binImportado = false;
-    private boolean jsonImportado = false;
-
     public JugadorService(ContenedorJugador contenedor) {
         this.contenedor = contenedor;
     }
@@ -164,51 +159,74 @@ public class JugadorService implements MetodosComunes<Jugador> {
     }
 
     //IMPORTAR
-    public void importarTxt() throws SeHaProducidoUnError, YaImportadoException, ElDatoIntroducidoEsIncorrecto {
-        List<String> lineas = MetodosFicheros.importarTxt(Constantes.FICHERO_JUGADOR, txtImportado);
-        //Comprobar lineas
+    public void importarTxt() throws SeHaProducidoUnError, ElDatoIntroducidoEsIncorrecto {
+        List<String> lineas = MetodosFicheros.importarTxt(Constantes.FICHERO_JUGADOR);
+
         for (String linea : lineas) {
-            String[] campos = linea.split(Constantes.SEPARADOR_TXT);
-            
-      
-        }
-        for (String linea : lineas) {
-            String[] campos = linea.split(Constantes.SEPARADOR_TXT);
-            //System.out.println(campos);
-            insertar(parsearJugador(campos));
+            try {
+                String[] campos = linea.split(Constantes.SEPARADOR_TXT);
+                Jugador j = (parsearJugador(campos));
+                if (!existeEnBD(j.getCodigo())) {
+                    insertar(j);
+                } else {
+                    System.out.println("Jugador duplicado ignorado, codigo: " + j.getCodigo());
+                }
+
+            } catch (Exception e) {
+                System.err.println("Linea con datos incorrectos ignorada: " + linea);
+            }
 
         }
-        txtImportado = true;
-    }
-    
-    
-    
-    public void importarCsv() throws SeHaProducidoUnError, YaImportadoException, ElDatoIntroducidoEsIncorrecto {
-        List<String> lineas = MetodosFicheros.importarCsv(Constantes.FICHERO_JUGADOR, csvImportado);
-        for (String linea : lineas) {
-            String[] campos = linea.split(Constantes.SEPARADOR_CSV);
-            insertar(parsearJugador(campos));
-        }
-        csvImportado = true;
     }
 
-    public void importarBinario() throws SeHaProducidoUnError, YaImportadoException, ElDatoIntroducidoEsIncorrecto, ClassNotFoundException {
-        List<Jugador> jugadores = MetodosFicheros.importarBinario(Constantes.FICHERO_JUGADOR, binImportado);
+    public void importarCsv() throws SeHaProducidoUnError, ElDatoIntroducidoEsIncorrecto {
+        List<String> lineas = MetodosFicheros.importarCsv(Constantes.FICHERO_JUGADOR);
+        for (String linea : lineas) {
+            try {
+                String[] campos = linea.split(Constantes.SEPARADOR_CSV);
+                Jugador j = parsearJugador(campos);
+                if (!existeEnBD(j.getCodigo())) {
+                    insertar(j);
+                } else {
+                    System.out.println("Jugador duplicado ignorado, codigo: " + j.getCodigo());
+                }
+            } catch (ElDatoIntroducidoEsIncorrecto e) {
+                System.out.println("Linea con datos incorrectos ignorada: " + linea);
+            }
+        }
+    }
+
+    public void importarBinario() throws SeHaProducidoUnError, ElDatoIntroducidoEsIncorrecto, ClassNotFoundException {
+        List<Jugador> jugadores = MetodosFicheros.importarBinario(Constantes.FICHERO_JUGADOR);
         for (Jugador j : jugadores) {
-            insertar(j);
+            try {
+                if (!existeEnBD(j.getCodigo())) {
+                    insertar(j);
+                } else {
+                    System.out.println("Jugador duplicado ignorado, codigo: " + j.getCodigo());
+                }
+            } catch (ElDatoIntroducidoEsIncorrecto e) {
+                System.out.println("Jugador con datos incorrectos ignorado: " + j.getCodigo());
+            }
         }
-        binImportado = true;
     }
 
-    public void importarJson() throws SeHaProducidoUnError, YaImportadoException, ElDatoIntroducidoEsIncorrecto {
+    public void importarJson() throws SeHaProducidoUnError, ElDatoIntroducidoEsIncorrecto {
         List<Jugador> jugadores = MetodosFicheros.importarJson(
-                Constantes.FICHERO_JUGADOR, jsonImportado,
+                Constantes.FICHERO_JUGADOR,
                 new TypeToken<List<Jugador>>() {
                 }.getType());
         for (Jugador j : jugadores) {
-            insertar(j);
+            try {
+                if (!existeEnBD(j.getCodigo())) {
+                    insertar(j);
+                } else {
+                    System.out.println("Jugador duplicado ignorado, codigo: " + j.getCodigo());
+                }
+            } catch (ElDatoIntroducidoEsIncorrecto e) {
+                System.out.println("Jugador con datos incorrectos ignorado: " + j.getCodigo());
+            }
         }
-        jsonImportado = true;
     }
 
     //*******corregir
@@ -279,6 +297,18 @@ public class JugadorService implements MetodosComunes<Jugador> {
 
     public void verDatosInsertadosSesion() {
         contenedor.mostrarJugadoresSesion();
+    }
+
+    private boolean existeEnBD(int codigo) throws SeHaProducidoUnError {
+        String sql = "SELECT codigo FROM jugador WHERE codigo = ?";
+        try (Connection con = MetodosBaseDeDatos.AccederBaseDeDatos(); PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setInt(1, codigo);
+            try (ResultSet rs = ps.executeQuery()) {
+                return rs.next();
+            }
+        } catch (SQLException e) {
+            throw new SeHaProducidoUnError("Error al comprobar jugador en BD: " + e.getMessage());
+        }
     }
 
 }

@@ -1,0 +1,4 @@
+2;Albacete;1980;Albacete, Aragon;jnsdjfe;312312
+1;Barcelona;1900;Barcelona, Cataluña;Camp Nou;32421
+3;Real Madrid;1940;Madrid, Madrid;Santiago Bernabeu;50000
+999;Zaragoza;1900;Zaragoza, Aragon;Romareda;12000

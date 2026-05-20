@@ -28,12 +28,6 @@ public class JugadorEquipoService implements MetodosComunes<Jugador_equipo> {
     //Hace de memoria para poder almacenar los equipos introducidos durante la sesión.
     private List<Jugador_equipo> listaSesion;
 
-    //Controladores para la importación de cada tipo de fichero.
-    private boolean txtImportado = false;
-    private boolean csvImportado = false;
-    private boolean binImportado = false;
-    private boolean jsonImportado = false;
-
     //Constructor
     public JugadorEquipoService() {
         this.listaSesion = new ArrayList<>();
@@ -43,7 +37,7 @@ public class JugadorEquipoService implements MetodosComunes<Jugador_equipo> {
     public void insertar(Jugador_equipo je) throws ElDatoIntroducidoEsIncorrecto, SeHaProducidoUnError {
         validar(je);
         String sql = "INSERT INTO jugador_equipo(codigo_equipo,codigo_jugador,año_entrada,año_salida,partidos_titular)" + "VALUES (?,?,?,?,?)";
-        try ( Connection con = MetodosBaseDeDatos.AccederBaseDeDatos();  PreparedStatement ps = con.prepareStatement(sql)) {
+        try (Connection con = MetodosBaseDeDatos.AccederBaseDeDatos(); PreparedStatement ps = con.prepareStatement(sql)) {
 
             ps.setInt(1, je.getCodigoEquipo());
             ps.setInt(2, je.getCodigoJugador());
@@ -73,7 +67,7 @@ public class JugadorEquipoService implements MetodosComunes<Jugador_equipo> {
         validar(je);
         String sql = "UPDATE jugador_equipo SET año_salida=?, partidos_titular=?" + "WHERE codigo_equipo=? AND codigo_jugador=? AND año_entrada=?";
 
-        try ( Connection con = MetodosBaseDeDatos.AccederBaseDeDatos();  PreparedStatement ps = con.prepareStatement(sql)) {
+        try (Connection con = MetodosBaseDeDatos.AccederBaseDeDatos(); PreparedStatement ps = con.prepareStatement(sql)) {
             if (je.getAñoSalida() != null) {
                 ps.setInt(1, je.getAñoSalida());
             } else {
@@ -103,7 +97,7 @@ public class JugadorEquipoService implements MetodosComunes<Jugador_equipo> {
     public void eliminar(int codigoJugador) throws SeHaProducidoUnError {
         String sql = "DELETE FROM jugador_equipo WHERE codigo_jugador=? ";
 
-        try ( Connection con = MetodosBaseDeDatos.AccederBaseDeDatos();  PreparedStatement ps = con.prepareStatement(sql)) {
+        try (Connection con = MetodosBaseDeDatos.AccederBaseDeDatos(); PreparedStatement ps = con.prepareStatement(sql)) {
 
             ps.setInt(1, codigoJugador);
 
@@ -121,11 +115,11 @@ public class JugadorEquipoService implements MetodosComunes<Jugador_equipo> {
     public Jugador_equipo consultar(int codigoJugador) throws SeHaProducidoUnError {
         String sql = "SELECT * FROM jugador_equipo WHERE codigo_jugador=? ";
 
-        try ( Connection con = MetodosBaseDeDatos.AccederBaseDeDatos();  PreparedStatement ps = con.prepareStatement(sql)) {
+        try (Connection con = MetodosBaseDeDatos.AccederBaseDeDatos(); PreparedStatement ps = con.prepareStatement(sql)) {
 
             ps.setInt(1, codigoJugador);
 
-            try ( ResultSet rs = ps.executeQuery()) {
+            try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
                     return mapear(rs);
                 } else {
@@ -142,7 +136,7 @@ public class JugadorEquipoService implements MetodosComunes<Jugador_equipo> {
         String sql = "SELECT * FROM jugador_equipo ORDER BY año_entrada ASC";
         List<Jugador_equipo> lista = new ArrayList<>();
 
-        try ( Connection con = MetodosBaseDeDatos.AccederBaseDeDatos();  PreparedStatement ps = con.prepareStatement(sql);  ResultSet rs = ps.executeQuery()) {
+        try (Connection con = MetodosBaseDeDatos.AccederBaseDeDatos(); PreparedStatement ps = con.prepareStatement(sql); ResultSet rs = ps.executeQuery()) {
             while (rs.next()) {
                 lista.add(mapear(rs));
             }
@@ -174,7 +168,7 @@ public class JugadorEquipoService implements MetodosComunes<Jugador_equipo> {
     }
 
     /**
-     * Metodos de exportaciona CSv de JugadorEquipo
+     * Metodos de exportacion a CSv de JugadorEquipo
      *
      * @throws SeHaProducidoUnError
      */
@@ -215,12 +209,20 @@ public class JugadorEquipoService implements MetodosComunes<Jugador_equipo> {
      *
      * @throws SeHaProducidoUnError
      */
-    public void importarTxt() throws SeHaProducidoUnError, YaImportadoException, ElDatoIntroducidoEsIncorrecto {
-        List<String> lineas = MetodosFicheros.importarTxt(Constantes.FICHERO_JUGADOR_EQUIPO, txtImportado);
+    public void importarTxt() throws SeHaProducidoUnError, ElDatoIntroducidoEsIncorrecto {
+        List<String> lineas = MetodosFicheros.importarTxt(Constantes.FICHERO_JUGADOR_EQUIPO);
         for (String linea : lineas) {
-            insertar(parsear(linea.split(Constantes.SEPARADOR_TXT)));
+            try {
+                Jugador_equipo je = parsear(linea.split(Constantes.SEPARADOR_TXT));
+                if (!existeEnBD(je.getCodigoEquipo(), je.getCodigoJugador(), je.getAñoEntrada())) {
+                    insertar(je);
+                } else {
+                    System.out.println("JugadorEquipo duplicado ignorado: eq=" + je.getCodigoEquipo() + " jug=" + je.getCodigoJugador());
+                }
+            } catch (ElDatoIntroducidoEsIncorrecto e) {
+                System.out.println("Linea con datos incorrectos ignorada: " + linea);
+            }
         }
-        txtImportado = true;
     }
 
     /**
@@ -228,13 +230,21 @@ public class JugadorEquipoService implements MetodosComunes<Jugador_equipo> {
      *
      * @throws SeHaProducidoUnError
      */
-    public void importarCsv() throws SeHaProducidoUnError, YaImportadoException, ElDatoIntroducidoEsIncorrecto {
-        List<String> lineas = MetodosFicheros.importarCsv(Constantes.FICHERO_JUGADOR_EQUIPO, csvImportado);
+    public void importarCsv() throws SeHaProducidoUnError, ElDatoIntroducidoEsIncorrecto {
+        List<String> lineas = MetodosFicheros.importarCsv(Constantes.FICHERO_JUGADOR_EQUIPO);
 
         for (String linea : lineas) {
-            insertar(parsear(linea.split(Constantes.SEPARADOR_CSV)));
+            try {
+                Jugador_equipo je = parsear(linea.split(Constantes.SEPARADOR_CSV));
+                if (!existeEnBD(je.getCodigoEquipo(), je.getCodigoJugador(), je.getAñoEntrada())) {
+                    insertar(je);
+                } else {
+                    System.out.println("JugadorEquipo duplicado ignorado: eq=" + je.getCodigoEquipo() + " jug=" + je.getCodigoJugador());
+                }
+            } catch (ElDatoIntroducidoEsIncorrecto e) {
+                System.out.println("Linea con datos incorrectos ignorada: " + linea);
+            }
         }
-        csvImportado = true;
     }
 
     /**
@@ -242,18 +252,24 @@ public class JugadorEquipoService implements MetodosComunes<Jugador_equipo> {
      *
      * @throws SeHaProducidoUnError
      */
-    public void importarBinario() throws SeHaProducidoUnError, YaImportadoException, ElDatoIntroducidoEsIncorrecto {
+    public void importarBinario() throws SeHaProducidoUnError, ElDatoIntroducidoEsIncorrecto {
         List<Jugador_equipo> jugador_equipos;
         try {
-            jugador_equipos = MetodosFicheros.importarBinario(Constantes.FICHERO_JUGADOR_EQUIPO, binImportado);
+            jugador_equipos = MetodosFicheros.importarBinario(Constantes.FICHERO_JUGADOR_EQUIPO);
             for (Jugador_equipo je : jugador_equipos) {
-                insertar(je);
+                try {
+                    if (!existeEnBD(je.getCodigoEquipo(), je.getCodigoJugador(), je.getAñoEntrada())) {
+                        insertar(je);
+                    } else {
+                        System.out.println("JugadorEquipo duplicado ignorado: eq=" + je.getCodigoEquipo() + " jug=" + je.getCodigoJugador());
+                    }
+                } catch (ElDatoIntroducidoEsIncorrecto e) {
+                    System.out.println("JugadorEquipo con datos incorrectos ignorado.");
+                }
             }
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(JugadorEquipoService.class.getName()).log(Level.SEVERE, null, ex);
         }
-
-        binImportado = true;
     }
 
     /**
@@ -261,15 +277,22 @@ public class JugadorEquipoService implements MetodosComunes<Jugador_equipo> {
      *
      * @throws SeHaProducidoUnError
      */
-    public void importarJson() throws SeHaProducidoUnError, YaImportadoException, ElDatoIntroducidoEsIncorrecto {
-        List<Jugador_equipo> lista = MetodosFicheros.importarJson(Constantes.FICHERO_JUGADOR_EQUIPO, jsonImportado,
+    public void importarJson() throws SeHaProducidoUnError, ElDatoIntroducidoEsIncorrecto {
+        List<Jugador_equipo> lista = MetodosFicheros.importarJson(Constantes.FICHERO_JUGADOR_EQUIPO,
                 new TypeToken<List<Jugador_equipo>>() {
                 }.getType());
 
         for (Jugador_equipo je : lista) {
-            insertar(je);
+            try {
+                if (!existeEnBD(je.getCodigoEquipo(), je.getCodigoJugador(), je.getAñoEntrada())) {
+                    insertar(je);
+                } else {
+                    System.out.println("JugadorEquipo duplicado ignorado: eq=" + je.getCodigoEquipo() + " jug=" + je.getCodigoJugador());
+                }
+            } catch (ElDatoIntroducidoEsIncorrecto e) {
+                System.out.println("JugadorEquipo con datos incorrectos ignorado.");
+            }
         }
-        jsonImportado = true;
     }
 
     //METODOS AUXILIARES
@@ -334,6 +357,20 @@ public class JugadorEquipoService implements MetodosComunes<Jugador_equipo> {
             for (Jugador_equipo je : listaSesion) {
                 System.out.println(" " + je.toString());
             }
+        }
+    }
+
+    private boolean existeEnBD(int codigoEquipo, int codigoJugador, int añoEntrada) throws SeHaProducidoUnError {
+        String sql = "SELECT codigo_equipo FROM jugador_equipo WHERE codigo_equipo=? AND codigo_jugador=? AND año_entrada=?";
+        try (Connection con = MetodosBaseDeDatos.AccederBaseDeDatos(); PreparedStatement ps = con.prepareStatement(sql)) {
+            ps.setInt(1, codigoEquipo);
+            ps.setInt(2, codigoJugador);
+            ps.setInt(3, añoEntrada);
+            try (ResultSet rs = ps.executeQuery()) {
+                return rs.next();
+            }
+        } catch (SQLException e) {
+            throw new SeHaProducidoUnError("Error al comprobar jugador_equipo en BD: " + e.getMessage());
         }
     }
 

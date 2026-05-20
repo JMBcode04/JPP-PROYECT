@@ -1,0 +1,16 @@
+[
+  {
+    "codigoEquipo": 3,
+    "codigoJugador": 35,
+    "añoEntrada": 2015,
+    "añoSalida": 2026,
+    "partidosTitular": 450
+  },
+  {
+    "codigoEquipo": 3,
+    "codigoJugador": 1,
+    "añoEntrada": 2020,
+    "añoSalida": 2026,
+    "partidosTitular": 243
+  }
+]
