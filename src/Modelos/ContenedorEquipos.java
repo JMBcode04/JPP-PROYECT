@@ -16,9 +16,10 @@ import java.util.TreeSet;
 public class ContenedorEquipos {
 
     // Atributos 
-    private ArrayList<Equipo> listaEquipos;
-    private HashMap<Integer, Equipo> mapaEquipos;
-    private TreeSet<Equipo> conjuntoEquiposOrdenados;
+    private ArrayList<Equipo> listaEquipos = new ArrayList<>();
+    private HashMap<Integer, Equipo> mapaEquipos = new HashMap<>();
+    private TreeSet<Equipo> conjuntoEquiposOrdenados = new TreeSet<>();
+    
 
     // Constructor
     public ContenedorEquipos() {
@@ -28,8 +29,8 @@ public class ContenedorEquipos {
     // Añade el equipo insertado en cada uno de las colecciones
     public void añadirEquipo(Equipo equipo) {
         listaEquipos.add(equipo);
-        mapaEquipos.put(equipo.getCodigo(), equipo);
-        conjuntoEquiposOrdenados.add(equipo);
+        //mapaEquipos.put(equipo.getCodigo(), equipo);
+        //conjuntoEquiposOrdenados.add(equipo);
     }
 
     // Devuelve los equipos introducidos en la sesion

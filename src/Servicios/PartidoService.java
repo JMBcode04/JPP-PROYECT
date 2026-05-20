@@ -232,10 +232,10 @@ public class PartidoService {
         if (partido.getFecha() == null || partido.getFecha().isBlank()) {
             throw new ElDatoIntroducidoEsIncorrecto("La fecha no puede estar vacia");
         }
-        if (partido.getPuntuacionLocal() <= 0) {
+        if (partido.getPuntuacionLocal() < 0) {
             throw new ElDatoIntroducidoEsIncorrecto("La puntuiacion tiene que ser un numero positivio");
         }
-        if (partido.getPuntuacionVisitante() <= 0) {
+        if (partido.getPuntuacionVisitante() < 0) {
             throw new ElDatoIntroducidoEsIncorrecto("La puntuiacion tiene que ser un numero positivio");
         }
     }

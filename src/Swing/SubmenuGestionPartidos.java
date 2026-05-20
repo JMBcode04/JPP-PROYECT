@@ -107,8 +107,8 @@ public class SubmenuGestionPartidos extends javax.swing.JDialog {
         Integer puntuacionLocal = null;
         if (!puntLocalStr.isEmpty()) {
             try {
-                int v = Integer.parseInt(puntLocalStr);
-                puntuacionLocal = v == 0 ? null : v;
+                puntuacionLocal = Integer.parseInt(puntLocalStr);
+                
             } catch (NumberFormatException e) {
                 JOptionPane.showMessageDialog(this, "La puntuación local debe ser un número entero (o dejar vacío).\nValor: \"" + puntLocalStr + "\"",
                         "Error de validación", JOptionPane.WARNING_MESSAGE);
@@ -118,8 +118,8 @@ public class SubmenuGestionPartidos extends javax.swing.JDialog {
         Integer puntuacionVisitante = null;
         if (!puntVisitanteStr.isEmpty()) {
             try {
-                int v = Integer.parseInt(puntVisitanteStr);
-                puntuacionVisitante = v == 0 ? null : v;
+                puntuacionVisitante = Integer.parseInt(puntVisitanteStr);
+                
             } catch (NumberFormatException e) {
                 JOptionPane.showMessageDialog(this, "La puntuación visitante debe ser un número entero (o dejar vacío).\nValor: \"" + puntVisitanteStr + "\"",
                         "Error de validación", JOptionPane.WARNING_MESSAGE);

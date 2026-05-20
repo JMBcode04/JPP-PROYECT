@@ -44,7 +44,7 @@ public class JugadorService implements MetodosComunes<Jugador> {
         String sql = "INSERT INTO jugador (codigo, nombre, fecha_nacimiento, nacionalidad, posicion)"
                 + "values(?,?,?,?,?)";
         try {
-            Connection con = MetodosBaseDeDatos.AccederBaseDeDatos();  
+            Connection con = MetodosBaseDeDatos.AccederBaseDeDatos();
             PreparedStatement ps = con.prepareStatement(sql);
             ps.setInt(1, entidad.getCodigo());
             ps.setString(2, entidad.getNombre());
@@ -65,7 +65,7 @@ public class JugadorService implements MetodosComunes<Jugador> {
     public void actualizar(Jugador entidad) throws ElDatoIntroducidoEsIncorrecto, SeHaProducidoUnError {
         validarJugador(entidad);
         String sql = "UPDATE jugador SET nombre=?, fecha_nacimiento=?, nacionalidad=?, posicion=? WHERE codigo=?";
-        try ( Connection con = MetodosBaseDeDatos.AccederBaseDeDatos();  PreparedStatement ps = con.prepareStatement(sql)) {
+        try (Connection con = MetodosBaseDeDatos.AccederBaseDeDatos(); PreparedStatement ps = con.prepareStatement(sql)) {
             ps.setString(1, entidad.getNombre());
             ps.setDate(2, Date.valueOf(entidad.getFechaNacimientoEnDate()));
             ps.setString(3, entidad.getNacionalidad());
@@ -83,7 +83,7 @@ public class JugadorService implements MetodosComunes<Jugador> {
     @Override
     public void eliminar(int codigo) throws SeHaProducidoUnError {
         String sql = "DELETE FROM jugador WHERE codigo=?";
-        try ( Connection con = MetodosBaseDeDatos.AccederBaseDeDatos();  PreparedStatement ps = con.prepareStatement(sql)) {
+        try (Connection con = MetodosBaseDeDatos.AccederBaseDeDatos(); PreparedStatement ps = con.prepareStatement(sql)) {
             ps.setInt(1, codigo);
             int filas = ps.executeUpdate();
             if (filas == 0) {
@@ -97,9 +97,9 @@ public class JugadorService implements MetodosComunes<Jugador> {
     @Override
     public Jugador consultar(int codigo) throws SeHaProducidoUnError {
         String sql = "SELECT * FROM jugador WHERE codigo=?";
-        try ( Connection con = MetodosBaseDeDatos.AccederBaseDeDatos();  PreparedStatement ps = con.prepareStatement(sql)) {
+        try (Connection con = MetodosBaseDeDatos.AccederBaseDeDatos(); PreparedStatement ps = con.prepareStatement(sql)) {
             ps.setInt(1, codigo);
-            try ( ResultSet rs = ps.executeQuery()) {
+            try (ResultSet rs = ps.executeQuery()) {
                 if (rs.next()) {
                     return mapearJugador(rs);
                 } else {
@@ -115,7 +115,7 @@ public class JugadorService implements MetodosComunes<Jugador> {
     public List<Jugador> consultarTodos() throws SeHaProducidoUnError {
         String sql = "SELECT * FROM jugador ORDER BY nombre ASC";
         List<Jugador> lista = new ArrayList<>();
-        try ( Connection con = MetodosBaseDeDatos.AccederBaseDeDatos();  PreparedStatement ps = con.prepareStatement(sql);  ResultSet rs = ps.executeQuery()) {
+        try (Connection con = MetodosBaseDeDatos.AccederBaseDeDatos(); PreparedStatement ps = con.prepareStatement(sql); ResultSet rs = ps.executeQuery()) {
             while (rs.next()) {
                 lista.add(mapearJugador(rs));
             }
@@ -166,12 +166,22 @@ public class JugadorService implements MetodosComunes<Jugador> {
     //IMPORTAR
     public void importarTxt() throws SeHaProducidoUnError, YaImportadoException, ElDatoIntroducidoEsIncorrecto {
         List<String> lineas = MetodosFicheros.importarTxt(Constantes.FICHERO_JUGADOR, txtImportado);
+        //Comprobar lineas
         for (String linea : lineas) {
             String[] campos = linea.split(Constantes.SEPARADOR_TXT);
+            
+      
+        }
+        for (String linea : lineas) {
+            String[] campos = linea.split(Constantes.SEPARADOR_TXT);
+            //System.out.println(campos);
             insertar(parsearJugador(campos));
+
         }
         txtImportado = true;
     }
+    
+    
     
     public void importarCsv() throws SeHaProducidoUnError, YaImportadoException, ElDatoIntroducidoEsIncorrecto {
         List<String> lineas = MetodosFicheros.importarCsv(Constantes.FICHERO_JUGADOR, csvImportado);
@@ -181,30 +191,33 @@ public class JugadorService implements MetodosComunes<Jugador> {
         }
         csvImportado = true;
     }
-     public void importarBinario() throws SeHaProducidoUnError, YaImportadoException, ElDatoIntroducidoEsIncorrecto, ClassNotFoundException {
+
+    public void importarBinario() throws SeHaProducidoUnError, YaImportadoException, ElDatoIntroducidoEsIncorrecto, ClassNotFoundException {
         List<Jugador> jugadores = MetodosFicheros.importarBinario(Constantes.FICHERO_JUGADOR, binImportado);
         for (Jugador j : jugadores) {
             insertar(j);
         }
         binImportado = true;
     }
-     public void importarJson() throws SeHaProducidoUnError, YaImportadoException, ElDatoIntroducidoEsIncorrecto {
+
+    public void importarJson() throws SeHaProducidoUnError, YaImportadoException, ElDatoIntroducidoEsIncorrecto {
         List<Jugador> jugadores = MetodosFicheros.importarJson(
                 Constantes.FICHERO_JUGADOR, jsonImportado,
-                new TypeToken<List<Jugador>>(){}.getType());
+                new TypeToken<List<Jugador>>() {
+                }.getType());
         for (Jugador j : jugadores) {
             insertar(j);
         }
         jsonImportado = true;
     }
-    
+
     //*******corregir
     //Ajustar Codigo Contador desde el ultimo en la BD
     public static int obtenerUltimoCodigo() throws SeHaProducidoUnError {
         int ultimoCodigo = 0;
         String sql = "Select max(codigo) from jugador";
-        try ( Connection con = DriverManager.getConnection(Constantes.URL);//******  
-                  PreparedStatement pst = con.prepareStatement(sql);  ResultSet rs = pst.executeQuery()) {
+        try (Connection con = DriverManager.getConnection(Constantes.URL);//******  
+                 PreparedStatement pst = con.prepareStatement(sql); ResultSet rs = pst.executeQuery()) {
 
             if (rs.next()) {
                 ultimoCodigo = rs.getInt(1);
@@ -234,6 +247,11 @@ public class JugadorService implements MetodosComunes<Jugador> {
         if (campos.length < 5) {
             throw new ElDatoIntroducidoEsIncorrecto("Formato de línea incorrecto para jugador.");
         }
+        System.out.println("Campo 0" + campos[0]);
+        System.out.println("Campo 1" + campos[1]);
+        System.out.println("Campo 2" + campos[2]);
+        System.out.println("Campo 3" + campos[3]);
+        System.out.println("Campo 4" + campos[4]);
         return new Jugador(
                 Integer.parseInt(campos[0].trim()),
                 campos[1].trim(),

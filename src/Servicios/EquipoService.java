@@ -46,7 +46,9 @@ public class EquipoService implements MetodosComunes<Equipo> {
         try {
             Connection con = MetodosBaseDeDatos.AccederBaseDeDatos();
             PreparedStatement ps = con.prepareStatement(sql);
-
+            
+            System.out.println("Provincia: " + entidad.getProvincia());
+            
             ps.setInt(1, entidad.getCodigo());
             ps.setString(2, entidad.getNombre());
             ps.setInt(3, entidad.getañoFundacion());
@@ -56,9 +58,12 @@ public class EquipoService implements MetodosComunes<Equipo> {
             ps.setInt(7, entidad.getSociosAficionados());
             ps.executeUpdate();
             contenedor.añadirEquipo(entidad);
+            ps.close();
+            con.close();
         } catch (SQLException e) {
             throw new SeHaProducidoUnError("Error al insertar equipo: " + e.getMessage());
         }
+        
     }
 
     @Override

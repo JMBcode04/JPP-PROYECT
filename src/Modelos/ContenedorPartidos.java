@@ -15,9 +15,9 @@ import java.util.HashSet;
 public class ContenedorPartidos {
 
     // Atributos 
-    private ArrayList<Partido> listaPartidos;
-    private HashMap<String, Partido> mapaPartidos;
-    private HashSet<Integer> temporadasRegistradas;
+    private ArrayList<Partido> listaPartidos= new ArrayList<>();
+    private HashMap<String, Partido> mapaPartidos = new HashMap<>();
+    private HashSet<Integer> temporadasRegistradas = new HashSet<>();
 
     // Constructor
     public ContenedorPartidos() { 

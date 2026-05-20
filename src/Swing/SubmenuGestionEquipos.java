@@ -74,6 +74,7 @@ public class SubmenuGestionEquipos extends javax.swing.JDialog {
         int codigo, añoFundacion, sociosAficionados;
         try {
             codigo = Integer.parseInt(codigoStr);
+            System.out.println("El codigo es en la interfaz " + codigo);
         } catch (NumberFormatException e) {
             JOptionPane.showMessageDialog(this, "El campo 'Código' debe ser un número entero.",
                     "Error de validación", JOptionPane.WARNING_MESSAGE);

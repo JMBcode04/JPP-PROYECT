@@ -14,7 +14,7 @@ import java.time.LocalDate;
 public class Equipo implements Serializable {
 
     // Atributos
-    private int contadorCodigo = 0;
+    private int contadorCodigo;
     private int codigo;
     private String nombre;
     private int añoFundacion;
@@ -26,7 +26,7 @@ public class Equipo implements Serializable {
 
     // Constructor
     public Equipo(int codigo, String nombre, int añoFundacion, String lugarSede, String estadio, int sociosAficionados) {
-        this.codigo = contadorCodigo++;
+        this.codigo = codigo;
         this.nombre = nombre;
         this.añoFundacion = añoFundacion;
         setLugarSede(lugarSede); 
@@ -86,10 +86,12 @@ public class Equipo implements Serializable {
 
     public void setLugarSede(String lugarSede) {
         this.lugarSede = lugarSede != null ? lugarSede.trim() : "";
-        int coma = this.lugarSede.indexOf(",");
+        int coma = this.lugarSede.indexOf(","); //Zaragoza, Aragón
         if (coma >= 0) {
-            this.localidad = this.lugarSede.substring(0, coma).trim();
+            this.localidad = this.lugarSede.substring(0, coma).trim(); //Zaragoza
             this.provincia = this.lugarSede.substring(coma + 1).trim();
+            System.out.println("Localidad: " + this.localidad);
+            System.out.println("Provincia: " + this.provincia);
         } else {
             this.localidad = this.lugarSede;
             this.provincia = "";

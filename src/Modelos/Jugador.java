@@ -66,7 +66,14 @@ public class Jugador implements Serializable {
     
     //Profesor: A data
     public LocalDate getFechaNacimientoEnDate() {
-        //dd/MM/YYYY
+        //YYYY-MM-DD
+        if(Character.isDigit(fechaNacimiento.charAt(2))){ //YYYY-MM-DD
+            int ano = Integer.parseInt(fechaNacimiento.substring(0, 4));
+            int mes = Integer.parseInt(fechaNacimiento.substring(5, 7));
+            int dia = Integer.parseInt(fechaNacimiento.substring(8, 10));
+            return LocalDate.of(ano, mes, dia);
+        }
+        //dd/MM/YYYY 
         return LocalDate.of(Integer.parseInt(fechaNacimiento.substring(6, 10)), Integer.parseInt(fechaNacimiento.substring(3, 5)), Integer.parseInt(fechaNacimiento.substring(0, 2)));
     }
 

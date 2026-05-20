@@ -249,7 +249,8 @@ public class SubmenuGestionJugadores extends javax.swing.JDialog {
         try {
             JPP_ProyectoFinal.jugadorService.insertar(jugador);
             JOptionPane.showMessageDialog(this, "Jugador insertado correctamente.");
-            limpiarCampos(); cargarTabla();
+            limpiarCampos(); 
+            cargarTabla();
         } catch (ElDatoIntroducidoEsIncorrecto e) {
             JOptionPane.showMessageDialog(this, "Error de validación: " + e.getMessage(), "Error", JOptionPane.WARNING_MESSAGE);
         } catch (SeHaProducidoUnError e) {
@@ -329,9 +330,15 @@ public class SubmenuGestionJugadores extends javax.swing.JDialog {
         catch (SeHaProducidoUnError e) { JOptionPane.showMessageDialog(this, "Error: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE); }
     }
     private void jButtonImpTXTActionPerformed(java.awt.event.ActionEvent evt) {
-        try { JPP_ProyectoFinal.jugadorService.importarTxt(); JOptionPane.showMessageDialog(this, "Importado desde TXT."); cargarTabla(); }
-        catch (YaImportadoException e) { JOptionPane.showMessageDialog(this, e.getMessage(), "Aviso", JOptionPane.WARNING_MESSAGE); }
-        catch (SeHaProducidoUnError | ElDatoIntroducidoEsIncorrecto e) { JOptionPane.showMessageDialog(this, "Error: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE); }
+        try {
+            JPP_ProyectoFinal.jugadorService.importarTxt();
+            JOptionPane.showMessageDialog(this, "Importado desde TXT.");
+            cargarTabla();
+        } catch (YaImportadoException e) {
+            JOptionPane.showMessageDialog(this, e.getMessage(), "Aviso", JOptionPane.WARNING_MESSAGE);
+        } catch (SeHaProducidoUnError | ElDatoIntroducidoEsIncorrecto e) {
+            JOptionPane.showMessageDialog(this, "Error: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+        }
     }
     private void jButtonImpCSVActionPerformed(java.awt.event.ActionEvent evt) {
         try { JPP_ProyectoFinal.jugadorService.importarCsv(); JOptionPane.showMessageDialog(this, "Importado desde CSV."); cargarTabla(); }
