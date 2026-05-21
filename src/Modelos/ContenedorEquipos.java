@@ -13,13 +13,18 @@ import java.util.TreeSet;
  *
  * @author jorge
  */
+/**
+ * REALIZADO POR JORGE
+ * @author jorge
+ */
+// Contenedor en memoria para los equipos insertados durante la sesion actual
+// Combina tres estructuras: lista (orden insercion), mapa (acceso por codigo) y TreeSet (orden alfabetico)
 public class ContenedorEquipos {
 
     // Atributos 
     private ArrayList<Equipo> listaEquipos = new ArrayList<>();
     private HashMap<Integer, Equipo> mapaEquipos = new HashMap<>();
     private TreeSet<Equipo> conjuntoEquiposOrdenados = new TreeSet<>();
-    
 
     // Constructor
     public ContenedorEquipos() {

@@ -20,6 +20,10 @@ import java.util.logging.Logger;
  *
  * @author jorge
  */
+/**
+ * REALIZADO POR PAMELA Y JORGE
+ * @author jorge
+ */
 public class SubMenuJugadores {
 
     private static Scanner scanner = new Scanner(System.in);
@@ -172,7 +176,6 @@ public class SubMenuJugadores {
             int codigo = leerEntero();
             System.out.print("Nombre: ");
             String nombre = teclado.nextLine().trim();
-            //nombre = teclado.nextLine().trim();
             while (!Validadores.validarNombre(nombre)) {
                 System.out.print("Introduce el nombre correctamente: ");
                 nombre = teclado.nextLine().trim();
@@ -180,11 +183,9 @@ public class SubMenuJugadores {
 
             System.out.print("Fecha de nacimiento (dd/mm/aaaa): ");
             String fechaNacimiento = teclado.nextLine().trim(); //Elimina espacios en blanco al principio y final
-            //fechaNacimiento = teclado.nextLine().trim(); //Elimina espacios en blanco al principio y final
 
             System.out.print("Nacionalidad: ");
             String nacionalidad = teclado.nextLine().trim();
-           // nacionalidad = teclado.nextLine().trim();
             while (!Validadores.validarNacionalidad(nacionalidad)) {
                 System.out.print("Introduce la nacionalidad correctamente: ");
                 nacionalidad = teclado.nextLine().trim();

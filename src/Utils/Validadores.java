@@ -10,9 +10,14 @@ import Excepciones.ElDatoIntroducidoEsIncorrecto;
  *
  * @author jorge
  */
+/**
+ * REALIZADO POR JORGE
+ * @author jorge
+ */
 public class Validadores {
 
     // SUB MENU JUGADORES/EQUIPOS
+    // Valida que el nombre no este vacio, tenga al menos 3 caracteres y no contenga digitos
     public static boolean validarNombre(String nombre) {
         if (nombre.isEmpty()) {
             System.err.println("El nombre esta vacio");
@@ -33,6 +38,7 @@ public class Validadores {
         return true;
     }
 
+    // Misma logica que validarNombre: sin digitos, no vacio y minimo 3 caracteres
     public static boolean validarNacionalidad(String nacionalidad) {
         if (nacionalidad.isEmpty()) {
             System.err.println("El nombre esta vacio");
@@ -50,6 +56,7 @@ public class Validadores {
         return true;
     }
 
+    // Valida que la posicion no este vacia, tenga al menos 3 letras y no contenga numeros
     public static boolean validarPosicion(String posicion) {
         if (posicion.isEmpty()) {
             System.err.println("El nombre esta vacio");
@@ -67,6 +74,7 @@ public class Validadores {
         return true;
     }
 
+    // Verifica que el ano sea positivo y no mayor al ano actual
     public static boolean añoFundacion(int añoFundacion) {
 
         if (añoFundacion < 0) {
@@ -82,6 +90,7 @@ public class Validadores {
         return true;
     }
 
+    // Valida que el lugar de sede no este vacio, tenga al menos 3 caracteres y no tenga digitos
     public static boolean lugarSede(String lugarSede) {
 
         if (lugarSede.isEmpty()) {
@@ -100,6 +109,7 @@ public class Validadores {
         return true;
     }
 
+    // Mismo criterio que lugarSede aplicado al nombre del estadio
     public static boolean estadio(String estadio) {
 
         if (estadio.isEmpty()) {
@@ -118,6 +128,7 @@ public class Validadores {
         return true;
     }
 
+    // Comprueba que el numero de socios sea un valor no negativo
     public static boolean numeroSocios(int sociosAficionados) {
 
         if (sociosAficionados < 0) {

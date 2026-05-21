@@ -12,13 +12,17 @@ import java.util.logging.Logger;
 /**
  *
  * @author jorge
+ *//**
+ * REALIZADO POR JORGE
+ * @author jorge
  */
 public class MetodosBaseDeDatos {
-    
+
     private static Connection con;
-    
+
+    // Establece y devuelve la conexion a la BD; con gestion de fallo de contrasena
     public static Connection AccederBaseDeDatos() {
-        
+
         try {
             String url = Constantes.URL;
             String user = Constantes.USER;
@@ -43,11 +47,12 @@ public class MetodosBaseDeDatos {
                 System.err.println("No se ha establecido la conexion con la base de datos");
             }
             return con;
-                   
+
         }
         //return null;
     }
 
+    // Cierra la conexion abierta con la base de datos
     public static void CerrarBaseDeDatos() {
         try {
             con.close();

@@ -33,12 +33,12 @@ public class JPP_ProyectoFinal {
     /**
      * @param args the command line arguments
      */
-    // CONTENEDORES
+    // CONTENEDORES en memoria (guardan los datos insertados durante la sesion)
     private static ContenedorEquipos contenedorEquipos = new ContenedorEquipos();
     private static ContenedorJugador contenedorJugador = new ContenedorJugador();
     private static ContenedorPartidos contenedorPartidos = new ContenedorPartidos();
 
-    //SERVICIOS
+    //SERVICIOS: gestionan CRUD y ficheros para cada entidad
     public static EquipoService equipoService = new EquipoService(contenedorEquipos);
     public static JugadorService jugadorService = new JugadorService(contenedorJugador);
     public static JugadorEquipoService jugadorEquipoService = new JugadorEquipoService();
@@ -49,14 +49,15 @@ public class JPP_ProyectoFinal {
     private static Scanner scanner = new Scanner(System.in);
 
     public static void main(String[] args) {
-
-        //Ajustar Codigo jugador Contador desde el ultimo en la BD (JugadorService)
+        // Sincroniza el contador de codigos de Jugador con el ultimo valor en la BD
+        // para que los nuevos jugadores no colisionen con los ya existentes
         try {
             int ultimoCodigo = JugadorService.obtenerUltimoCodigo();
             Jugador.inicializarContador(ultimoCodigo);
         } catch (SeHaProducidoUnError e) {
             System.out.println("Error al inicializar: " + e.getMessage());
         }
+        // Lanza el menu principal por consola
         MenuPrincipal.menuPrincipal();
     }
 }

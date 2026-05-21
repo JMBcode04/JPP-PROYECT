@@ -29,10 +29,14 @@ import java.util.List;
  *
  * @author jorge
  */
+/**
+ * REALIZADO POR PAMELA Y PAULA
+ * @author jorge
+ */
 public class MetodosFicheros {
- 
- 
-     public static void exportarTxt(String nombreFichero, List<String> lineas) throws SeHaProducidoUnError {
+
+    // Escribe una lista de lineas en un fichero .txt, creando el directorio si no existe
+    public static void exportarTxt(String nombreFichero, List<String> lineas) throws SeHaProducidoUnError {
         String ruta = Constantes.RUTA_FICHEROS + nombreFichero + Constantes.EXT_TXT;
         crearDirectorioSiNoExiste();
         try (BufferedWriter writer = new BufferedWriter(new FileWriter(ruta))) {
@@ -45,7 +49,7 @@ public class MetodosFicheros {
         }
     }
 
-    
+    // Lee todas las lineas de un fichero .txt y las devuelve como lista de Strings
     public static List<String> importarTxt(String nombreFichero)
             throws SeHaProducidoUnError {
         String ruta = Constantes.RUTA_FICHEROS + nombreFichero + Constantes.EXT_TXT;
@@ -61,7 +65,7 @@ public class MetodosFicheros {
         return lineas;
     }
 
-    
+    // Escribe lineas en formato CSV (misma logica que TXT, distinta extension y separador)
     public static void exportarCsv(String nombreFichero, List<String> lineas) throws SeHaProducidoUnError {
         String ruta = Constantes.RUTA_FICHEROS + nombreFichero + Constantes.EXT_CSV;
         crearDirectorioSiNoExiste();
@@ -75,7 +79,7 @@ public class MetodosFicheros {
         }
     }
 
-   
+    // Lee un fichero CSV y devuelve sus lineas como lista
     public static List<String> importarCsv(String nombreFichero)
             throws SeHaProducidoUnError {
         String ruta = Constantes.RUTA_FICHEROS + nombreFichero + Constantes.EXT_CSV;
@@ -91,7 +95,7 @@ public class MetodosFicheros {
         return lineas;
     }
 
-   
+    // Serializa la lista de objetos en binario usando ObjectOutputStream
     public static void exportarBinario(String nombreFichero, List<?> lista) throws SeHaProducidoUnError {
         String ruta = Constantes.RUTA_FICHEROS + nombreFichero + Constantes.EXT_BIN;
         crearDirectorioSiNoExiste();
@@ -102,7 +106,7 @@ public class MetodosFicheros {
         }
     }
 
-    
+    // Deserializa una lista de objetos desde un fichero binario; requiere que la clase sea Serializable
     @SuppressWarnings("unchecked")
     public static <T> List<T> importarBinario(String nombreFichero)
             throws SeHaProducidoUnError, ClassNotFoundException {
@@ -114,7 +118,7 @@ public class MetodosFicheros {
         }
     }
 
-    
+    // Convierte la lista a JSON usando Gson con formato legible (pretty printing)
     public static void exportarJson(String nombreFichero, List<?> lista) throws SeHaProducidoUnError {
         String ruta = Constantes.RUTA_FICHEROS + nombreFichero + Constantes.EXT_JSON;
         crearDirectorioSiNoExiste();
@@ -126,9 +130,9 @@ public class MetodosFicheros {
         }
     }
 
-  
+    // Parsea un fichero JSON a lista de objetos del tipo indicado mediante reflection (TypeToken)
     public static <T> List<T> importarJson(String nombreFichero, Type tipo)
-            throws SeHaProducidoUnError  {
+            throws SeHaProducidoUnError {
         String ruta = Constantes.RUTA_FICHEROS + nombreFichero + Constantes.EXT_JSON;
         try (Reader reader = new FileReader(ruta)) {
             Gson gson = new Gson();
@@ -138,13 +142,13 @@ public class MetodosFicheros {
         }
     }
 
-   //creaun directorio si noexiste
+    // Crea el directorio de ficheros si aun no existe en el sistema de archivos
     private static void crearDirectorioSiNoExiste() {
         File directorio = new File(Constantes.RUTA_FICHEROS);
         if (!directorio.exists()) {
             directorio.mkdirs();
+        }
+
     }
-    
-    }
- 
+
 }

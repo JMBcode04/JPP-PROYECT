@@ -23,6 +23,10 @@ import java.util.ArrayList;
  *
  * @author jorge
  */
+/**
+ * REALIZADO POR PAMELA
+ * @author jorge
+ */
 public class PartidoService {
 
     // Atributos
@@ -301,6 +305,7 @@ public class PartidoService {
         contenedor.mostrarPartidosSesion();
     }
 
+    // Valida si existe dentro de la Base de datos
     private boolean existeEnBD(int codigoLocal, int codigoVisitante, int añoTemporada) throws SeHaProducidoUnError {
         String sql = "SELECT codigo_equipo_local FROM partido WHERE codigo_equipo_local=? AND codigo_equipo_visitante=? AND año_temporada=?";
         try (Connection con = MetodosBaseDeDatos.AccederBaseDeDatos(); PreparedStatement ps = con.prepareStatement(sql)) {

@@ -11,15 +11,20 @@ import java.time.LocalDate;
  *
  * @author jorge
  */
+/**
+ * REALIZADO POR JORGE
+ * @author jorge
+ */
+// Entidad que representa un partido entre dos equipos; la clave es (local, visitante, temporada)
 public class Partido implements Serializable {
 
     // Atributos
     protected int codigoEquipoLocal;
     protected int codigoEquipoVisitante;
     protected int añoTemporada;
-    protected String fecha;
-    protected Integer puntuacionLocal;
-    protected Integer puntuacionVisitante;
+    protected String fecha;  // Formato dd/MM/YYYY
+    protected Integer puntuacionLocal;  // null si el partido no tiene resultado registrado
+    protected Integer puntuacionVisitante; // null si el partido no tiene resultado registrado
 
     // Constructor
     public Partido(int codigoEquipoLocal, int codigoEquipoVisitante, int añoTemporada, String fecha, Integer puntuacionLocal, Integer puntuacionVisitante) {
@@ -66,7 +71,8 @@ public class Partido implements Serializable {
     public void setFecha(String fecha) {
         this.fecha = fecha;
     }
-
+    
+    // Convierte la fecha String en LocalDate (formato dd/MM/YYYY)
     public LocalDate getfechaEnDate() {
         //dd/MM/YYYY
         return LocalDate.of(Integer.parseInt(fecha.substring(6, 10)), Integer.parseInt(fecha.substring(3, 5)), Integer.parseInt(fecha.substring(0, 2)));

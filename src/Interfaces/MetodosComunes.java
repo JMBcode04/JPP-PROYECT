@@ -13,6 +13,11 @@ import java.util.List;
  * @author jorge
  * @param <T>
  */
+
+/**
+ * REALIZADO POR JORGE
+ * @author jorge
+ */
 public interface MetodosComunes<T> {
 
     // Insertar una nueva entidad en la base de datos y en el contenedor en memoria

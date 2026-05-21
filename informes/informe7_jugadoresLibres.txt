@@ -3,6 +3,7 @@ JUGADOR                   NACIONALIDAD
 --------------------------------------------------
 Abdul                     Marruecos           
 Andres                    España              
+Eustaquio                 España              
 Iker                      España              
 Luis                      Turquia             
 Pepe                      España              

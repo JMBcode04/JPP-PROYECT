@@ -21,6 +21,10 @@ import java.util.logging.Logger;
  *
  * @author jorge
  */
+/**
+ * REALIZADO POR PAULA
+ * @author jorge
+ */
 public class JugadorEquipoService implements MetodosComunes<Jugador_equipo> {
 
     // Implementar el crud de JugadorEquipo

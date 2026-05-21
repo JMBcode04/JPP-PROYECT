@@ -12,15 +12,21 @@ import java.util.HashSet;
  *
  * @author jorge
  */
+/**
+ * REALIZADO POR JORGE
+ * @author jorge
+ */
+// Contenedor en memoria para los partidos de la sesion
+// El mapa usa una clave compuesta "local-visitante-temporada" para identificar cada partido de forma unica
 public class ContenedorPartidos {
 
     // Atributos 
-    private ArrayList<Partido> listaPartidos= new ArrayList<>();
+    private ArrayList<Partido> listaPartidos = new ArrayList<>();
     private HashMap<String, Partido> mapaPartidos = new HashMap<>();
     private HashSet<Integer> temporadasRegistradas = new HashSet<>();
 
     // Constructor
-    public ContenedorPartidos() { 
+    public ContenedorPartidos() {
     }
 
     // Metodos

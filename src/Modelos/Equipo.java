@@ -11,6 +11,10 @@ import java.time.LocalDate;
  *
  * @author jorge
  */
+/**
+ * REALIZADO POR JORGE
+ * @author jorge
+ */
 public class Equipo implements Serializable {
 
     // Atributos
@@ -24,16 +28,17 @@ public class Equipo implements Serializable {
     private String estadio;
     private int sociosAficionados;
 
-    // Constructor
+    // Constructor usado desde consola: recibe lugarSede como cadena "localidad, provincia"
     public Equipo(int codigo, String nombre, int añoFundacion, String lugarSede, String estadio, int sociosAficionados) {
         this.codigo = codigo;
         this.nombre = nombre;
         this.añoFundacion = añoFundacion;
-        setLugarSede(lugarSede); 
+        setLugarSede(lugarSede);
         this.estadio = estadio;
         this.sociosAficionados = sociosAficionados;
     }
 
+    // Constructor usado al recuperar datos de la BD: recibe localidad y provincia por separado
     public Equipo(int codigo, String nombre, int añoFundacion,
             String localidad, String provincia, String estadio, int sociosAficionados) {
         this.codigo = codigo;
@@ -84,6 +89,7 @@ public class Equipo implements Serializable {
         return lugarSede;
     }
 
+    // Al asignar lugarSede, divide por la coma para extraer localidad y provincia
     public void setLugarSede(String lugarSede) {
         this.lugarSede = lugarSede != null ? lugarSede.trim() : "";
         int coma = this.lugarSede.indexOf(","); //Zaragoza, Aragón
@@ -118,6 +124,7 @@ public class Equipo implements Serializable {
         return localidad;
     }
 
+    // Al cambiar localidad, sincroniza lugarSede
     public void setLocalidad(String localidad) {
         this.localidad = localidad != null ? localidad.trim() : "";
         // mantener lugarSede sincronizado
@@ -131,7 +138,8 @@ public class Equipo implements Serializable {
     public String getProvincia() {
         return provincia;
     }
-
+    
+    // Al cambiar provincia, sincroniza lugarSede
     public void setProvincia(String provincia) {
         this.provincia = provincia != null ? provincia.trim() : "";
         // mantener lugarSede sincronizado

@@ -16,6 +16,10 @@ import java.util.Scanner;
  *
  * @author jorge
  */
+/**
+ * REALIZADO POR PAMELA Y JORGE
+ * @author jorge
+ */
 public class SubMenuJugadorEquipo {
 
     private static Scanner scanner = new Scanner(System.in);

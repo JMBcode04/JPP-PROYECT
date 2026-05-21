@@ -22,6 +22,10 @@ import java.util.logging.Logger;
  *
  * @author jorge
  */
+/**
+ * REALIZADO POR PAMELA
+ * @author jorge
+ */
 public class JugadorService implements MetodosComunes<Jugador> {
 
     private ContenedorJugador contenedor;
@@ -33,9 +37,7 @@ public class JugadorService implements MetodosComunes<Jugador> {
     // Implementar el crud de Jugador
     @Override
     public void insertar(Jugador entidad) throws ElDatoIntroducidoEsIncorrecto, SeHaProducidoUnError {
-        validarJugador(entidad);
-        //System.out.println("Jugador insertado correctamente: " + entidad.toString());
-        //aqui insercion en BD (mas adelante)   
+        validarJugador(entidad); 
         String sql = "INSERT INTO jugador (codigo, nombre, fecha_nacimiento, nacionalidad, posicion)"
                 + "values(?,?,?,?,?)";
         try {
@@ -229,8 +231,6 @@ public class JugadorService implements MetodosComunes<Jugador> {
         }
     }
 
-    //*******corregir
-    //Ajustar Codigo Contador desde el ultimo en la BD
     public static int obtenerUltimoCodigo() throws SeHaProducidoUnError {
         int ultimoCodigo = 0;
         String sql = "Select max(codigo) from jugador";

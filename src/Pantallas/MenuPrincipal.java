@@ -11,6 +11,11 @@ import java.util.Scanner;
  *
  * @author jorge
  */
+
+/**
+ * REALIZADO POR PAMELA Y JORGE
+ * @author jorge
+ */
 public class MenuPrincipal {
 
     public static void menuPrincipal() {

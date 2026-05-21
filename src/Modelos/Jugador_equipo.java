@@ -11,14 +11,20 @@ import java.time.LocalDate;
  *
  * @author jorge
  */
+/**
+ * REALIZADO POR JORGE
+ * @author jorge
+ */
+// Entidad que representa la relacion entre un jugador y un equipo (tabla intermedia)
+// La clave primaria es la combinacion de codigoEquipo + codigoJugador + añoEntrada
 public class Jugador_equipo implements Serializable {
     // Atributos
 
     protected int codigoEquipo;
     protected int codigoJugador;
     protected int añoEntrada;
-    protected Integer añoSalida;
-    protected Integer partidosTitular;
+    protected Integer añoSalida; // null si el jugador sigue activo en el equipo
+    protected Integer partidosTitular; // null si no hay dato disponible
 
     // Constructor
     public Jugador_equipo(int codigoEquipo, int codigoJugador, int añoEntrada, Integer añoSalida, Integer partidosTitular) {
@@ -75,11 +81,11 @@ public class Jugador_equipo implements Serializable {
 
     @Override
     public String toString() {
-        return "Jugador_equipo{" + "codigoEquipo=" + codigoEquipo + 
-                ", codigoJugador=" + codigoJugador + 
-                ", a\u00f1oEntrada=" + añoEntrada + 
-                ", a\u00f1oSalida=" + añoSalida + 
-                ", partidosTitular=" + partidosTitular + '}';
-    }   
+        return "Jugador_equipo{" + "codigoEquipo=" + codigoEquipo
+                + ", codigoJugador=" + codigoJugador
+                + ", a\u00f1oEntrada=" + añoEntrada
+                + ", a\u00f1oSalida=" + añoSalida
+                + ", partidosTitular=" + partidosTitular + '}';
+    }
 
 }

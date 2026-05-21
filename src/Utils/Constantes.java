@@ -8,6 +8,10 @@ package Utils;
  *
  * @author jorge
  */
+/**
+ * REALIZADO POR JORGE
+ * @author jorge
+ */
 public class Constantes {
 
     // CONSTANTES BASE DE DATOS

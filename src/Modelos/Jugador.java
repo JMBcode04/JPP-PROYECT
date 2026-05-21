@@ -12,10 +12,16 @@ import java.util.Date;
  *
  * @author jorge
  */
+/**
+ * REALIZADO POR JORGE
+ * @author jorge
+ */
+// Entidad que representa a un jugador; implementa Serializable para exportacion binaria
 public class Jugador implements Serializable {
-    
+
     // Atributos
-    private static int contadorCodigo=0;
+    private static int contadorCodigo = 0;
+
     //Ajustar Codigo Contador desde el ultimo en la BD (JugadorService,main)
     public static void inicializarContador(int valorInicial) {
         contadorCodigo = valorInicial + 1;
@@ -26,7 +32,7 @@ public class Jugador implements Serializable {
     protected String nacionalidad;
     protected String posicion;
 
-    // Constructor
+    // Constructor para crear jugadores desde la aplicacion: asigna codigo automaticamente
     public Jugador(String nombre, String fechaNacimiento, String nacionalidad, String posicion) {//para el main
         this.codigo = contadorCodigo++;
         this.nombre = nombre;
@@ -35,6 +41,7 @@ public class Jugador implements Serializable {
         this.posicion = posicion;
     }
 
+    // Constructor para reconstruir jugadores leidos de la BD (el codigo viene dado)
     public Jugador(int codigo, String nombre, String fechaNacimiento, String nacionalidad, String posicion) {//para consultar por codigo BD
         this.codigo = codigo;
         this.nombre = nombre;
@@ -59,15 +66,15 @@ public class Jugador implements Serializable {
     public void setNombre(String nombre) {
         this.nombre = nombre;
     }
-    
+
     public String getFechaNacimiento() {
         return fechaNacimiento;
     }
-    
-    //Profesor: A data
+
+    // Convierte la fecha en String a LocalDate; soporta tanto "YYYY-MM-DD" como "dd/MM/YYYY"
     public LocalDate getFechaNacimientoEnDate() {
         //YYYY-MM-DD
-        if(Character.isDigit(fechaNacimiento.charAt(2))){ //YYYY-MM-DD
+        if (Character.isDigit(fechaNacimiento.charAt(2))) { //YYYY-MM-DD
             int ano = Integer.parseInt(fechaNacimiento.substring(0, 4));
             int mes = Integer.parseInt(fechaNacimiento.substring(5, 7));
             int dia = Integer.parseInt(fechaNacimiento.substring(8, 10));

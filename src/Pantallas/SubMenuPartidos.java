@@ -18,6 +18,11 @@ import java.util.logging.Logger;
  *
  * @author jorge
  */
+
+/**
+ * REALIZADO POR PAMELA Y JORGE
+ * @author jorge
+ */
 public class SubMenuPartidos {
 
     private static Scanner scanner = new Scanner(System.in);

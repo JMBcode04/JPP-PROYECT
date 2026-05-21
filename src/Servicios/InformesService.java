@@ -19,11 +19,15 @@ import java.util.List;
  *
  * @author jorge
  */
+/**
+ * REALIZADO POR JORGE
+ * @author jorge
+ */
 public class InformesService {
 
     private static final String RUTA_INFORMES = "informes/";
 
-    // 1.Primera consulta Multitabla
+    // 1.Primera consulta Multitabla: jugadores activos por equipo (año_salida IS NULL)
     public void informeJugadoresActualesPorEquipo() throws SeHaProducidoUnError {
         String sql = "SELECT e.nombre AS equipo, e.estadio, "
                 + "CONCAT(e.localidad, ', ', e.provincia) AS lugar_sede, "
@@ -47,7 +51,7 @@ public class InformesService {
                         rs.getString("posicion")));
     }
 
-    // 2.Segunda consulta Multitabla
+    // 2.Segunda consulta Multitabla: listado de partidos con nombres de equipos local y visitante
     public void informePartidosConEquipos() throws SeHaProducidoUnError {
         String sql = "SELECT p.fecha, el.estadio, el.nombre AS local, ev.nombre AS visitante, "
                 + "p.puntuacion_local, p.puntuacion_visitante "
@@ -70,7 +74,7 @@ public class InformesService {
                         rs.getObject("puntuacion_visitante") != null ? rs.getInt("puntuacion_visitante") : "-"));
     }
 
-    // 3. Tercera consulta Multitabla
+    // 3. Tercera consulta Multitabla: historial completo de equipos por jugador, ordenado por año de entrada descendente
     public void informeHistorialJugador() throws SeHaProducidoUnError {
         String sql = "SELECT j.nombre, j.nacionalidad, j.fecha_nacimiento, "
                 + "e.nombre AS equipo, je.año_entrada, je.año_salida, je.partidos_titular "
@@ -94,7 +98,8 @@ public class InformesService {
                         rs.getObject("partidos_titular") != null ? rs.getInt("partidos_titular") : "-"));
     }
 
-    // 4. Cuarta consulta Multitabla
+    // 4. Cuarta consulta Multitabla: suma de puntos locales y numero de partidos en casa para un ano de temporada
+    // Usa parametro de entrada, por eso tiene su propio bloque de ejecucion con PreparedStatement
     public void informePuntosLocalPorTemporada(int añoTemporada) throws SeHaProducidoUnError {
         String sql = "SELECT e.nombre, e.estadio, "
                 + "SUM(p.puntuacion_local) AS total_puntos, COUNT(*) AS partidos_casa "
@@ -135,7 +140,7 @@ public class InformesService {
         }
     }
 
-    // 5. Quinta consulta Multitabla
+    // 5. Quinta consulta Multitabla: total de equipos y partidos como titular por jugador (resumen de carrera)
     public void informeResumenCarreraJugadores() throws SeHaProducidoUnError {
         String sql = "SELECT j.nombre, j.posicion, "
                 + "COUNT(DISTINCT je.codigo_equipo) AS total_equipos, "
@@ -157,7 +162,7 @@ public class InformesService {
                         rs.getInt("total_partidos")));
     }
 
-    // 6. Sexta consulta Multitabla
+    // 6. Sexta consulta Multitabla: equipos con mas de 3 jugadores que llevan mas de 5 años
     public void informeEquiposConJugadoresFieles() throws SeHaProducidoUnError {
         String sql = "SELECT e.nombre, e.año_fundacion, "
                 + "COUNT(je.codigo_jugador) AS jugadores_mas_5_años "
@@ -179,7 +184,7 @@ public class InformesService {
                         rs.getInt("jugadores_mas_5_años")));
     }
 
-    // 7. Septima consulta Multitabla
+    // 7. Septima consulta Multitabla: jugadores que no pertenecen a ningun equipo (LEFT JOIN con IS NULL)
     public void informeJugadoresLibres() throws SeHaProducidoUnError {
         String sql = "SELECT j.nombre, j.nacionalidad "
                 + "FROM jugador j "
@@ -196,7 +201,7 @@ public class InformesService {
                         rs.getString("nacionalidad")));
     }
 
-    // 8. Octava consulta Multitabla
+    // 8. Octava consulta Multitabla: partidos cuya suma de puntuaciones supera el umbral indicado por el usuario
     public void informePartidosAltaPuntuacion(int valorMinimo) throws SeHaProducidoUnError {
         String sql = "SELECT p.fecha, p.año_temporada, el.nombre AS local, ev.nombre AS visitante, "
                 + "(p.puntuacion_local + p.puntuacion_visitante) AS suma_puntos "
@@ -238,7 +243,7 @@ public class InformesService {
         }
     }
 
-    // 9. Novena consulta Multitabla
+    // 9. Novena consulta Multitabla: equipos que comparten localidad y provincia, con sus socios sumados
     public void informeEquiposPorSede() throws SeHaProducidoUnError {
         String sql = "SELECT CONCAT(e1.localidad, ', ', e1.provincia) AS lugar_sede, "
                 + "GROUP_CONCAT(e1.nombre ORDER BY e1.nombre SEPARATOR ', ') AS equipos, "
@@ -262,6 +267,7 @@ public class InformesService {
                         rs.getLong("total_socios")));
     }
 
+    //Metodo auxiliar: ejecuta la SQL, escribe cabecera + filas en fichero y consola
     private void ejecutarYGuardar(String sql, List<String> lineasCabecera,
             String nombreFichero, MapaFila mapeador) throws SeHaProducidoUnError {
         crearDirectorioInformes();

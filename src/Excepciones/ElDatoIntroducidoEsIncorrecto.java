@@ -8,8 +8,15 @@ package Excepciones;
  *
  * @author jorge
  */
+/**
+ * REALIZADO POR JORGE
+ * @author jorge
+ */
+
+// Excepcion personalizada para datos invalidos introducidos por el usuario
 public class ElDatoIntroducidoEsIncorrecto extends Exception {
 
+    // Constructor con mensaje personalizado
     public ElDatoIntroducidoEsIncorrecto(String mensaje) {
         super(mensaje);
     }

@@ -13,6 +13,12 @@ import java.util.Map;
  *
  * @author jorge
  */
+/**
+ * REALIZADO POR JORGE
+ * @author jorge
+ */
+// Contenedor en memoria para los jugadores insertados en la sesion
+// Usa ArrayList (lista), HashMap (acceso por codigo) y LinkedList (cola FIFO)
 public class ContenedorJugador {
 
     // Atributos 
@@ -22,13 +28,10 @@ public class ContenedorJugador {
 
     // Constructor
     public ContenedorJugador() {
-        
+
     }
 
-
     // Metodos
-    
-    
     // Añade el jugador introducido a las diferentes colecciones
     public void añadirJugador(Jugador jugador) {
         listaJugadores.add(jugador);

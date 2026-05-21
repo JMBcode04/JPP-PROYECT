@@ -21,6 +21,12 @@ import java.util.List;
  *
  * @author jorge
  */
+/**
+ * REALIZADO POR JORGE
+ * @author jorge
+ */
+// Servicio que implementa el CRUD de Equipo contra la BD y la gestion de ficheros
+// Usa ContenedorEquipos para llevar un registro de los equipos insertados en sesion
 public class EquipoService implements MetodosComunes<Equipo> {
 
     // Atributos
