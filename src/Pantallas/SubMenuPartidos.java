@@ -104,9 +104,7 @@ public class SubMenuPartidos {
                     try {
                         JPP_ProyectoFinal.partidoService.importarTxt();
                         System.out.println("Importado Correctamente");
-                    } catch (YaImportadoException e) {
-                        System.out.println(e.getMessage());
-                    } catch (SeHaProducidoUnError | ElDatoIntroducidoEsIncorrecto e) {
+                    }  catch (SeHaProducidoUnError | ElDatoIntroducidoEsIncorrecto e) {
                         System.out.println("Error: " + e.getMessage());
                     }
                 }
@@ -115,9 +113,7 @@ public class SubMenuPartidos {
                     try {
                         JPP_ProyectoFinal.partidoService.importarCsv();
                         System.out.println("Importado Correctamente");
-                    } catch (YaImportadoException e) {
-                        System.out.println(e.getMessage());
-                    } catch (SeHaProducidoUnError | ElDatoIntroducidoEsIncorrecto e) {
+                    }  catch (SeHaProducidoUnError | ElDatoIntroducidoEsIncorrecto e) {
                         System.out.println("Error: " + e.getMessage());
                     }
                 }
@@ -126,9 +122,7 @@ public class SubMenuPartidos {
                     try {
                         JPP_ProyectoFinal.partidoService.importarBinario();
                         System.out.println("Importado Correctamente");
-                    } catch (YaImportadoException e) {
-                        System.out.println(e.getMessage());
-                    } catch (SeHaProducidoUnError | ElDatoIntroducidoEsIncorrecto e) {
+                    }  catch (SeHaProducidoUnError | ElDatoIntroducidoEsIncorrecto e) {
                         System.out.println("Error: " + e.getMessage());
                     } catch (ClassNotFoundException ex) {
                         Logger.getLogger(SubMenuPartidos.class.getName()).log(Level.SEVERE, null, ex);
@@ -139,9 +133,7 @@ public class SubMenuPartidos {
                     try {
                         JPP_ProyectoFinal.partidoService.importarJson();
                         System.out.println("Importado Correctamente");
-                    } catch (YaImportadoException e) {
-                        System.out.println(e.getMessage());
-                    } catch (SeHaProducidoUnError | ElDatoIntroducidoEsIncorrecto e) {
+                    }  catch (SeHaProducidoUnError | ElDatoIntroducidoEsIncorrecto e) {
                         System.out.println("Error: " + e.getMessage());
                     }
                 }

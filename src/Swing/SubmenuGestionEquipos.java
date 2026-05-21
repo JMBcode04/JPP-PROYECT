@@ -154,46 +154,52 @@ public class SubmenuGestionEquipos extends javax.swing.JDialog {
         formLayout.setAutoCreateGaps(true);
         formLayout.setAutoCreateContainerGaps(true);
         formLayout.setHorizontalGroup(
-            formLayout.createSequentialGroup()
-                .addGroup(formLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(jLabelCodigo)
-                    .addComponent(jLabelNombre)
-                    .addComponent(jLabelAñoFundacion)
-                    .addComponent(jLabelLugarSede)
-                    .addComponent(jLabelEstadio)
-                    .addComponent(jLabelSociosAficionados))
-                .addGroup(formLayout.createParallelGroup()
-                    .addComponent(txtCodigo, 200, 200, 200)
-                    .addComponent(txtNombre, 200, 200, 200)
-                    .addComponent(txtAñoFundacion, 200, 200, 200)
-                    .addComponent(txtLugarSede, 200, 200, 200)
-                    .addComponent(txtEstadio, 200, 200, 200)
-                    .addComponent(txtSociosAficionados, 200, 200, 200))
+                formLayout.createSequentialGroup()
+                        .addGroup(formLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                .addComponent(jLabelCodigo)
+                                .addComponent(jLabelNombre)
+                                .addComponent(jLabelAñoFundacion)
+                                .addComponent(jLabelLugarSede)
+                                .addComponent(jLabelEstadio)
+                                .addComponent(jLabelSociosAficionados))
+                        .addGroup(formLayout.createParallelGroup()
+                                .addComponent(txtCodigo, 200, 200, 200)
+                                .addComponent(txtNombre, 200, 200, 200)
+                                .addComponent(txtAñoFundacion, 200, 200, 200)
+                                .addComponent(txtLugarSede, 200, 200, 200)
+                                .addComponent(txtEstadio, 200, 200, 200)
+                                .addComponent(txtSociosAficionados, 200, 200, 200))
         );
         formLayout.setVerticalGroup(
-            formLayout.createSequentialGroup()
-                .addGroup(formLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabelCodigo).addComponent(txtCodigo))
-                .addGroup(formLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabelNombre).addComponent(txtNombre))
-                .addGroup(formLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabelAñoFundacion).addComponent(txtAñoFundacion))
-                .addGroup(formLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabelLugarSede).addComponent(txtLugarSede))
-                .addGroup(formLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabelEstadio).addComponent(txtEstadio))
-                .addGroup(formLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabelSociosAficionados).addComponent(txtSociosAficionados))
+                formLayout.createSequentialGroup()
+                        .addGroup(formLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(jLabelCodigo).addComponent(txtCodigo))
+                        .addGroup(formLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(jLabelNombre).addComponent(txtNombre))
+                        .addGroup(formLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(jLabelAñoFundacion).addComponent(txtAñoFundacion))
+                        .addGroup(formLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(jLabelLugarSede).addComponent(txtLugarSede))
+                        .addGroup(formLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(jLabelEstadio).addComponent(txtEstadio))
+                        .addGroup(formLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(jLabelSociosAficionados).addComponent(txtSociosAficionados))
         );
 
         // Tabla
         jTableEquipos.setModel(new DefaultTableModel(
-            new Object[][]{},
-            new String[]{"Código", "Nombre", "Año Fund.", "Sede", "Estadio", "Socios"}
+                new Object[][]{},
+                new String[]{"Código", "Nombre", "Año Fund.", "Sede", "Estadio", "Socios"}
         ) {
-            @Override public boolean isCellEditable(int row, int column) { return false; }
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
         });
-        jTableEquipos.getSelectionModel().addListSelectionListener(e -> { if (e.getValueIsAdjusting()) return;
+        jTableEquipos.getSelectionModel().addListSelectionListener(e -> {
+            if (e.getValueIsAdjusting()) {
+                return;
+            }
             int fila = jTableEquipos.getSelectedRow();
             if (fila >= 0) {
                 txtCodigo.setText(jTableEquipos.getValueAt(fila, 0).toString());
@@ -272,18 +278,18 @@ public class SubmenuGestionEquipos extends javax.swing.JDialog {
         layout.setAutoCreateGaps(true);
         layout.setAutoCreateContainerGaps(true);
         layout.setHorizontalGroup(
-            layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup()
-                    .addComponent(jPanelFormulario)
-                    .addComponent(jPanelBotones))
-                .addComponent(jScrollPane1, 400, 400, Short.MAX_VALUE)
+                layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup()
+                                .addComponent(jPanelFormulario)
+                                .addComponent(jPanelBotones))
+                        .addComponent(jScrollPane1, 400, 400, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
-            layout.createParallelGroup()
-                .addGroup(layout.createSequentialGroup()
-                    .addComponent(jPanelFormulario)
-                    .addComponent(jPanelBotones))
-                .addComponent(jScrollPane1)
+                layout.createParallelGroup()
+                        .addGroup(layout.createSequentialGroup()
+                                .addComponent(jPanelFormulario)
+                                .addComponent(jPanelBotones))
+                        .addComponent(jScrollPane1)
         );
 
         pack();
@@ -293,7 +299,9 @@ public class SubmenuGestionEquipos extends javax.swing.JDialog {
 
     private void jButtonInsertarActionPerformed(java.awt.event.ActionEvent evt) {
         Equipo equipo = validarYConstruirEquipo();
-        if (equipo == null) return;
+        if (equipo == null) {
+            return;
+        }
         try {
             JPP_ProyectoFinal.equipoService.insertar(equipo);
             JOptionPane.showMessageDialog(this, "Equipo insertado correctamente.");
@@ -310,7 +318,9 @@ public class SubmenuGestionEquipos extends javax.swing.JDialog {
 
     private void jButtonActualizarActionPerformed(java.awt.event.ActionEvent evt) {
         Equipo equipo = validarYConstruirEquipo();
-        if (equipo == null) return;
+        if (equipo == null) {
+            return;
+        }
         try {
             JPP_ProyectoFinal.equipoService.actualizar(equipo);
             JOptionPane.showMessageDialog(this, "Equipo actualizado correctamente.");
@@ -343,7 +353,9 @@ public class SubmenuGestionEquipos extends javax.swing.JDialog {
         int confirm = JOptionPane.showConfirmDialog(this,
                 "¿Seguro que deseas eliminar el equipo con código " + codigo + "?",
                 "Confirmar eliminación", JOptionPane.YES_NO_OPTION);
-        if (confirm != JOptionPane.YES_OPTION) return;
+        if (confirm != JOptionPane.YES_OPTION) {
+            return;
+        }
         try {
             JPP_ProyectoFinal.equipoService.eliminar(codigo);
             JOptionPane.showMessageDialog(this, "Equipo eliminado correctamente.");
@@ -428,8 +440,6 @@ public class SubmenuGestionEquipos extends javax.swing.JDialog {
             JPP_ProyectoFinal.equipoService.importarTxt();
             JOptionPane.showMessageDialog(this, "Importado desde TXT correctamente.");
             cargarTabla();
-        } catch (YaImportadoException e) {
-            JOptionPane.showMessageDialog(this, e.getMessage(), "Aviso", JOptionPane.WARNING_MESSAGE);
         } catch (SeHaProducidoUnError | ElDatoIntroducidoEsIncorrecto e) {
             JOptionPane.showMessageDialog(this, "Error: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
@@ -440,8 +450,6 @@ public class SubmenuGestionEquipos extends javax.swing.JDialog {
             JPP_ProyectoFinal.equipoService.importarCsv();
             JOptionPane.showMessageDialog(this, "Importado desde CSV correctamente.");
             cargarTabla();
-        } catch (YaImportadoException e) {
-            JOptionPane.showMessageDialog(this, e.getMessage(), "Aviso", JOptionPane.WARNING_MESSAGE);
         } catch (SeHaProducidoUnError | ElDatoIntroducidoEsIncorrecto e) {
             JOptionPane.showMessageDialog(this, "Error: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
@@ -452,8 +460,6 @@ public class SubmenuGestionEquipos extends javax.swing.JDialog {
             JPP_ProyectoFinal.equipoService.importarBinario();
             JOptionPane.showMessageDialog(this, "Importado desde Binario correctamente.");
             cargarTabla();
-        } catch (YaImportadoException e) {
-            JOptionPane.showMessageDialog(this, e.getMessage(), "Aviso", JOptionPane.WARNING_MESSAGE);
         } catch (SeHaProducidoUnError | ElDatoIntroducidoEsIncorrecto e) {
             JOptionPane.showMessageDialog(this, "Error: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         } catch (ClassNotFoundException e) {
@@ -466,9 +472,8 @@ public class SubmenuGestionEquipos extends javax.swing.JDialog {
             JPP_ProyectoFinal.equipoService.importarJson();
             JOptionPane.showMessageDialog(this, "Importado desde JSON correctamente.");
             cargarTabla();
-        } catch (YaImportadoException e) {
-            JOptionPane.showMessageDialog(this, e.getMessage(), "Aviso", JOptionPane.WARNING_MESSAGE);
-        } catch (SeHaProducidoUnError | ElDatoIntroducidoEsIncorrecto e) {
+        } 
+        catch (SeHaProducidoUnError | ElDatoIntroducidoEsIncorrecto e) {
             JOptionPane.showMessageDialog(this, "Error: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
         }
     }

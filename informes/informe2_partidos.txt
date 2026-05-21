@@ -1,3 +1,6 @@
 INFORME 2: PARTIDOS CON EQUIPOS
 FECHA           ESTADIO                   LOCAL                VISITANTE             PTS LOCAL  PTS VISIT
 ---------------------------------------------------------------------------------------------------------
+2000-07-01      Romareda                  Zaragoza             Barcelona                     1          2
+2002-03-17      jnsdjfe                   Albacete             Barcelona                     1          0
+2010-02-08      Romareda                  Zaragoza             Albacete                      3          1

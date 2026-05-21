@@ -1,0 +1,5 @@
+INFORME 8: PARTIDOS CON PUNTUACIÓN TOTAL > 1
+FECHA           TEMPORADA LOCAL                VISITANTE             SUMA PUNTOS
+--------------------------------------------------------------------------------
+2010-02-08          2010 Zaragoza             Albacete                        4
+2000-07-01          2000 Zaragoza             Barcelona                       3

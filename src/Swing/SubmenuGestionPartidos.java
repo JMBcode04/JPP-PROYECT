@@ -351,23 +351,19 @@ public class SubmenuGestionPartidos extends javax.swing.JDialog {
     }
     private void jButtonImpTXTActionPerformed(java.awt.event.ActionEvent evt) {
         try { JPP_ProyectoFinal.partidoService.importarTxt(); JOptionPane.showMessageDialog(this, "Importado desde TXT."); cargarTabla(); }
-        catch (YaImportadoException e) { JOptionPane.showMessageDialog(this, e.getMessage(), "Aviso", JOptionPane.WARNING_MESSAGE); }
         catch (SeHaProducidoUnError | ElDatoIntroducidoEsIncorrecto e) { JOptionPane.showMessageDialog(this, "Error: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE); }
     }
     private void jButtonImpCSVActionPerformed(java.awt.event.ActionEvent evt) {
         try { JPP_ProyectoFinal.partidoService.importarCsv(); JOptionPane.showMessageDialog(this, "Importado desde CSV."); cargarTabla(); }
-        catch (YaImportadoException e) { JOptionPane.showMessageDialog(this, e.getMessage(), "Aviso", JOptionPane.WARNING_MESSAGE); }
         catch (SeHaProducidoUnError | ElDatoIntroducidoEsIncorrecto e) { JOptionPane.showMessageDialog(this, "Error: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE); }
     }
     private void jButtoniImpBINActionPerformed(java.awt.event.ActionEvent evt) {
         try { JPP_ProyectoFinal.partidoService.importarBinario(); JOptionPane.showMessageDialog(this, "Importado desde Binario."); cargarTabla(); }
-        catch (YaImportadoException e) { JOptionPane.showMessageDialog(this, e.getMessage(), "Aviso", JOptionPane.WARNING_MESSAGE); }
         catch (SeHaProducidoUnError | ElDatoIntroducidoEsIncorrecto e) { JOptionPane.showMessageDialog(this, "Error: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE); }
         catch (ClassNotFoundException e) { JOptionPane.showMessageDialog(this, "Error de clase: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE); }
     }
     private void jButtonImpJSONActionPerformed(java.awt.event.ActionEvent evt) {
         try { JPP_ProyectoFinal.partidoService.importarJson(); JOptionPane.showMessageDialog(this, "Importado desde JSON."); cargarTabla(); }
-        catch (YaImportadoException e) { JOptionPane.showMessageDialog(this, e.getMessage(), "Aviso", JOptionPane.WARNING_MESSAGE); }
         catch (SeHaProducidoUnError | ElDatoIntroducidoEsIncorrecto e) { JOptionPane.showMessageDialog(this, "Error: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE); }
     }
 

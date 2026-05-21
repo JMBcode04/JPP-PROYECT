@@ -1,3 +1,5 @@
 INFORME 5: RESUMEN CARRERA DE JUGADORES
 JUGADOR                   POSICIÓN          TOTAL EQUIPOS  TOTAL PARTIDOS
 ---------------------------------------------------------------------------
+Santi                     DEL                           1             450
+Jorge                     DEL                           1             317

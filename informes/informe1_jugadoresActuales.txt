@@ -1,0 +1,3 @@
+INFORME 1: JUGADORES ACTUALES POR EQUIPO
+EQUIPO                    ESTADIO                   LUGAR SEDE           JUGADOR                   POSICIÓN       
+--------------------------------------------------------------------------------------------------------------

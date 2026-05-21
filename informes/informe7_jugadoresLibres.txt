@@ -1,3 +1,9 @@
 INFORME 7: JUGADORES LIBRES (SIN EQUIPO)
 JUGADOR                   NACIONALIDAD        
 --------------------------------------------------
+Abdul                     Marruecos           
+Andres                    España              
+Iker                      España              
+Luis                      Turquia             
+Pepe                      España              
+Ramon                     España              

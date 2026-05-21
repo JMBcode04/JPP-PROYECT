@@ -102,8 +102,6 @@ public class SubMenuJugadorEquipo {
                     try {
                         JPP_ProyectoFinal.jugadorEquipoService.importarTxt();
                         System.out.println("Importado Correctamente");
-                    } catch (YaImportadoException e) {
-                        System.out.println(e.getMessage());
                     } catch (SeHaProducidoUnError | ElDatoIntroducidoEsIncorrecto e) {
                         System.out.println("Error: " + e.getMessage());
                     }
@@ -113,9 +111,7 @@ public class SubMenuJugadorEquipo {
                     try {
                         JPP_ProyectoFinal.jugadorEquipoService.importarCsv();
                         System.out.println("Importado Correctamente");
-                    } catch (YaImportadoException e) {
-                        System.out.println(e.getMessage());
-                    } catch (SeHaProducidoUnError | ElDatoIntroducidoEsIncorrecto e) {
+                    }  catch (SeHaProducidoUnError | ElDatoIntroducidoEsIncorrecto e) {
                         System.out.println("Error: " + e.getMessage());
                     }
                 }
@@ -124,9 +120,7 @@ public class SubMenuJugadorEquipo {
                     try {
                         JPP_ProyectoFinal.jugadorEquipoService.importarBinario();
                         System.out.println("Importado Correctamente");
-                    } catch (YaImportadoException e) {
-                        System.out.println(e.getMessage());
-                    } catch (SeHaProducidoUnError | ElDatoIntroducidoEsIncorrecto e) {
+                    }  catch (SeHaProducidoUnError | ElDatoIntroducidoEsIncorrecto e) {
                         System.out.println("Error: " + e.getMessage());
                     }
                 }
@@ -135,9 +129,7 @@ public class SubMenuJugadorEquipo {
                     try {
                         JPP_ProyectoFinal.jugadorEquipoService.importarJson();
                         System.out.println("Importado Correctamente");
-                    } catch (YaImportadoException e) {
-                        System.out.println(e.getMessage());
-                    } catch (SeHaProducidoUnError | ElDatoIntroducidoEsIncorrecto e) {
+                    }  catch (SeHaProducidoUnError | ElDatoIntroducidoEsIncorrecto e) {
                         System.out.println("Error: " + e.getMessage());
                     }
                 }

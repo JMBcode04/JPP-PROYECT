@@ -114,7 +114,7 @@ public class SubMenuEquipos {
             System.out.println("INSERTAR EQUIPO");
             System.out.print("Código: ");
             int codigo = leerEntero("Codigo");
-            
+
             System.out.print("Nombre: ");
             String nombre = teclado.nextLine().trim();
             while (!Validadores.validarNombre(nombre)) {
@@ -286,8 +286,6 @@ public class SubMenuEquipos {
         try {
             equipoService.importarTxt();
             System.out.println("Equipos importados desde TXT. ");
-        } catch (YaImportadoException e) {
-            System.out.println(e.getMessage());
         } catch (SeHaProducidoUnError | ElDatoIntroducidoEsIncorrecto e) {
             System.out.println("Error al importar: " + e.getMessage());
         }
@@ -297,8 +295,6 @@ public class SubMenuEquipos {
         try {
             equipoService.importarCsv();
             System.out.println("Equipos importados desde CSV. ");
-        } catch (YaImportadoException e) {
-            System.out.println(e.getMessage());
         } catch (SeHaProducidoUnError | ElDatoIntroducidoEsIncorrecto e) {
             System.out.println("Error al importar: " + e.getMessage());
         }
@@ -308,8 +304,6 @@ public class SubMenuEquipos {
         try {
             equipoService.importarBinario();
             System.out.println("Equipos importados desde Binario.");
-        } catch (YaImportadoException e) {
-            System.out.println(e.getMessage());
         } catch (SeHaProducidoUnError | ElDatoIntroducidoEsIncorrecto e) {
             System.out.println("Error al importar: " + e.getMessage());
         } catch (ClassNotFoundException ex) {
@@ -321,8 +315,6 @@ public class SubMenuEquipos {
         try {
             equipoService.importarJson();
             System.out.println("Equipos importados desde JSON.");
-        } catch (YaImportadoException e) {
-            System.out.println(e.getMessage());
         } catch (SeHaProducidoUnError | ElDatoIntroducidoEsIncorrecto e) {
             System.out.println("Error al importar: " + e.getMessage());
         }

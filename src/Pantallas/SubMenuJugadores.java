@@ -115,9 +115,7 @@ public class SubMenuJugadores {
                     try {
                         JPP_ProyectoFinal.jugadorService.importarTxt();
                         System.out.println("Importado correctamente");
-                    } catch (YaImportadoException e) {
-                        System.out.println(e.getMessage());
-                    } catch (SeHaProducidoUnError | ElDatoIntroducidoEsIncorrecto e) {
+                    }  catch (SeHaProducidoUnError | ElDatoIntroducidoEsIncorrecto e) {
                         System.out.println("Error: " + e.getMessage());
                     }
                 }
@@ -127,9 +125,7 @@ public class SubMenuJugadores {
                     try {
                         JPP_ProyectoFinal.jugadorService.importarCsv();
                         System.out.println("Importado correctamente");
-                    } catch (YaImportadoException e) {
-                        System.out.println(e.getMessage());
-                    } catch (SeHaProducidoUnError | ElDatoIntroducidoEsIncorrecto e) {
+                    }  catch (SeHaProducidoUnError | ElDatoIntroducidoEsIncorrecto e) {
                         System.out.println("Error: " + e.getMessage());
                     }
                 }
@@ -138,9 +134,7 @@ public class SubMenuJugadores {
                     try {
                         JPP_ProyectoFinal.jugadorService.importarBinario();
                         System.out.println("Importado correctamente");
-                    } catch (YaImportadoException e) {
-                        System.out.println(e.getMessage());
-                    } catch (SeHaProducidoUnError | ElDatoIntroducidoEsIncorrecto e) {
+                    }  catch (SeHaProducidoUnError | ElDatoIntroducidoEsIncorrecto e) {
                         System.out.println("Error: " + e.getMessage());
                     } catch (ClassNotFoundException ex) {
                         Logger.getLogger(SubMenuJugadores.class.getName()).log(Level.SEVERE, null, ex);
@@ -152,9 +146,7 @@ public class SubMenuJugadores {
                     try {
                         JPP_ProyectoFinal.jugadorService.importarJson();
                         System.out.println("Importado correctamente");
-                    } catch (YaImportadoException e) {
-                        System.out.println(e.getMessage());
-                    } catch (SeHaProducidoUnError | ElDatoIntroducidoEsIncorrecto e) {
+                    }  catch (SeHaProducidoUnError | ElDatoIntroducidoEsIncorrecto e) {
                         System.out.println("Error: " + e.getMessage());
                     }
                 }
